@@ -20,6 +20,7 @@ Datasets
       <li>
         Name: <%= dataset.name %>
         Uploaded at: <%= dataset.created_at %>
+        <%= link_to("View", dataset_path(dataset)) %>
       </li>
     <% end %>
   <% end %>

@@ -6,6 +6,9 @@ class DatasetsController < ApplicationController
     @datasets = Dataset.all
   end
 
+  def show
+  end
+
   def create
     @dataset = Dataset.new(dataset_params)
 

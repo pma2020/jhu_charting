@@ -10,6 +10,7 @@ gem 'coffee-rails', '~> 4.1.0'
 
 gem 'refile', '~> 0.6.0', require: 'refile/rails'
 gem 'responders'
+gem 'smarter_csv'
 
 gem 'jquery-rails'
 gem 'turbolinks'
