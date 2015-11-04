@@ -1,0 +1,26 @@
+Datasets
+
+<%= form_for @new_dataset do |form| %>
+  <%= label(:dataset, :name) %>
+  <%= form.text_field :name %>
+
+  <%= label(:dataset, :csv_file) %>
+  <%= form.attachment_field :csv_file %>
+
+  <%= submit_tag %>
+<% end %>
+
+<h3>Current Datasets</h3>
+
+<ul>
+  <% if @datasets.empty? %>
+    No datasets. Upload the first one!
+  <% else %>
+    <% @datasets.each do |dataset| %>
+      <li>
+        Name: <%= dataset.name %>
+        Uploaded at: <%= dataset.created_at %>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
