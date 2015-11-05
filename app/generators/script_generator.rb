@@ -9,14 +9,8 @@ class ScriptGenerator
   def generate
     <<-"EOS"
       <div class='filters'>
-        <div class='form-group'>
-          #{label_tag(:dataset_countries, "Countries:")}
-          #{collection_check_boxes(:dataset, :countries, select_options(:countries), :first, :last, {}, class: 'country-check')}
-        </div>
-        <div class='form-group'>
-          #{label_tag(:dataset_years, "Years:")}
-          #{collection_check_boxes(:dataset, :years, select_options(:years), :first, :last, {}, class: 'year-check')}
-        </div>
+        #{checkbox_filter('countries')}
+        #{checkbox_filter('years')}
         #{submit_tag("Chart", id: "submit-chart-filters-#{container_id}")}
       </div>
       <div id='chart-container-#{container_id}' style='width:100%; height:400px;'></div>
@@ -44,6 +38,15 @@ class ScriptGenerator
   end
 
   private
+
+  def checkbox_filter(type)
+    <<-"EOS"
+    <div class='form-group'>
+      #{label_tag("dataset_#{type}".to_sym, "#{type.capitalize}:")}
+      #{collection_check_boxes(:dataset, type.to_sym, select_options(type.to_sym), :first, :last, {}, class: "#{type.singularize}-check")}
+    </div>
+    EOS
+  end
 
   def container_id
     @container_id ||= SecureRandom.hex(15)
