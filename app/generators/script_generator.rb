@@ -9,14 +9,9 @@ class ScriptGenerator
   def generate
     <<-"EOS"
       <div class='filters'>
-        <div class='form-group'>
-          #{label_tag(:dataset_countries, "Countries:")}
-          #{collection_check_boxes(:dataset, :countries, select_options(:countries), :first, :last, {}, class: 'country-check')}
-        </div>
-        <div class='form-group'>
-          #{label_tag(:dataset_years, "Years:")}
-          #{collection_check_boxes(:dataset, :years, select_options(:years), :first, :last, {}, class: 'year-check')}
-        </div>
+        #{checkbox_filter('countries')}
+        #{checkbox_filter('years')}
+        #{select_box_filter('group_filters')}
         #{submit_tag("Chart", id: "submit-chart-filters-#{container_id}")}
       </div>
       <div id='chart-container-#{container_id}' style='width:100%; height:400px;'></div>
@@ -29,21 +24,47 @@ class ScriptGenerator
         $('#submit-chart-filters-#{container_id}').on('click', function() {
           console.log(getCheckedItems('country'));
           console.log(getCheckedItems('year'));
+          console.log(getSelectedItem('group_filters'));
         });
 
         // Function to retrieve the selected items in a checkbox group
         function getCheckedItems(type) {
           var checkedItems = [];
-          $('.' + type + '-check:checked').each(function() {
+          $('.' + type + '-check-#{container_id}:checked').each(function() {
              checkedItems.push($(this).val());
           });
           return checkedItems;
+        }
+
+        // Function to retrieve the selected item in a select group
+        function getSelectedItem(type) {
+          var selector = $('#dataset_' + type + '_#{container_id}');
+          return selector.val();
         }
       </script>
     EOS
   end
 
   private
+
+  def checkbox_filter(type)
+    <<-"EOS"
+    <div class='form-group'>
+      #{label_tag("dataset_#{type}".to_sym, "#{type.capitalize}:")}
+      #{collection_check_boxes(:dataset, type.to_sym, select_options(type.to_sym), :first, :last, {}, class: "#{type.singularize}-check-#{container_id}")}
+    </div>
+    EOS
+  end
+
+  def select_box_filter(type)
+    id = "dataset_#{type}_#{container_id}".to_sym
+    <<-"EOS"
+    <div class='form-group'>
+      #{label_tag(id, "#{type.capitalize}:")}
+      #{select_tag(id,  options_for_select(select_options(type.to_sym), "None"))}
+    </div>
+    EOS
+  end
 
   def container_id
     @container_id ||= SecureRandom.hex(15)
