@@ -13,6 +13,7 @@ class ScriptGenerator
         #{checkbox_filter('years')}
         #{select_box_filter('group_filters')}
         #{select_box_filter('indicators')}
+        #{select_box_filter('chart_types')}
         #{submit_tag("Chart", id: "submit-chart-filters-#{container_id}")}
       </div>
       <div id='chart-container-#{container_id}' style='width:100%; height:400px;'></div>
