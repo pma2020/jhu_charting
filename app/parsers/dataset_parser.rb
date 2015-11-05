@@ -29,12 +29,17 @@ class DatasetParser
     @indicators ||= filters_from_columns(INDICATOR_HEADER_RANGE_START)
   end
 
+  def chart_types
+    @chart_types ||= ['bar', 'column', 'line', 'pie']
+  end
+
   def metadata
     {
       countries: countries,
       years: years,
       group_filters: group_filters,
-      indicators: indicators
+      indicators: indicators,
+      chart_types: chart_types
     }
   end
 
