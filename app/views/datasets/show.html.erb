@@ -1,0 +1,9 @@
+Dataset <%= @dataset.name %>
+
+<%= text_area_tag :script, @dataset.parse %>
+
+<h3>
+  Rendered Script:
+</h3>
+<hr/>
+<%= @dataset.parse.html_safe %>
