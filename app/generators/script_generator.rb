@@ -9,8 +9,14 @@ class ScriptGenerator
   def generate
     <<-"EOS"
       <div class='filters'>
-        #{label_tag(:dataset_countries, "Countries:")}
-        #{collection_check_boxes(:dataset, :countries, select_options(:countries), :first, :last, {}, class: 'country-check')}
+        <div class='form-group'>
+          #{label_tag(:dataset_countries, "Countries:")}
+          #{collection_check_boxes(:dataset, :countries, select_options(:countries), :first, :last, {}, class: 'country-check')}
+        </div>
+        <div class='form-group'>
+          #{label_tag(:dataset_years, "Years:")}
+          #{collection_check_boxes(:dataset, :years, select_options(:years), :first, :last, {}, class: 'year-check')}
+        </div>
         #{submit_tag("Chart", id: "submit-chart-filters-#{container_id}")}
       </div>
       <div id='chart-container-#{container_id}' style='width:100%; height:400px;'></div>
@@ -21,16 +27,17 @@ class ScriptGenerator
 
         // Chart Filter Submission
         $('#submit-chart-filters-#{container_id}').on('click', function() {
-          console.log(getCheckedCountries());
+          console.log(getCheckedItems('country'));
+          console.log(getCheckedItems('year'));
         });
 
-        // Function to retrieve the selected countries
-        function getCheckedCountries() {
-          var checkedCountries = [];
-          $('.country-check:checked').each(function() {
-             checkedCountries.push($(this).val());
+        // Function to retrieve the selected items in a checkbox group
+        function getCheckedItems(type) {
+          var checkedItems = [];
+          $('.' + type + '-check:checked').each(function() {
+             checkedItems.push($(this).val());
           });
-          return checkedCountries;
+          return checkedItems;
         }
       </script>
     EOS
