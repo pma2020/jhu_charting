@@ -1,7 +1,7 @@
 require 'date'
 
 class DatasetParser
-  attr_reader :data, :countries, :years
+  attr_reader :data, :countries, :years, :group_filters
 
   def initialize(csv)
     @csv = csv
@@ -20,20 +20,25 @@ class DatasetParser
     @years ||= data.collect{|row| row[:date]}.uniq
   end
 
+  def group_filters
+    @group_filters ||= data.collect{|row| row[:grouping]}.uniq
+  end
+
   def metadata
     {
       countries: countries,
-      years: years
+      years: years,
+      group_filters: group_filters
     }
   end
 
   private
 
   def load
-    @data ||= SmarterCSV.process(@csv, options)
+    @data ||= SmarterCSV.process(@csv, csv_parse_options)
   end
 
-  def options
+  def csv_parse_options
     {
       row_sep: :auto,
       value_converters: { date: DateConverter }
