@@ -35,3 +35,8 @@ group :test do
   gem "database_cleaner"
   gem "shoulda-matchers", require: false
 end
+
+group :production do
+  gem 'rails_12factor'
+  gem 'puma'
+end
