@@ -5,20 +5,20 @@ function getCheckedItems(container_id, type) {
      checkedItems.push($(this).val());
   });
   return checkedItems;
-}
+};
 
 // Function to retrieve the selected item in a select group
 function getSelectedItem(container_id, type) {
   var selector = $('#dataset_' + type + '_' + container_id);
   return selector.val();
-}
+};
 
 function filterData(dataSet, type, value) {
   var items = dataSet.filter(function(hsh) {
     return hsh[type] === value;
   });
   return items
-}
+};
 
 function dataIntersection(arrays) {
   var result = arrays.shift().filter(function(v) {
@@ -27,42 +27,55 @@ function dataIntersection(arrays) {
     });
   });
   return result;
-}
+};
+
+function reduceDataSet(data, filters, filterType) {
+  var result = [];
+  if (isArray(filters) == true) {
+    filters.forEach(function(filter) {
+      result.push(filterData(data, filterType, filter));
+    })
+  } else {
+    result.push(filterData(data, filterType, filters));
+  }
+  result = [].concat.apply([], result);
+  return result;
+};
+
+function scopeDataSet(data, scope) {
+  var scopedData = {};
+
+  data.forEach(function(row) {
+    var scopeKey = row[scope];
+
+    if (scopedData[scopeKey] == null) {
+      scopedData[scopeKey] = [row];
+    } else {
+      scopedData[scopeKey].push(row)
+    }
+  });
+
+  return scopedData;
+};
+
+function isArray(obj) {
+  return Object.prototype.toString.call(obj) === '[object Array]';
+};
 
 function reduceDataBasedOnSelection(countries, grouping, dates) {
   var countryFilter = [];
   var dateFilter = [];
   var groupingFilter = [];
+  var reducedDataSet;
 
-  // filter countries
-  countries.forEach(function(country) {
-    countryFilter.push(filterData(data, 'Country', country));
-  })
-  countryFilter = [].concat.apply([], countryFilter);
+  countryFilter = reduceDataSet(data, countries, 'Country');
+  dateFilter = reduceDataSet(data, dates, 'Date');
+  groupingFilter = reduceDataSet(data, grouping, 'Grouping');
 
-  dates.forEach(function(date) {
-    dateFilter.push(filterData(data, 'Date', date));
-  });
-  dateFilter = [].concat.apply([], dateFilter);
+  reducedDataSet = dataIntersection([countryFilter, dateFilter, groupingFilter]);
 
-  groupingFilter.push(filterData(data, 'Grouping', grouping));
-  groupingFilter = [].concat.apply([], groupingFilter);
-
-  var reducedDataSet = dataIntersection([countryFilter, dateFilter, groupingFilter]);
-  var scopedData = {};
-
-  reducedDataSet.forEach(function(row) {
-    var country = row['Country'];
-
-    if (scopedData[country] == null) {
-      scopedData[country] = [row];
-    } else {
-      scopedData[country].push(row)
-    }
-  });
-
-  return scopedData;
-}
+  return scopeDataSet(reducedDataSet, 'Country');
+};
 
 function generateSeriesData(chartType, countries, indicator, grouping, dates) {
   var dataSet = reduceDataBasedOnSelection(countries, grouping, dates);
@@ -107,7 +120,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates) {
 
   chartComponents = [xAxis, series];
   return chartComponents;
-}
+};
 
 function generateTitle(countries, indicator, grouping) {
   var titleResult;
@@ -117,7 +130,7 @@ function generateTitle(countries, indicator, grouping) {
     titleResult = indicator + ' by ' + grouping + ' for ' + countries.join();
   }
   return titleResult;
-}
+};
 
 function generateChart(container_id, type, title, xAxis, yAxis, seriesData) {
   $('#chart-container-' + container_id).highcharts({
@@ -127,4 +140,4 @@ function generateChart(container_id, type, title, xAxis, yAxis, seriesData) {
       yAxis: { title: { text: yAxis } },
       series: seriesData
   });
-}
+};
