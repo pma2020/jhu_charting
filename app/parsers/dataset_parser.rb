@@ -2,6 +2,7 @@ require 'date'
 
 class DatasetParser
   INDICATOR_HEADER_RANGE_START = 5
+  AVAILABLE_CHART_TYPES = ['bar', 'column', 'line', 'pie'].freeze
   HEADER_MAP = {
     country: "Country",
     date: "Date",
@@ -17,6 +18,32 @@ class DatasetParser
 
   def script
     ScriptGenerator.new(metadata, data).generate
+  end
+
+  private
+
+  def load
+    @data ||= SmarterCSV.process(@csv, csv_parse_options)
+  end
+
+  def csv_parse_options
+    {
+      row_sep: :auto,
+      remove_empty_values: false,
+      remove_zero_values: false,
+      keep_original_headers: true,
+      value_converters: { date: DateConverter }
+    }
+  end
+
+  def metadata
+    {
+      countries: countries,
+      years: years,
+      group_filters: group_filters,
+      indicators: indicators,
+      chart_types: chart_types
+    }
   end
 
   def countries
@@ -36,33 +63,7 @@ class DatasetParser
   end
 
   def chart_types
-    @chart_types ||= ['bar', 'column', 'line', 'pie']
-  end
-
-  def metadata
-    {
-      countries: countries,
-      years: years,
-      group_filters: group_filters,
-      indicators: indicators,
-      chart_types: chart_types
-    }
-  end
-
-  private
-
-  def load
-    @data ||= SmarterCSV.process(@csv, csv_parse_options)
-  end
-
-  def csv_parse_options
-    {
-      row_sep: :auto,
-      remove_empty_values: false,
-      remove_zero_values: false,
-      keep_original_headers: true,
-      value_converters: { date: DateConverter }
-    }
+    @chart_types ||= AVAILABLE_CHART_TYPES
   end
 
   def filter_items_for(type)
