@@ -2,6 +2,12 @@ require 'date'
 
 class DatasetParser
   INDICATOR_HEADER_RANGE_START = 5
+  HEADER_MAP = {
+    country: "Country",
+    date: "Date",
+    grouping: "Grouping"
+  }.freeze
+
   attr_reader :data, :countries, :years, :group_filters
 
   def initialize(csv)
@@ -54,12 +60,14 @@ class DatasetParser
       row_sep: :auto,
       remove_empty_values: false,
       remove_zero_values: false,
+      keep_original_headers: true,
       value_converters: { date: DateConverter }
     }
   end
 
   def filter_items_for(type)
-    data.collect{|row| row[type]}.uniq
+    header = HEADER_MAP.fetch(type)
+    data.collect{|row| row[header]}.uniq
   end
 
   def filters_from_columns(start_index, end_index = nil)
