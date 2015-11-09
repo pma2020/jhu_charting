@@ -21,6 +21,7 @@ Datasets
         Name: <%= dataset.name %>
         Uploaded at: <%= dataset.created_at %>
         <%= link_to("View", dataset_path(dataset)) %>
+        <%= link_to("Delete", dataset_path(dataset), method: :delete) %>
       </li>
     <% end %>
   <% end %>
