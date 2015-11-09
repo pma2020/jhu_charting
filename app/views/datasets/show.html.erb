@@ -1,9 +1,12 @@
-Dataset <%= @dataset.name %>
+<section class="dataset">
+  <h3><%= @dataset.name %></h3>
 
-<%= text_area_tag :script, @dataset.parse.script %>
+  <%= text_area_tag :script, @dataset.parse.script %>
+</section>
 
-<h3>
-  Rendered Script:
-</h3>
-<hr/>
-<%= @dataset.parse.script.html_safe %>
+<section class="charted-dataset">
+  <h3>
+    Rendered Script:
+  </h3>
+  <%= @dataset.parse.script.html_safe %>
+</section>

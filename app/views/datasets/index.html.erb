@@ -1,28 +1,41 @@
-Datasets
+<h1>Datasets</h1>
 
-<%= form_for @new_dataset do |form| %>
-  <%= label(:dataset, :name) %>
-  <%= form.text_field :name %>
+<section class="new-dataset">
+  <h3>Upload New Dataset</h3>
+  <%= form_for @new_dataset do |form| %>
+    <p>
+      <%= label(:dataset, :name) %>
+      <%= form.text_field :name %>
+    </p>
 
-  <%= label(:dataset, :csv_file) %>
-  <%= form.attachment_field :csv_file %>
-
-  <%= submit_tag %>
-<% end %>
-
-<h3>Current Datasets</h3>
-
-<ul>
-  <% if @datasets.empty? %>
-    No datasets. Upload the first one!
-  <% else %>
-    <% @datasets.each do |dataset| %>
-      <li>
-        Name: <%= dataset.name %>
-        Uploaded at: <%= dataset.created_at %>
-        <%= link_to("View", dataset_path(dataset)) %>
-        <%= link_to("Delete", dataset_path(dataset), method: :delete) %>
-      </li>
-    <% end %>
+    <p>
+      <%= label(:dataset, :csv_file) %>
+      <%= form.attachment_field :csv_file %>
+    </p>
+    
+    <p><%= submit_tag %></p>
   <% end %>
-</ul>
+</section>
+
+<section class="current-datasets">
+  <h3>Current Datasets</h3>
+
+  <ul>
+    <% if @datasets.empty? %>
+      No datasets. Upload the first one!
+    <% else %>
+      <% @datasets.each do |dataset| %>
+        <li>
+          <p>
+            <strong><%= dataset.name %></strong>
+            <span><%= dataset.created_at %></span>
+          </p>
+          <p>
+            <%= link_to("View", dataset_path(dataset)) %>
+            <%= link_to("Delete", dataset_path(dataset), method: :delete) %>
+          </p>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+</section>
