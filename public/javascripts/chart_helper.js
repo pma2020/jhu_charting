@@ -1,15 +1,55 @@
-// Function to retrieve the selected items in a checkbox group
-function getCheckedItems(container_id, type) {
+function getCheckedItems(containerId, type) {
   var checkedItems = [];
-  $('.' + type + '-check-' + container_id + ':checked').each(function() {
+  $('.' + type + '-check-' + containerId + ':checked').each(function() {
      checkedItems.push($(this).val());
   });
   return checkedItems;
 };
 
-// Function to retrieve the selected item in a select group
-function getSelectedItem(container_id, type) {
-  var selector = $('#dataset_' + type + '_' + container_id);
+function validateFilters(containerId, metadata) {
+  var chartType = getSelectedItem(containerId, 'chart_types');
+  var selectedCountries = getCheckedItems(containerId, 'country');
+  var selectedDates = getCheckedItems(containerId, 'year');
+
+  disablePieOption(containerId, selectedCountries, selectedDates);
+  disableDates(containerId, selectedCountries, metadata);
+};
+
+function disableDates(containerId, countries, metadata) {
+  var keys = Object.keys(metadata);
+  keys.forEach(function(key) {
+    var dates = metadata[key];
+    if(countries.indexOf(key) >= 0) {
+      dates.forEach(function(date) {
+        $(".year-check-" + containerId + ":checkbox[value='" + date + "']").prop('disabled', '');
+      });
+    } else {
+      dates.forEach(function(date) {
+        $(".year-check-" + containerId + ":checkbox[value='" + date + "']").prop('disabled', 'disabled');
+      });
+    }
+  });
+};
+
+function disablePieOption(containerId, countries, dates) {
+  var chartSelect = $("#dataset_chart_types_" + containerId + " option[value='pie']");
+  var disablePieForCountry = false;
+  var disablePieForDate = false;
+
+  // Add or remove pie option based on country
+  if(countries.length > 1) { disablePieForCountry = true; }
+  // Add or remove pie option based on country
+  if(dates.length > 1) { disablePieForDate = true; }
+
+  if(disablePieForCountry || disablePieForDate) {
+    chartSelect.prop("disabled", "disabled");
+  } else {
+    chartSelect.prop("disabled", "");
+  }
+};
+
+function getSelectedItem(containerId, type) {
+  var selector = $('#dataset_' + type + '_' + containerId);
   return selector.val();
 };
 
@@ -132,8 +172,8 @@ function generateTitle(countries, indicator, grouping) {
   return titleResult;
 };
 
-function generateChart(container_id, type, title, xAxis, yAxis, seriesData) {
-  $('#chart-container-' + container_id).highcharts({
+function generateChart(containerId, type, title, xAxis, yAxis, seriesData) {
+  $('#chart-container-' + containerId).highcharts({
       chart: { type: type },
       title: { text: title },
       xAxis: { categories: xAxis },

@@ -42,8 +42,22 @@ class DatasetParser
       years: years,
       group_filters: group_filters,
       indicators: indicators,
-      chart_types: chart_types
+      chart_types: chart_types,
+      year_by_country: years_by_country
     }
+  end
+
+  def years_by_country
+    countryHeader = HEADER_MAP.fetch(:country)
+    yearHeader = HEADER_MAP.fetch(:date)
+    results = Hash.new
+
+    countries.map do |country|
+      results[country] = data.find_all{|row| row[countryHeader] == country}
+                             .collect{|row| row[yearHeader]}.uniq
+    end
+
+    results
   end
 
   def countries
