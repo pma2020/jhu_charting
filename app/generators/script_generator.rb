@@ -1,5 +1,6 @@
 class ScriptGenerator
   include ActionView::Helpers
+  include ActionView::Context
 
   def initialize(metadata = {}, data = {})
     @metadata = metadata
@@ -56,9 +57,19 @@ class ScriptGenerator
     <<-"EOS"
     <div class='form-group'>
       #{label_tag("dataset_#{type}".to_sym, "#{type.humanize.capitalize}:")}
-      #{collection_check_boxes(:dataset, type.to_sym, select_options(type.to_sym), :first, :last, {}, { disabled: disabled, class: "filter #{type.singularize}-check-#{container_id}" })}
+      #{checkboxes(type, disabled)}
     </div>
     EOS
+  end
+
+  def checkboxes(type, disabled)
+    collection_check_boxes(:dataset, type.to_sym, select_options(type.to_sym), :first, :last) do |b|
+      content_tag(:span, class: "checkbox-group") do
+        b.label do
+          b.check_box(class: "filter #{type.singularize}-check-#{container_id}", disabled: disabled) + b.text
+        end
+      end
+    end
   end
 
   def select_box_filter(type)
