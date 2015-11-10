@@ -19,7 +19,7 @@ RSpec.describe DatasetsController, type: :controller do
   #end
 
   describe "POST create" do
-    let(:derivative_file) do
+    let(:dataset_file) do
       fixture_file_upload('test.csv', 'text/csv')
     end
 
@@ -27,7 +27,7 @@ RSpec.describe DatasetsController, type: :controller do
       let(:valid_attributes) do
         {
           name: "Test Data Set",
-          dataset_csv_file: derivative_file
+          dataset_csv_file: dataset_file
         }
       end
 
@@ -47,13 +47,18 @@ RSpec.describe DatasetsController, type: :controller do
         post :create, {:dataset => valid_attributes}
         expect(response).to redirect_to(datasets_path)
       end
+
+      it "sets the flash message" do
+        post :create, {:dataset => valid_attributes}
+        expect(flash[:notice]).to eq("Dataset was successfully created.")
+      end
     end
 
     describe "with invalid params" do
       let(:invalid_attributes) do
         {
           name: nil,
-          dataset_csv_file: derivative_file
+          dataset_csv_file: dataset_file
         }
       end
 
@@ -65,6 +70,11 @@ RSpec.describe DatasetsController, type: :controller do
       it "re-renders the 'new' template" do
         post :create, {:dataset => invalid_attributes}
         expect(response).to render_template(:index)
+      end
+
+      it "sets the flash message" do
+        post :create, {:dataset => invalid_attributes}
+        expect(flash[:alert]).to eq("Dataset could not be created.")
       end
     end
   end
