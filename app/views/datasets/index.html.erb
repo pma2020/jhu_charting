@@ -1,13 +1,22 @@
 Datasets
-
-<%= form_for @new_dataset do |form| %>
+<div>
+  <% flash.each do |key, value| %>
+    <%= value %>
+  <% end %>
+  <ul>
+    <% @dataset.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+</div>
+<%= form_for @dataset do |form| %>
   <%= label(:dataset, :name) %>
   <%= form.text_field :name %>
 
   <%= label(:dataset, :csv_file) %>
   <%= form.attachment_field :csv_file %>
 
-  <%= submit_tag %>
+  <%= submit_tag "Save dataset" %>
 <% end %>
 
 <h3>Current Datasets</h3>

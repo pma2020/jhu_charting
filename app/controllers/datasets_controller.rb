@@ -1,9 +1,11 @@
 class DatasetsController < ApplicationController
   before_action :set_dataset, only: [:show, :destroy]
 
+  respond_to :html
+
   def index
-    @new_dataset = Dataset.new
     @datasets = Dataset.all
+    @dataset = Dataset.new
   end
 
   def show
@@ -15,7 +17,8 @@ class DatasetsController < ApplicationController
     if @dataset.save
       respond_with(@dataset, location: -> { datasets_path })
     else
-      flash[:alert] = "Dataset could not be created"
+      @datasets = Dataset.all
+      flash[:alert] = "Dataset could not be created."
       render :index
     end
   end
