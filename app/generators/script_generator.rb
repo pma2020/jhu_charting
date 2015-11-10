@@ -15,7 +15,7 @@ class ScriptGenerator
       -->
       <div class='filters'>
         #{checkbox_filter('countries')}
-        #{checkbox_filter('years')}
+        #{checkbox_filter('years', true)}
         #{select_box_filter('group_filters')}
         #{select_box_filter('indicators')}
         #{select_box_filter('chart_types')}
@@ -23,12 +23,13 @@ class ScriptGenerator
       </div>
       <div id='chart-container-#{container_id}' style='width:100%; height:400px;'></div>
       <script src='https://code.highcharts.com/highcharts.js'></script>
+      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'chart_helper.js')) }</script>
       <script>
-        #{ File.read(Rails.root.join('public', 'javascripts', 'chart_helper.js')) }
-      </script>
-      <script>
+        var metadata = #{@metadata.fetch(:year_by_country, {}).to_json};;
         var data = #{chart_data};
         var chartContainer = $('#chart-container-#{container_id}');
+
+        $('.filter').on('change', function() { validateFilters('#{container_id}', metadata) });
 
         $('#submit-chart-filters-#{container_id}').on('click', function() {
           var chartType = getSelectedItem('#{container_id}', 'chart_types');
@@ -51,11 +52,11 @@ class ScriptGenerator
 
   private
 
-  def checkbox_filter(type)
+  def checkbox_filter(type, disabled = false)
     <<-"EOS"
     <div class='form-group'>
       #{label_tag("dataset_#{type}".to_sym, "#{type.humanize.capitalize}:")}
-      #{collection_check_boxes(:dataset, type.to_sym, select_options(type.to_sym), :first, :last, {}, class: "#{type.singularize}-check-#{container_id}")}
+      #{collection_check_boxes(:dataset, type.to_sym, select_options(type.to_sym), :first, :last, {}, { disabled: disabled, class: "filter #{type.singularize}-check-#{container_id}" })}
     </div>
     EOS
   end
@@ -65,7 +66,7 @@ class ScriptGenerator
     <<-"EOS"
     <div class='form-group'>
       #{label_tag(id, "#{type.humanize.capitalize}:")}
-      <span class='select-container'>#{select_tag(id,  options_for_select(select_options(type.to_sym), "None"))}</span>
+      <span class='select-container'>#{select_tag(id,  options_for_select(select_options(type.to_sym), "None"), class: "filter")}</span>
     </div>
     EOS
   end

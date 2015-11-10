@@ -1,8 +1,19 @@
 <h1>Datasets</h1>
 
+<div>
+  <% flash.each do |key, value| %>
+    <%= value %>
+  <% end %>
+  <ul>
+    <% @dataset.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+</div>
+
 <section class="new-dataset">
   <h3>Upload New Dataset</h3>
-  <%= form_for @new_dataset do |form| %>
+  <%= form_for @dataset do |form| %>
     <p>
       <%= label(:dataset, :name) %>
       <%= form.text_field :name %>
@@ -12,8 +23,8 @@
       <%= label(:dataset, :csv_file) %>
       <%= form.attachment_field :csv_file %>
     </p>
-    
-    <p><%= submit_tag %></p>
+
+    <p><%= submit_tag "Save dataset" %></p>
   <% end %>
 </section>
 
