@@ -20,6 +20,7 @@ class ScriptGenerator
         #{select_box_filter('group_filters')}
         #{select_box_filter('indicators')}
         #{select_box_filter('chart_types')}
+        #{overtime_checkbox}
         #{submit_tag("Chart", id: "submit-chart-filters-#{container_id}")}
       </div>
       <div id='chart-container-#{container_id}' style='width:100%; height:400px;'></div>
@@ -38,9 +39,15 @@ class ScriptGenerator
           var selectedDates = getCheckedItems('#{container_id}', 'year');
           var selectedIndicator = getSelectedItem('#{container_id}', 'indicators');
           var selectedGrouping = getSelectedItem('#{container_id}', 'group_filters');
+          var overTime = $('.overtime-check-#{container_id}').prop('checked');
 
           var title = generateTitle(selectedCountries, selectedIndicator, selectedGrouping);
-          var chartComponents = generateSeriesData(chartType, selectedCountries, selectedIndicator, selectedGrouping, selectedDates);
+          var chartComponents;
+          if(overTime) {
+            chartComponents= generateSeriesData(chartType, selectedCountries, selectedIndicator, selectedGrouping, selectedDates, true);
+          } else {
+            chartComponents = generateSeriesData(chartType, selectedCountries, selectedIndicator, selectedGrouping, selectedDates, false);
+          }
           var xAxis = chartComponents[0];
           var seriesData = chartComponents[1]
 
@@ -52,6 +59,16 @@ class ScriptGenerator
   end
 
   private
+
+  def overtime_checkbox
+    collection_check_boxes(:dataset, :overtime, [['Graph series over time', 'Graph series over time']], :first, :last) do |b|
+      content_tag(:span, class: "checkbox-group") do
+        b.label do
+          b.check_box(class: "filter overtime-check-#{container_id}", disabled: 'disabled') + b.text
+        end
+      end
+    end
+  end
 
   def checkbox_filter(type, disabled = false)
     <<-"EOS"
