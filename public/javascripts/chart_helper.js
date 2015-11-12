@@ -48,9 +48,14 @@ function disablePieOption(containerId, countries, dates) {
   if(dates.length > 1) { disablePieForDate = true; }
 
   if(disablePieForCountry || disablePieForDate) {
-    chartSelect.prop("disabled", "disabled");
+    chartSelect.remove();
   } else {
-    chartSelect.prop("disabled", "");
+    if(chartSelect.length <= 0) {
+      $('#dataset_chart_types_' + containerId)
+        .append($("<option></option>")
+        .attr("value", 'pie')
+        .text('Pie'));
+    }
   }
 };
 
