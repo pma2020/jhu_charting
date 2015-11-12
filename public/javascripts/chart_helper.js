@@ -16,9 +16,9 @@ function validateFilters(containerId, metadata) {
   var selectedCountries = getCheckedItems(containerId, 'country');
   var selectedDates = getCheckedItems(containerId, 'year');
 
-  toggleOverTimeOption(containerId, selectedDates);
   disablePieOption(containerId, selectedCountries, selectedDates);
   disableDates(containerId, selectedCountries, metadata);
+  toggleOverTimeOption(containerId, selectedDates, selectedCountries);
 };
 
 function disableDates(containerId, countries, metadata) {
@@ -32,6 +32,7 @@ function disableDates(containerId, countries, metadata) {
     } else {
       dates.forEach(function(date) {
         $(".year-check-" + containerId + ":checkbox[value='" + date + "']").prop('disabled', 'disabled');
+        $(".year-check-" + containerId + ":checkbox[value='" + date + "']").prop('checked', false);
       });
     }
   });
@@ -59,10 +60,14 @@ function disablePieOption(containerId, countries, dates) {
   }
 };
 
-function toggleOverTimeOption(containerId, dates) {
+function toggleOverTimeOption(containerId, dates, countries) {
   var overTimeCheckbox = $(".overtime-check-" + containerId);
-  if(dates.length > 1) { overTimeCheckbox.prop('disabled', ''); }
-  else { overTimeCheckbox.prop('disabled', 'disabled'); }
+  if(dates.length > 1 && countries.length > 0) { overTimeCheckbox.prop('disabled', ''); }
+  else {
+    console.log('heer')
+    overTimeCheckbox.prop('disabled', 'disabled');
+    overTimeCheckbox.prop('checked', false);
+  }
 }
 
 function filterData(dataSet, type, value) {
