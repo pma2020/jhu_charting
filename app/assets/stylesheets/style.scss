@@ -1,0 +1,171 @@
+$black: #333;
+$medium-gray: lighten($black, 25%);
+$light-gray: lighten($black, 65%);
+
+$blue: #00a5ff;
+
+@mixin button {
+  color: #fff;
+  background-color: $blue;
+  border: none;
+  border-radius: .25em;
+  padding: .5em 1em;
+  cursor: pointer;
+  &:hover {
+    background-color: lighten($blue, 10%);
+  }
+  &:active {
+    background-color: darken($blue, 10%);
+  }
+}
+
+* {
+  color: $black;
+  font-family: 'Open Sans', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0 2em;
+  h1 {
+    font-size: 1.65em;
+    font-weight: normal;
+  }
+  h3 {
+    font-size: 1.2em;
+    font-weight: normal;
+    margin: 0 0 1em 0;
+  }
+  a {
+    color: $blue;
+    &:hover {
+      color: lighten($blue, 10%);
+    }
+    &:active {
+      color: darken($blue, 10%);
+    }
+  }
+  section {
+    border-bottom: solid 1px $light-gray;
+    padding: 1em 0;
+    &:last-of-type {
+      border-bottom: none;
+    }
+    &.new-dataset {
+      form.new_dataset {
+        p {
+          margin: 0 0 1em 0;
+          label {
+            font-weight: bold;
+          }
+          input {
+            font-size: 1em;
+            &[type="text"] {
+              border: solid 1px $light-gray;   
+              border-radius: .25em;
+              padding: .5em 1em;
+            }
+            &[type="submit"] {
+              @include button;
+            }
+          }
+        }
+      }
+    }
+    &.current-datasets {
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        li {
+          border-bottom: dashed 1px $light-gray;
+          margin: 0;
+          padding: .5em 0;
+          p {
+            margin: .25em 0;
+            strong {
+            }
+            span {
+              color: $medium-gray;
+              font-size: .8em;
+            }
+            a {
+              font-size: .8em;
+              margin: 0 .5em 0 0;
+            }
+            &:last-of-type {
+              padding: 0 0 0 1em;
+            }
+          }
+        }
+      }
+    }
+    &.dataset {
+      textarea {
+        display: block;
+        width: 600px;
+        height: 200px;
+        border: solid 1px $light-gray;
+      }
+    }
+    &.charted-dataset {
+      .filters {
+        .form-group {
+          margin: 0 0 1em 0;
+          > label {
+            display: block;
+            font-weight: bold;
+            margin: 0 0 .5em 0;
+          }
+          .checkbox-group {
+            display: block;
+            padding: 0 0 0 1em;
+            label {
+              display: block;
+              color: $medium-gray;
+              padding: .25em 0;
+              input {
+                margin: 0 .5em 0 0;
+              }
+            }
+          }
+          .select-container {
+            position: relative;
+            display: inline-block;
+            padding: 0 0 0 1em;
+            &:after {
+              content: "";
+              position: absolute;
+              top: 50%;
+              right: 1em;
+              display: block;
+              width: 0;
+              height: 0;
+              border-top: solid .5em $light-gray;
+              border-right: solid .5em transparent;
+              border-left: solid .5em transparent;
+              margin: -.25em 0 0 0;
+            }
+            select {
+              -webkit-appearance: none;
+              -moz-appearance: none;
+              appearance: none;
+              background-color: #fff;
+              font-size: 1em;
+              border: solid 1px $light-gray;
+              border-radius: .25em;
+              padding: .5em 3em .5em 1em;
+            }
+          }
+        }
+        input[type="submit"] {
+          @include button;
+          font-size: 1em;
+          padding: .5em 3em;
+          margin: 2em 0;
+        }
+      }
+    }
+  }
+}
+

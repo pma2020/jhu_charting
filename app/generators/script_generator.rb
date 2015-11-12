@@ -94,7 +94,7 @@ class ScriptGenerator
     <<-"EOS"
     <div class='form-group'>
       #{label_tag(id, "#{type.humanize.capitalize}:")}
-      #{select_tag(id,  options_for_select(select_options(type.to_sym), "None"), class: "filter")}
+      <span class='select-container'>#{select_tag(id,  options_for_select(select_options(type.to_sym), "None"), class: "filter")}</span>
     </div>
     EOS
   end
