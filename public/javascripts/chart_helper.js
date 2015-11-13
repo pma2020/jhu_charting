@@ -1,7 +1,23 @@
+function isArray(obj) { return Object.prototype.toString.call(obj) === '[object Array]'; };
+
+function appendToHash(hsh, key, value) {
+  if (hsh[key] == null || hsh[key] == {}) { hsh[key] = [value]; }
+  else { hsh[key].push(value) }
+  return hsh;
+}
+
+function multiSeries(countries, dates) {
+  if (countries.length >= 1 && dates.length > 1) {
+    return true
+  } else {
+    return false
+  }
+};
+
 function getCheckedItems(containerId, type) {
   var checkedItems = [];
   $('.' + type + '-check-' + containerId + ':checked').each(function() {
-     checkedItems.push($(this).val());
+    checkedItems.push($(this).val());
   });
   return checkedItems;
 };
@@ -53,9 +69,9 @@ function disablePieOption(containerId, countries, dates) {
   } else {
     if(chartSelect.length <= 0) {
       $('#dataset_chart_types_' + containerId)
-        .append($("<option></option>")
-        .attr("value", 'pie')
-        .text('Pie'));
+      .append($("<option></option>")
+              .attr("value", 'pie')
+              .text('Pie'));
     }
   }
 };
@@ -64,7 +80,6 @@ function toggleOverTimeOption(containerId, dates, countries) {
   var overTimeCheckbox = $(".overtime-check-" + containerId);
   if(dates.length > 1 && countries.length > 0) { overTimeCheckbox.prop('disabled', ''); }
   else {
-    console.log('heer')
     overTimeCheckbox.prop('disabled', 'disabled');
     overTimeCheckbox.prop('checked', false);
   }
@@ -102,7 +117,8 @@ function reduceDataSet(data, filters, filterType) {
 function scopeDataSet(data, scope, countries) {
   var scopedData = {};
 
-  if(scope == 'Category') {
+  if(scope == 'OverTime') {
+    scope = 'Category';
     countries.forEach(function(country) { scopedData[country] = {}; });
     data.forEach(function(row) {
       appendToHash(scopedData[row['Country']], row[scope], row);
@@ -115,31 +131,20 @@ function scopeDataSet(data, scope, countries) {
   return scopedData;
 };
 
-function appendToHash(hsh, key, value) {
-  if (hsh[key] == null || hsh[key] == {}) { hsh[key] = [value]; }
-  else { hsh[key].push(value) }
-  return hsh;
-}
-
-function isArray(obj) {
-  return Object.prototype.toString.call(obj) === '[object Array]';
-};
-
 function reduceDataBasedOnSelection(countries, grouping, dates, overTime) {
-  var countryFilter = [];
-  var dateFilter = [];
-  var groupingFilter = [];
   var reducedDataSet;
 
-  countryFilter = reduceDataSet(data, countries, 'Country');
-  dateFilter = reduceDataSet(data, dates, 'Date');
-  groupingFilter = reduceDataSet(data, grouping, 'Grouping');
-
-  reducedDataSet = dataIntersection([countryFilter, dateFilter, groupingFilter]);
+  reducedDataSet = dataIntersection([
+    reduceDataSet(data, countries, 'Country'),
+    reduceDataSet(data, dates, 'Date'),
+    reduceDataSet(data, grouping, 'Grouping')
+  ]);
 
   var scopedData;
 
   if(overTime) {
+    scopedData = scopeDataSet(reducedDataSet, 'OverTime', countries);
+  } else if(multiSeries(countries, dates)) {
     scopedData = scopeDataSet(reducedDataSet, 'Category', countries);
   } else {
     scopedData = scopeDataSet(reducedDataSet, 'Country');
@@ -211,6 +216,37 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
         series.push(newRow);
       };
     }
+  } else if(multiSeries(countries, dates)) {
+    var tmpHsh = {};
+
+    for(var key in dataSet) {
+      var data = dataSet[key];
+
+      data.forEach(function(row) {
+        key = row['Country'] + ' ' + row['Date'];
+        appendToHash(tmpHsh, key, row[indicator]);
+      });
+    };
+
+    for(var key in dataSet) {
+      xAxis.push(key);
+    }
+
+    for(var countryDate in tmpHsh) {
+      var newRow = {};
+      newRow['data'] = [];
+      newRow['name'] = countryDate;
+      var dataPoints = tmpHsh[countryDate];
+
+      dataPoints.forEach(function(dataPoint) {
+        var dataElement = {};
+        //dataElement['name'] = ;
+        dataElement['y'] = dataPoint;
+        newRow['data'].push(dataElement);
+      });
+
+      series.push(newRow);
+    };
   } else {
     if (chartType == "pie") {
       for(var key in dataSet) {
@@ -265,10 +301,10 @@ function generateTitle(countries, indicator, grouping) {
 
 function generateChart(containerId, type, title, xAxis, yAxis, seriesData) {
   $('#chart-container-' + containerId).highcharts({
-      chart: { type: type },
-      title: { text: title },
-      xAxis: { categories: xAxis },
-      yAxis: { title: { text: yAxis } },
-      series: seriesData
+    chart: { type: type },
+    title: { text: title },
+    xAxis: { categories: xAxis },
+    yAxis: { title: { text: yAxis } },
+    series: seriesData
   });
 };
