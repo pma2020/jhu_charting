@@ -27,31 +27,39 @@ function getSelectedItem(containerId, type) {
   return selector.val();
 };
 
-function validateFilters(containerId, metadata) {
-  var chartType = getSelectedItem(containerId, 'chart_types');
-  var selectedCountries = getCheckedItems(containerId, 'country');
-  var selectedDates = getCheckedItems(containerId, 'year');
+function getCountries(containerId) {
+  var countries = [];
+  $('.year-check-' + containerId + ':checked').each(function() {
+    countries.push($(this).data('country'));
+  });
 
-  disablePieOption(containerId, selectedCountries, selectedDates);
-  disableDates(containerId, selectedCountries, metadata);
-  toggleOverTimeOption(containerId, selectedDates, selectedCountries);
+  var uniqueCountries = [];
+  $.each(countries, function(i, el){
+    if($.inArray(el, uniqueCountries) === -1) uniqueCountries.push(el);
+  });
+
+  return uniqueCountries;
 };
 
-function disableDates(containerId, countries, metadata) {
-  var keys = Object.keys(metadata);
-  keys.forEach(function(key) {
-    var dates = metadata[key];
-    if(countries.indexOf(key) >= 0) {
-      dates.forEach(function(date) {
-        $(".year-check-" + containerId + ":checkbox[value='" + date + "']").prop('disabled', '');
-      });
-    } else {
-      dates.forEach(function(date) {
-        $(".year-check-" + containerId + ":checkbox[value='" + date + "']").prop('disabled', 'disabled');
-        $(".year-check-" + containerId + ":checkbox[value='" + date + "']").prop('checked', false);
-      });
-    }
+function selectAll(containerId) {
+  $('.year-check-' + containerId).each(function() {
+    $(this).prop('checked', true);
   });
+};
+
+function clearAll(containerId) {
+  $('.year-check-' + containerId).each(function() {
+    $(this).prop('checked', false);
+  });
+};
+
+function validateFilters(containerId, metadata) {
+  var chartType = getSelectedItem(containerId, 'chart_types');
+  var selectedDates = getCheckedItems(containerId, 'year');
+  var selectedCountries = getCountries(containerId);
+
+  disablePieOption(containerId, selectedCountries, selectedDates);
+  toggleOverTimeOption(containerId, selectedDates, selectedCountries);
 };
 
 function disablePieOption(containerId, countries, dates) {

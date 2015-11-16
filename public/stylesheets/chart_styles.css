@@ -1,10 +1,42 @@
+#jhu-chart .clearfix:after {
+  content: " ";
+  visibility: hidden;
+  display: block;
+  height: 0;
+  clear: both;
+}
+#jhu-chart .filters #series-filters-container {
+  width: 100%;
+  margin: 0 0 1em 0;
+}
+#jhu-chart .filters #series-filters-container #series-filters {
+  border: 1px solid #000;
+  padding: 10px 15px;
+  width: 75%;
+  float: left;
+}
+#jhu-chart .filters #series-filters-container #series-filters-buttons {
+  width: 20%;
+  float: left;
+}
+#jhu-chart .filters #series-filters-container #series-filters-buttons button {
+  margin: 0 0 .5em 10px;
+  width: 100%;
+}
 #jhu-chart .filters .form-group {
   margin: 0 0 1em 0;
+  float: left;
+}
+#jhu-chart .filters .form-group h4 {
+  margin: 0 0 11px;
 }
 #jhu-chart .filters .form-group > label {
   display: block;
   font-weight: bold;
   margin: 0 0 .5em 0;
+}
+#jhu-chart .filters .form-group .country-header {
+  text-align: center;
 }
 #jhu-chart .filters .form-group .checkbox-group {
   display: block;
@@ -46,7 +78,8 @@
   border-radius: .25em;
   padding: .5em 3em .5em 1em;
 }
-#jhu-chart .filters input[type="submit"] {
+#jhu-chart .filters input[type="submit"],
+#jhu-chart .filters button {
   color: #fff;
   background-color: #00a5ff;
   border: none;
@@ -57,9 +90,17 @@
   padding: .5em 3em;
   margin: 2em 0;
 }
-#jhu-chart .filters input[type="submit"]:hover {
+#jhu-chart .filters input[type="submit"]:hover,
+#jhu-chart .filters button:hover {
   background-color: #33b7ff;
 }
-#jhu-chart .filters input[type="submit"]:active {
+#jhu-chart .filters input[type="submit"]:active,
+#jhu-chart .filters button:active {
   background-color: #0084cc;
+}
+#jhu-chart .filters input[type="submit"].submit-chart,
+#jhu-chart .filters button.submit-chart {
+  padding: 1em 3em;
+  margin: .5em 0;
+  width: 100%;
 }
