@@ -112,13 +112,45 @@ body {
 }
 
 #jhu-chart {
+  .clearfix:after {
+    content: " "; /* Older browser do not support empty content */
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+  }
   .filters {
+    #series-filters-container {
+      width: 100%;
+      margin: 0 0 1em 0;
+      #series-filters {
+        border: 1px solid #000;
+        padding: 10px 15px;
+        width: 75%;
+        float: left;
+      }
+      #series-filters-buttons {
+        width: 20%;
+        float: left;
+        button {
+          margin: 0 0 .5em 10px;
+          width: 100%;
+        }
+      }
+    }
     .form-group {
       margin: 0 0 1em 0;
+      float: left;
+      h4 {
+        margin: 0 0 11px;
+      }
       > label {
         display: block;
         font-weight: bold;
         margin: 0 0 .5em 0;
+      }
+      .country-header {
+        text-align: center;
       }
       .checkbox-group {
         display: block;
@@ -161,11 +193,17 @@ body {
         }
       }
     }
-    input[type="submit"] {
+    input[type="submit"],
+    button {
       @include button;
       font-size: 1em;
       padding: .5em 3em;
       margin: 2em 0;
+      &.submit-chart {
+        padding: 1em 3em;
+        margin: .5em 0;
+        width: 100%;
+      }
     }
   }
 }
