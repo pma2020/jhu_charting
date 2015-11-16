@@ -309,6 +309,19 @@ function generateTitle(countries, indicator, grouping) {
 
 function generateChart(containerId, type, title, xAxis, yAxis, seriesData) {
   $('#chart-container-' + containerId).highcharts({
+    exporting: {
+      chartOptions: { // specific options for the exported image
+        plotOptions: {
+          series: {
+            dataLabels: {
+              enabled: true
+            }
+          }
+        }
+      },
+      scale: 3,
+      fallbackToExportServer: false
+    },
     chart: { type: type },
     title: { text: title },
     xAxis: { categories: xAxis },
