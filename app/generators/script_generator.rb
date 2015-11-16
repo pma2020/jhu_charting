@@ -21,7 +21,9 @@ class ScriptGenerator
           #{select_box_filter('group_filters')}
           #{select_box_filter('indicators')}
           #{select_box_filter('chart_types')}
-          #{overtime_checkbox}
+          <div id='overtime-checkbox-container-#{container_id}'>
+            #{overtime_checkbox}
+          </div>
           #{submit_tag("Chart", id: "submit-chart-filters-#{container_id}")}
         </div>
         <div id='chart-container-#{container_id}' style='width:100%; height:400px;'></div>
