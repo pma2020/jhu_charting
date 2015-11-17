@@ -67,6 +67,34 @@ function validateFilters(containerId, metadata) {
   toggleOverTimeOption(containerId, selectedDates, selectedCountries);
 };
 
+function validateDataset(dataSet, countries) {
+   var tmpHsh = {};
+
+   countries.forEach(function(country) {
+     tmpHsh[country] = [];
+   });
+
+   dataSet.forEach(function(row) {
+     tmpHsh[row['Country']].push(row['Category']);
+   });
+
+   var tmpArr = [];
+   countries.forEach(function(country) {
+     tmpArr.push(tmpHsh[country].length);
+   });
+
+  var uniqueLength = [];
+  $.each(tmpArr, function(i, el){
+    if($.inArray(el, uniqueLength) === -1) uniqueLength.push(el);
+  });
+
+  if (uniqueLength.length > 1) {
+    return [false, 'Sorry, the disaggregator you have chosen can not be charted with multiple Countries. Please choose another one or reduce the countries chosen to 1.']
+  } else {
+    return [true, null]
+  }
+}
+
 function disablePieOption(containerId, countries, dates) {
   var chartSelect = $("#dataset_chart_types_" + containerId + " option[value='pie']");
   var disablePieForCountry = false;
@@ -153,17 +181,25 @@ function reduceDataBasedOnSelection(countries, grouping, dates, overTime) {
     reduceDataSet(data, grouping, 'Grouping')
   ]);
 
-  var scopedData;
+  var dataTestResult = validateDataset(reducedDataSet, countries);
+  var validData = dataTestResult[0];
+  var error = dataTestResult[1];
 
-  if(overTime) {
-    scopedData = scopeDataSet(reducedDataSet, 'OverTime', countries);
-  } else if(multiSeries(countries, dates)) {
-    scopedData = scopeDataSet(reducedDataSet, 'Category', countries);
+  if(validData) {
+    var scopedData;
+
+    if(overTime) {
+      scopedData = scopeDataSet(reducedDataSet, 'OverTime', countries);
+    } else if(multiSeries(countries, dates)) {
+      scopedData = scopeDataSet(reducedDataSet, 'Category', countries);
+    } else {
+      scopedData = scopeDataSet(reducedDataSet, 'Country');
+    }
+
+    return scopedData;
   } else {
-    scopedData = scopeDataSet(reducedDataSet, 'Country');
+    alert(error);
   }
-
-  return scopedData;
 };
 
 function generateSeriesData(chartType, countries, indicator, grouping, dates, overTime) {
