@@ -14,6 +14,11 @@ function multiSeries(countries, dates) {
   }
 };
 
+function checkValue(value) {
+  if(value == null || (value.length == 1 && value.indexOf(".") >= 0)) { return null; }
+  return value;
+}
+
 function getCheckedItems(containerId, type) {
   var checkedItems = [];
   $('.' + type + '-check-' + containerId + ':checked').each(function() {
@@ -207,7 +212,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
           category = row['Category'];
 
           dataElement['name'] = country + ' ' + category;
-          dataElement['y'] = tmpHsh[row['Date']];
+          dataElement['y'] = checkValue(tmpHsh[row['Date']]);
 
           newRow['data'].push(dataElement);
         });
@@ -232,7 +237,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
 
       data.forEach(function(row) {
         key = row['Country'] + ' ' + row['Date'];
-        appendToHash(tmpHsh, key, row[indicator]);
+        appendToHash(tmpHsh, key, checkValue(row[indicator]));
       });
     };
 
@@ -248,8 +253,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
 
       dataPoints.forEach(function(dataPoint) {
         var dataElement = {};
-        //dataElement['name'] = ;
-        dataElement['y'] = dataPoint;
+        dataElement['y'] = checkValue(dataPoint);
         newRow['data'].push(dataElement);
       });
 
@@ -267,7 +271,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
           var dataElement = {};
           xAxis.push(row['Category'])
           dataElement['name'] = row['Category'];
-          dataElement['y'] = row[indicator];
+          dataElement['y'] = checkValue(row[indicator]);
           newRow['data'].push(dataElement);
         });
 
@@ -284,7 +288,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
           var dataElement = {};
           xAxis.push(row['Category'])
           dataElement['name'] = row['Country'];
-          dataElement['y'] = row[indicator];
+          dataElement['y'] = checkValue(row[indicator]);
           newRow['data'].push(dataElement);
         });
 
