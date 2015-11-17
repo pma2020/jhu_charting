@@ -5,6 +5,17 @@
   height: 0;
   clear: both;
 }
+#jhu-chart .filters .help-center {
+  display: none;
+  border: 1px solid #000;
+  padding: 10px 15px;
+}
+#jhu-chart .filters .help-center.active {
+  display: block;
+}
+#jhu-chart .filters .help-center h4 {
+  margin: 0 0 5px;
+}
 #jhu-chart .filters #series-filters-container {
   width: 100%;
   margin: 0 0 1em 0;
@@ -24,7 +35,7 @@
   width: 100%;
 }
 #jhu-chart .filters .form-group {
-  margin: 0 0 1em 0;
+  margin: 0 .4em 1em 0;
   float: left;
 }
 #jhu-chart .filters .form-group h4 {
@@ -34,6 +45,14 @@
   display: block;
   font-weight: bold;
   margin: 0 0 .5em 0;
+}
+#jhu-chart .filters .form-group .hint {
+  border: 1px solid #whiteSmoke;
+  border-radius: 16px;
+  padding: 4px 8px;
+  font-weight: bold;
+  color: white;
+  background-color: #00a5ff;
 }
 #jhu-chart .filters .form-group .country-header {
   text-align: center;
@@ -53,7 +72,6 @@
 #jhu-chart .filters .form-group .select-container {
   position: relative;
   display: inline-block;
-  padding: 0 0 0 1em;
 }
 #jhu-chart .filters .form-group .select-container:after {
   content: "";

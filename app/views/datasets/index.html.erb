@@ -24,6 +24,11 @@
       <%= form.attachment_field :csv_file %>
     </p>
 
+    <p>
+      <%= label(:dataset, :help_file) %>
+      <%= form.attachment_field :help_file %>
+    </p>
+
     <p><%= submit_tag "Save dataset" %></p>
   <% end %>
 </section>

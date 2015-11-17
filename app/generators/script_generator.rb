@@ -28,7 +28,7 @@ class ScriptGenerator
           </div>
           <div id='limiting-filters-container'>
             #{select_box_filter('group_filters', 'Disaggregator')}
-            #{select_box_filter('indicators')}
+            #{select_box_filter('indicators', nil, true)}
             #{select_box_filter('chart_types')}
             <div id='overtime-checkbox-container-#{container_id}' class='form-group'>
               <h4>Over-time:</h4>
@@ -37,6 +37,10 @@ class ScriptGenerator
             <div class='clearfix'></div>
           </div>
           #{submit_tag("Chart", id: "submit-chart-filters-#{container_id}", class: 'submit-chart')}
+          <div class='help-center'>
+            <h4>Help Center</h4>
+            <span class='help-definition'></span>
+          </div>
         </div>
         <div id='chart-container-#{container_id}' style='width:100%; height:600px;'></div>
       </div>
@@ -46,11 +50,13 @@ class ScriptGenerator
       <script src='https://code.highcharts.com/modules/offline-exporting.js'></script>
       <script>#{ File.read(Rails.root.join('public', 'javascripts', 'chart_helper.js')) }</script>
       <script>
-        var metadata = #{@metadata.fetch(:year_by_country, {}).to_json};;
+        var metadata = #{@metadata.fetch(:year_by_country, {}).to_json};
+        var helpText = #{@metadata.fetch(:help_text, {}).to_json};
         var data = #{chart_data};
         var chartContainer = $('#chart-container-#{container_id}');
 
         $('.filter').on('change', function() { validateFilters('#{container_id}', metadata) });
+        $('.filter.filter-indicators').on('change', function() { displayHelpText('#{container_id}', 'indicators') });
         $('#select-all-#{container_id}').on('click', function() {selectAll('#{container_id}')});
         $('#clear-all-#{container_id}').on('click', function() {clearAll('#{container_id}')});
 
@@ -114,16 +120,26 @@ class ScriptGenerator
     end
   end
 
-  def select_box_filter(type, label = type)
+  def select_box_filter(type, label = nil, hint_text = false)
+    label = type unless label
     id = "dataset_#{type}_#{container_id}".to_sym
     values = @metadata.fetch(type.to_sym)
 
     <<-"EOS"
     <div class='form-group'>
       #{label_tag(id, "#{label.humanize.capitalize}:")}
-      <span class='select-container'>#{select_tag(id,  options_for_select(select_options(values), 'None'), class: 'filter')}</span>
+      #{hint(hint_text)}
+      <span class='select-container'>
+        #{select_tag(id,  options_for_select(select_options(values), 'None'), class: "filter filter-#{type}")}
+      </span>
     </div>
     EOS
+  end
+
+  def hint(hint_text)
+    if hint_text
+      "<span class='hint' title='Need help? Select a filter and a definition of the indicator will be displayed below.'>?</span>"
+    end
   end
 
   def data_series

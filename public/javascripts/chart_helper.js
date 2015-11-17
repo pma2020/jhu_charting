@@ -46,6 +46,22 @@ function getCountries(containerId) {
   return uniqueCountries;
 };
 
+function getHelpText(containerId, type) {
+  var selector = $('#dataset_' + type + '_' + containerId);
+  var help = helpText[selector.val()];
+
+  if(help == null) {
+    return "Uh oh, looks ike we are missing a definition for this one.";
+  } else {
+    return selector.val() + ": " + help;
+  }
+}
+
+function displayHelpText(containerId, type) {
+  $('.help-center .help-definition').html(getHelpText(containerId, type));
+  $('.help-center').show();
+}
+
 function selectAll(containerId) {
   $('.year-check-' + containerId).each(function() {
     $(this).prop('checked', true);

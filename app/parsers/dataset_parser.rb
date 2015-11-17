@@ -9,10 +9,11 @@ class DatasetParser
     grouping: "Grouping"
   }.freeze
 
-  attr_reader :data, :countries, :years, :group_filters
+  attr_reader :data, :help_data, :countries, :years, :group_filters
 
-  def initialize(csv)
+  def initialize(csv, help_file)
     @csv = csv
+    @help_file = help_file
     load
   end
 
@@ -24,6 +25,7 @@ class DatasetParser
 
   def load
     @data ||= SmarterCSV.process(@csv, csv_parse_options)
+    @help_data ||= SmarterCSV.process(@help_file, csv_parse_options)
   end
 
   def csv_parse_options
@@ -43,8 +45,15 @@ class DatasetParser
       group_filters: group_filters,
       indicators: indicators,
       chart_types: chart_types,
-      year_by_country: years_by_country
+      year_by_country: years_by_country,
+      help_text: help_text
     }
+  end
+
+  def help_text
+    help_hash = Hash.new
+    help_data.each{|row| help_hash[row['Term']] = row['Definition'] }
+    help_hash
   end
 
   def years_by_country
