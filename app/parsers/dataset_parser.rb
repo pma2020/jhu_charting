@@ -94,6 +94,6 @@ end
 
 class DateConverter
   def self.convert(value)
-    Date.strptime(value, '%m/%d/%Y')
+    Date.strptime(value, '%m - %Y')
   end
 end
