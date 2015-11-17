@@ -31,7 +31,7 @@ class DatasetsController < ApplicationController
   private
 
   def dataset_params
-    params.require(:dataset).permit(:name, :csv_file)
+    params.require(:dataset).permit(:name, :csv_file, :help_file)
   end
 
   def set_dataset
