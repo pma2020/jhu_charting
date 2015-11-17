@@ -14,6 +14,11 @@ function multiSeries(countries, dates) {
   }
 };
 
+function checkValue(value) {
+  if(value == null || (value.length == 1 && value.indexOf(".") >= 0)) { return null; }
+  return value;
+}
+
 function getCheckedItems(containerId, type) {
   var checkedItems = [];
   $('.' + type + '-check-' + containerId + ':checked').each(function() {
@@ -61,6 +66,34 @@ function validateFilters(containerId, metadata) {
   disablePieOption(containerId, selectedCountries, selectedDates);
   toggleOverTimeOption(containerId, selectedDates, selectedCountries);
 };
+
+function validateDataset(dataSet, countries) {
+   var tmpHsh = {};
+
+   countries.forEach(function(country) {
+     tmpHsh[country] = [];
+   });
+
+   dataSet.forEach(function(row) {
+     tmpHsh[row['Country']].push(row['Category']);
+   });
+
+   var tmpArr = [];
+   countries.forEach(function(country) {
+     tmpArr.push(tmpHsh[country].length);
+   });
+
+  var uniqueLength = [];
+  $.each(tmpArr, function(i, el){
+    if($.inArray(el, uniqueLength) === -1) uniqueLength.push(el);
+  });
+
+  if (uniqueLength.length > 1) {
+    return [false, 'Sorry, the disaggregator you have chosen can not be charted with multiple Countries. Please choose another one or reduce the countries chosen to 1.']
+  } else {
+    return [true, null]
+  }
+}
 
 function disablePieOption(containerId, countries, dates) {
   var chartSelect = $("#dataset_chart_types_" + containerId + " option[value='pie']");
@@ -148,17 +181,25 @@ function reduceDataBasedOnSelection(countries, grouping, dates, overTime) {
     reduceDataSet(data, grouping, 'Grouping')
   ]);
 
-  var scopedData;
+  var dataTestResult = validateDataset(reducedDataSet, countries);
+  var validData = dataTestResult[0];
+  var error = dataTestResult[1];
 
-  if(overTime) {
-    scopedData = scopeDataSet(reducedDataSet, 'OverTime', countries);
-  } else if(multiSeries(countries, dates)) {
-    scopedData = scopeDataSet(reducedDataSet, 'Category', countries);
+  if(validData) {
+    var scopedData;
+
+    if(overTime) {
+      scopedData = scopeDataSet(reducedDataSet, 'OverTime', countries);
+    } else if(multiSeries(countries, dates)) {
+      scopedData = scopeDataSet(reducedDataSet, 'Category', countries);
+    } else {
+      scopedData = scopeDataSet(reducedDataSet, 'Country');
+    }
+
+    return scopedData;
   } else {
-    scopedData = scopeDataSet(reducedDataSet, 'Country');
+    alert(error);
   }
-
-  return scopedData;
 };
 
 function generateSeriesData(chartType, countries, indicator, grouping, dates, overTime) {
@@ -207,7 +248,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
           category = row['Category'];
 
           dataElement['name'] = country + ' ' + category;
-          dataElement['y'] = tmpHsh[row['Date']];
+          dataElement['y'] = checkValue(tmpHsh[row['Date']]);
 
           newRow['data'].push(dataElement);
         });
@@ -232,7 +273,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
 
       data.forEach(function(row) {
         key = row['Country'] + ' ' + row['Date'];
-        appendToHash(tmpHsh, key, row[indicator]);
+        appendToHash(tmpHsh, key, checkValue(row[indicator]));
       });
     };
 
@@ -248,8 +289,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
 
       dataPoints.forEach(function(dataPoint) {
         var dataElement = {};
-        //dataElement['name'] = ;
-        dataElement['y'] = dataPoint;
+        dataElement['y'] = checkValue(dataPoint);
         newRow['data'].push(dataElement);
       });
 
@@ -267,7 +307,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
           var dataElement = {};
           xAxis.push(row['Category'])
           dataElement['name'] = row['Category'];
-          dataElement['y'] = row[indicator];
+          dataElement['y'] = checkValue(row[indicator]);
           newRow['data'].push(dataElement);
         });
 
@@ -284,7 +324,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
           var dataElement = {};
           xAxis.push(row['Category'])
           dataElement['name'] = row['Country'];
-          dataElement['y'] = row[indicator];
+          dataElement['y'] = checkValue(row[indicator]);
           newRow['data'].push(dataElement);
         });
 
@@ -309,6 +349,19 @@ function generateTitle(countries, indicator, grouping) {
 
 function generateChart(containerId, type, title, xAxis, yAxis, seriesData) {
   $('#chart-container-' + containerId).highcharts({
+    exporting: {
+      chartOptions: { // specific options for the exported image
+        plotOptions: {
+          series: {
+            dataLabels: {
+              enabled: true
+            }
+          }
+        }
+      },
+      scale: 3,
+      fallbackToExportServer: false
+    },
     chart: { type: type },
     title: { text: title },
     xAxis: { categories: xAxis },

@@ -27,7 +27,7 @@ class ScriptGenerator
             <div class='clearfix'></div>
           </div>
           <div id='limiting-filters-container'>
-            #{select_box_filter('group_filters')}
+            #{select_box_filter('group_filters', 'Disaggregator')}
             #{select_box_filter('indicators')}
             #{select_box_filter('chart_types')}
             <div id='overtime-checkbox-container-#{container_id}' class='form-group'>
@@ -42,6 +42,8 @@ class ScriptGenerator
       </div>
       <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
       <script src='https://code.highcharts.com/highcharts.js'></script>
+      <script src='https://code.highcharts.com/modules/exporting.js'></script>
+      <script src='https://code.highcharts.com/modules/offline-exporting.js'></script>
       <script>#{ File.read(Rails.root.join('public', 'javascripts', 'chart_helper.js')) }</script>
       <script>
         var metadata = #{@metadata.fetch(:year_by_country, {}).to_json};;
@@ -112,13 +114,13 @@ class ScriptGenerator
     end
   end
 
-  def select_box_filter(type)
+  def select_box_filter(type, label = type)
     id = "dataset_#{type}_#{container_id}".to_sym
     values = @metadata.fetch(type.to_sym)
 
     <<-"EOS"
     <div class='form-group'>
-      #{label_tag(id, "#{type.humanize.capitalize}:")}
+      #{label_tag(id, "#{label.humanize.capitalize}:")}
       <span class='select-container'>#{select_tag(id,  options_for_select(select_options(values), 'None'), class: 'filter')}</span>
     </div>
     EOS
