@@ -26,6 +26,7 @@ class ScriptGenerator
             </div>
             <div id='series-filters-buttons'>
               <button id='select-all-#{container_id}'>Select All</button>
+              <button id='select-latest-#{container_id}'>Select Latest</button>
               <button id='clear-all-#{container_id}'>Clear All</button>
             </div>
             <div class='clearfix'></div>
@@ -64,6 +65,7 @@ class ScriptGenerator
         $('.filter.filter-indicators').on('change', function() { displayHelpText('#{container_id}') });
         $('.filter.filter-group_filters').on('change', function() { displayHelpText('#{container_id}') });
         $('#select-all-#{container_id}').on('click', function() {selectAll('#{container_id}')});
+        $('#select-latest-#{container_id}').on('click', function() {selectLatest('#{container_id}')});
         $('#clear-all-#{container_id}').on('click', function() {clearAll('#{container_id}')});
 
         $('#submit-chart-filters-#{container_id}').on('click', function() {
