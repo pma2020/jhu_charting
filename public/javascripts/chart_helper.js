@@ -54,21 +54,47 @@ function getHelpText(containerId, type) {
   var indicator = $('#dataset_indicators_' + containerId);
   var grouping = $('#dataset_group_filters_' + containerId);
 
-  indicatorKey = keyify(indicator.val());
-  groupingKey = keyify(grouping.val());
+  var indicatorKey = keyify(indicator.val());
+  var groupingKey = keyify(grouping.val());
 
   var indicatorHelp = helpText[indicatorKey];
   var groupingHelp = helpText[groupingKey];
 
-  if(indicatorHelp == null && groupingHelp == null) {
-    return "Uh oh, looks ike we are missing a definition for this one.";
+  var groupingMessage;
+  var indicatorMessage;
+  var errorMessage = helpText['!error'];
+
+  console.log(errorMessage)
+
+  if(groupingHelp == null) {
+    if(errorMessage) {
+      groupingMessage =  grouping.val() + ": " + errorMessage;
+    } else {
+      groupingMessage =  grouping.val() + ": " + "Uh oh, looks ike we are missing a definition for this one.";
+    }
   } else {
     if (groupingKey == 'none') {
-      return indicator.val() + ": " + marked(indicatorHelp);
+      groupingMessage = "";
     } else {
-      return grouping.val() + ": " + marked(groupingHelp) + "\n" + indicator.val() + ": " + marked(indicatorHelp);
+      groupingMessage =  grouping.val() + ": " + marked(groupingHelp);
     }
   }
+
+  if(indicatorHelp == null) {
+    if(errorMessage) {
+      indicatorMessage =  indicator.val() + ": " + errorMessage;
+    } else {
+      indicatorMessage =  indicator.val() + ": " + "Uh oh, looks ike we are missing a definition for this one.";
+    }
+  } else {
+    if (indicatorKey == 'none') {
+      indicatorMessage = "";
+    } else {
+      indicatorMessage =  indicator.val() + ": " + marked(indicatorHelp);
+    }
+  }
+
+  return "Disaggregator description for " + groupingMessage + "\n\n Indicator description for " + indicatorMessage;
 }
 
 function displayHelpText(containerId) {
@@ -80,12 +106,27 @@ function selectAll(containerId) {
   $('.year-check-' + containerId).each(function() {
     $(this).prop('checked', true);
   });
+  validateFilters(containerId, metadata);
+};
+
+function selectLatest(containerId) {
+  console.log('herh')
+  $('.date-selection').each(function() {
+    $(this).find('.year-check-' + containerId).last().prop('checked', true);
+  });
+  validateFilters(containerId, metadata);
 };
 
 function clearAll(containerId) {
   $('.year-check-' + containerId).each(function() {
     $(this).prop('checked', false);
   });
+  validateFilters(containerId, metadata);
+};
+
+function enableCharting(containerId, dates) {
+  if(dates.length > 0) { $('#submit-chart-filters-' + containerId).prop('disabled', '');}
+  else {$('#submit-chart-filters-' + containerId).prop('disabled', 'disabled');}
 };
 
 function validateFilters(containerId, metadata) {
@@ -93,9 +134,11 @@ function validateFilters(containerId, metadata) {
   var selectedDates = getCheckedItems(containerId, 'year');
   var selectedCountries = getCountries(containerId);
 
+  enableCharting(containerId, selectedDates);
   disablePieOption(containerId, selectedCountries, selectedDates);
   toggleOverTimeOption(containerId, selectedDates, selectedCountries);
 };
+
 
 function validateDataset(dataSet, countries) {
    var tmpHsh = {};
@@ -392,7 +435,7 @@ function generateChart(containerId, type, title, xAxis, yAxis, seriesData) {
       scale: 3,
       fallbackToExportServer: false
     },
-    chart: { type: type },
+    chart: { type: type.toLowerCase() },
     title: { text: title },
     xAxis: { categories: xAxis },
     yAxis: { title: { text: yAxis } },

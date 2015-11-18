@@ -13,9 +13,17 @@ $blue: #00a5ff;
   cursor: pointer;
   &:hover {
     background-color: lighten($blue, 10%);
+    &:disabled {
+      background-color: darken($blue, 15%);
+    }
   }
   &:active {
     background-color: darken($blue, 10%);
+  }
+  &:disabled {
+    color: #a2a2a2;
+    background-color: darken($blue, 15%);
+    cursor: not-allowed;
   }
 }
 
