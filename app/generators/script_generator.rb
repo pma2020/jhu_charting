@@ -177,7 +177,7 @@ class ScriptGenerator
   def select_options(values)
     values.collect do |item|
       item = item.to_s
-      [item.humanize, item]
+      [item, item]
     end
   end
 end

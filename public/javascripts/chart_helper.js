@@ -435,7 +435,7 @@ function generateChart(containerId, type, title, xAxis, yAxis, seriesData) {
       scale: 3,
       fallbackToExportServer: false
     },
-    chart: { type: type },
+    chart: { type: type.toLowerCase() },
     title: { text: title },
     xAxis: { categories: xAxis },
     yAxis: { title: { text: yAxis } },

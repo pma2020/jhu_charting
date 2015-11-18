@@ -2,7 +2,7 @@ require 'date'
 
 class DatasetParser
   INDICATOR_HEADER_RANGE_START = 5
-  AVAILABLE_CHART_TYPES = ['bar', 'column', 'line', 'pie'].freeze
+  AVAILABLE_CHART_TYPES = ['Bar', 'Column', 'Line', 'Pie'].freeze
   HEADER_MAP = {
     country: "Country",
     date: "Date",
