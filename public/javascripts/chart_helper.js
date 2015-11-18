@@ -54,21 +54,47 @@ function getHelpText(containerId, type) {
   var indicator = $('#dataset_indicators_' + containerId);
   var grouping = $('#dataset_group_filters_' + containerId);
 
-  indicatorKey = keyify(indicator.val());
-  groupingKey = keyify(grouping.val());
+  var indicatorKey = keyify(indicator.val());
+  var groupingKey = keyify(grouping.val());
 
   var indicatorHelp = helpText[indicatorKey];
   var groupingHelp = helpText[groupingKey];
 
-  if(indicatorHelp == null && groupingHelp == null) {
-    return "Uh oh, looks ike we are missing a definition for this one.";
+  var groupingMessage;
+  var indicatorMessage;
+  var errorMessage = helpText['!error'];
+
+  console.log(errorMessage)
+
+  if(groupingHelp == null) {
+    if(errorMessage) {
+      groupingMessage =  grouping.val() + ": " + errorMessage;
+    } else {
+      groupingMessage =  grouping.val() + ": " + "Uh oh, looks ike we are missing a definition for this one.";
+    }
   } else {
     if (groupingKey == 'none') {
-      return indicator.val() + ": " + marked(indicatorHelp);
+      groupingMessage = "";
     } else {
-      return grouping.val() + ": " + marked(groupingHelp) + "\n" + indicator.val() + ": " + marked(indicatorHelp);
+      groupingMessage =  grouping.val() + ": " + marked(groupingHelp);
     }
   }
+
+  if(indicatorHelp == null) {
+    if(errorMessage) {
+      indicatorMessage =  indicator.val() + ": " + errorMessage;
+    } else {
+      indicatorMessage =  indicator.val() + ": " + "Uh oh, looks ike we are missing a definition for this one.";
+    }
+  } else {
+    if (indicatorKey == 'none') {
+      indicatorMessage = "";
+    } else {
+      indicatorMessage =  indicator.val() + ": " + marked(indicatorHelp);
+    }
+  }
+
+  return "Disaggregator description for " + groupingMessage + "\n\n Indicator description for " + indicatorMessage;
 }
 
 function displayHelpText(containerId) {
