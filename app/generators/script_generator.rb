@@ -57,7 +57,8 @@ class ScriptGenerator
         var chartContainer = $('#chart-container-#{container_id}');
 
         $('.filter').on('change', function() { validateFilters('#{container_id}', metadata) });
-        $('.filter.filter-indicators').on('change', function() { displayHelpText('#{container_id}', 'indicators') });
+        $('.filter.filter-indicators').on('change', function() { displayHelpText('#{container_id}') });
+        $('.filter.filter-group_filters').on('change', function() { displayHelpText('#{container_id}') });
         $('#select-all-#{container_id}').on('click', function() {selectAll('#{container_id}')});
         $('#clear-all-#{container_id}').on('click', function() {clearAll('#{container_id}')});
 

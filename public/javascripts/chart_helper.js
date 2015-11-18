@@ -47,18 +47,21 @@ function getCountries(containerId) {
 };
 
 function getHelpText(containerId, type) {
-  var selector = $('#dataset_' + type + '_' + containerId);
-  var help = helpText[selector.val()];
+  var indicator = $('#dataset_indicators_' + containerId);
+  var grouping = $('#dataset_group_filters_' + containerId);
 
-  if(help == null) {
+  var indicatorHelp = helpText[indicator.val()];
+  var groupingHelp = helpText[grouping.val()];
+
+  if(indicatorHelp == null && groupingHelp == null) {
     return "Uh oh, looks ike we are missing a definition for this one.";
   } else {
-    return selector.val() + ": " + marked(help);
+    return grouping.val() + ": " + marked(groupingHelp) + "\n" + indicator.val() + ": " + marked(indicatorHelp);
   }
 }
 
-function displayHelpText(containerId, type) {
-  $('.help-center .help-definition').html(getHelpText(containerId, type));
+function displayHelpText(containerId) {
+  $('.help-center .help-definition').html(getHelpText(containerId));
   $('.help-center').show();
 }
 
