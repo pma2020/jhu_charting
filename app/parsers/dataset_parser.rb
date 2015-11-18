@@ -52,7 +52,10 @@ class DatasetParser
 
   def help_text
     help_hash = Hash.new
-    help_data.each{|row| help_hash[row['Term']] = row['Definition'] }
+    help_data.each do |row|
+      term = row['Term'].downcase.gsub(' ', '_')
+      help_hash[term] = row['Definition']
+    end
     help_hash
   end
 

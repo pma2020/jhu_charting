@@ -46,17 +46,28 @@ function getCountries(containerId) {
   return uniqueCountries;
 };
 
+function keyify(text) {
+  return text.toLowerCase().replace(/ /g, '_');
+}
+
 function getHelpText(containerId, type) {
   var indicator = $('#dataset_indicators_' + containerId);
   var grouping = $('#dataset_group_filters_' + containerId);
 
-  var indicatorHelp = helpText[indicator.val()];
-  var groupingHelp = helpText[grouping.val()];
+  indicatorKey = keyify(indicator.val());
+  groupingKey = keyify(grouping.val());
+
+  var indicatorHelp = helpText[indicatorKey];
+  var groupingHelp = helpText[groupingKey];
 
   if(indicatorHelp == null && groupingHelp == null) {
     return "Uh oh, looks ike we are missing a definition for this one.";
   } else {
-    return grouping.val() + ": " + marked(groupingHelp) + "\n" + indicator.val() + ": " + marked(indicatorHelp);
+    if (groupingKey == 'none') {
+      return indicator.val() + ": " + marked(indicatorHelp);
+    } else {
+      return grouping.val() + ": " + marked(groupingHelp) + "\n" + indicator.val() + ": " + marked(indicatorHelp);
+    }
   }
 }
 
