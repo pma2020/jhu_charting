@@ -48,6 +48,7 @@ class ScriptGenerator
       <script src='https://code.highcharts.com/highcharts.js'></script>
       <script src='https://code.highcharts.com/modules/exporting.js'></script>
       <script src='https://code.highcharts.com/modules/offline-exporting.js'></script>
+      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'markdown.js')) }</script>
       <script>#{ File.read(Rails.root.join('public', 'javascripts', 'chart_helper.js')) }</script>
       <script>
         var metadata = #{@metadata.fetch(:year_by_country, {}).to_json};

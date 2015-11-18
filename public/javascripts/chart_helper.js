@@ -53,7 +53,7 @@ function getHelpText(containerId, type) {
   if(help == null) {
     return "Uh oh, looks ike we are missing a definition for this one.";
   } else {
-    return selector.val() + ": " + help;
+    return selector.val() + ": " + marked(help);
   }
 }
 
