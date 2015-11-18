@@ -40,7 +40,7 @@ class ScriptGenerator
             </div>
             <div class='clearfix'></div>
           </div>
-          #{submit_tag("Chart", id: "submit-chart-filters-#{container_id}", class: 'submit-chart')}
+          #{submit_tag("Chart", id: "submit-chart-filters-#{container_id}", class: 'submit-chart', disabled: 'disabled')}
           <div class='help-center'>
             <h4>Help Center</h4>
             <span class='help-definition'></span>

@@ -114,14 +114,21 @@ function clearAll(containerId) {
   });
 };
 
+function enableCharting(containerId, dates) {
+  if(dates.length > 0) { $('#submit-chart-filters-' + containerId).prop('disabled', '');}
+  else {$('#submit-chart-filters-' + containerId).prop('disabled', 'disabled');}
+};
+
 function validateFilters(containerId, metadata) {
   var chartType = getSelectedItem(containerId, 'chart_types');
   var selectedDates = getCheckedItems(containerId, 'year');
   var selectedCountries = getCountries(containerId);
 
+  enableCharting(containerId, selectedDates);
   disablePieOption(containerId, selectedCountries, selectedDates);
   toggleOverTimeOption(containerId, selectedDates, selectedCountries);
 };
+
 
 function validateDataset(dataSet, countries) {
    var tmpHsh = {};
