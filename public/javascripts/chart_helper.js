@@ -64,8 +64,6 @@ function getHelpText(containerId, type) {
   var indicatorMessage;
   var errorMessage = helpText['!error'];
 
-  console.log(errorMessage)
-
   if(groupingHelp == null) {
     if(errorMessage) {
       groupingMessage =  grouping.val() + ": " + errorMessage;
@@ -184,7 +182,7 @@ function validateDataset(dataSet, countries) {
 }
 
 function disablePieOption(containerId, countries, dates) {
-  var chartSelect = $("#dataset_chart_types_" + containerId + " option[value='pie']");
+  var chartSelect = $("#dataset_chart_types_" + containerId + " option[value='Pie']");
   var disablePieForCountry = false;
   var disablePieForDate = false;
 
@@ -199,7 +197,7 @@ function disablePieOption(containerId, countries, dates) {
     if(chartSelect.length <= 0) {
       $('#dataset_chart_types_' + containerId)
       .append($("<option></option>")
-              .attr("value", 'pie')
+              .attr("value", 'Pie')
               .text('Pie'));
     }
   }
