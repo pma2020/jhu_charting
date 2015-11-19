@@ -151,6 +151,17 @@ function validateDataset(dataSet, countries) {
      tmpHsh[row['Country']].push(row['Category']);
    });
 
+   countries.forEach(function(country) {
+     var uniqueTmpHshItems = [];
+     var items = tmpHsh[country];
+
+     $.each(items, function(i, el){
+       if($.inArray(el, uniqueTmpHshItems) === -1) uniqueTmpHshItems.push(el);
+     });
+
+     tmpHsh[country] = uniqueTmpHshItems;
+   });
+
    var tmpArr = [];
    countries.forEach(function(country) {
      tmpArr.push(tmpHsh[country].length);
