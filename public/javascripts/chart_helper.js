@@ -94,7 +94,7 @@ function getHelpText(containerId, type) {
     }
   }
 
-  return "Disaggregator description for " + groupingMessage + "\n\n Indicator description for " + indicatorMessage;
+  return groupingMessage + "\n\n" + indicatorMessage;
 }
 
 function displayHelpText(containerId) {
