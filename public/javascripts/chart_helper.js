@@ -64,8 +64,6 @@ function getHelpText(containerId, type) {
   var indicatorMessage;
   var errorMessage = helpText['!error'];
 
-  console.log(errorMessage)
-
   if(groupingHelp == null) {
     if(errorMessage) {
       groupingMessage =  grouping.val() + ": " + errorMessage;
@@ -94,7 +92,7 @@ function getHelpText(containerId, type) {
     }
   }
 
-  return "Disaggregator description for " + groupingMessage + "\n\n Indicator description for " + indicatorMessage;
+  return groupingMessage + "\n\n" + indicatorMessage;
 }
 
 function displayHelpText(containerId) {
@@ -110,7 +108,11 @@ function selectAll(containerId) {
 };
 
 function selectLatest(containerId) {
-  console.log('herh')
+  $('.date-selection').each(function() {
+    $('.year-check-' + containerId).each(function() {
+      $(this).prop('checked', false);
+    });
+  });
   $('.date-selection').each(function() {
     $(this).find('.year-check-' + containerId).last().prop('checked', true);
   });
@@ -151,6 +153,17 @@ function validateDataset(dataSet, countries) {
      tmpHsh[row['Country']].push(row['Category']);
    });
 
+   countries.forEach(function(country) {
+     var uniqueTmpHshItems = [];
+     var items = tmpHsh[country];
+
+     $.each(items, function(i, el){
+       if($.inArray(el, uniqueTmpHshItems) === -1) uniqueTmpHshItems.push(el);
+     });
+
+     tmpHsh[country] = uniqueTmpHshItems;
+   });
+
    var tmpArr = [];
    countries.forEach(function(country) {
      tmpArr.push(tmpHsh[country].length);
@@ -169,7 +182,7 @@ function validateDataset(dataSet, countries) {
 }
 
 function disablePieOption(containerId, countries, dates) {
-  var chartSelect = $("#dataset_chart_types_" + containerId + " option[value='pie']");
+  var chartSelect = $("#dataset_chart_types_" + containerId + " option[value='Pie']");
   var disablePieForCountry = false;
   var disablePieForDate = false;
 
@@ -184,7 +197,7 @@ function disablePieOption(containerId, countries, dates) {
     if(chartSelect.length <= 0) {
       $('#dataset_chart_types_' + containerId)
       .append($("<option></option>")
-              .attr("value", 'pie')
+              .attr("value", 'Pie')
               .text('Pie'));
     }
   }
@@ -281,6 +294,12 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
   var xAxis = [];
 
   if(overTime) {
+    dates.sort(function(a,b){
+      var aDate = Date.parse(a.split("-").join("-20"));
+      var bDate = Date.parse(b.split("-").join("-20"));
+      return aDate - bDate;
+    });
+
     for(var key in dataSet) {
       var countryData = dataSet[key];
 
@@ -422,8 +441,8 @@ function generateTitle(countries, indicator, grouping) {
 
 function generateChart(containerId, type, title, xAxis, yAxis, seriesData) {
   $('#chart-container-' + containerId).highcharts({
-    exporting: {
-      chartOptions: { // specific options for the exported image
+    exporting: { // specific options for the exported image
+      chartOptions: {
         plotOptions: {
           series: {
             dataLabels: {
@@ -434,6 +453,11 @@ function generateChart(containerId, type, title, xAxis, yAxis, seriesData) {
       },
       scale: 3,
       fallbackToExportServer: false
+    },
+    plotOptions: {
+      series: {
+        connectNulls: true,
+      }
     },
     chart: { type: type.toLowerCase() },
     title: { text: title },
