@@ -14,15 +14,14 @@ $blue: #00a5ff;
   &:hover {
     background-color: lighten($blue, 10%);
     &:disabled {
-      background-color: darken($blue, 15%);
+      background-color: lighten(desaturate($blue, 50%), 25%);
     }
   }
   &:active {
     background-color: darken($blue, 10%);
   }
   &:disabled {
-    color: #a2a2a2;
-    background-color: darken($blue, 15%);
+    background-color: lighten(desaturate($blue, 50%), 25%);
     cursor: not-allowed;
   }
 }
@@ -30,6 +29,7 @@ $blue: #00a5ff;
 * {
   color: $black;
   font-family: 'Open Sans', sans-serif;
+  box-sizing: border-box;
 }
 
 body {
@@ -128,38 +128,57 @@ body {
     clear: both;
   }
   .filters {
+    margin: 0 0 2em 0;
     .help-center {
       display: none;
-      border: 1px solid #000;
-      padding: 10px 15px;
+      border: 1px solid $light-gray;
+      padding: 1em;
       &.active {
         display: block;
       }
-      h4 {
-        margin: 0 0 5px;
+      h1, h2, h3, h4 {
+        margin: 0 0 .5em 0;
+      }
+      span {
+        color: $blue;
+        font-style: italic;
+      }
+      p {
+        font-size: .8em;
+        font-style: normal;
+        margin: 0 0 1em 0;
+        &:last-of-type {
+          margin: 0;
+        }
       }
     }
     #series-filters-container {
       width: 100%;
       margin: 0 0 1em 0;
       #series-filters {
-        border: 1px solid #000;
-        padding: 10px 15px;
-        width: 75%;
-        float: left;
+        width: 100%;
+        border: 1px solid $light-gray;
+        padding: .5em;
+        margin: 0 0 .5em 0;
+        .form-group {
+          margin: .5em 1em;
+        }
       }
       #series-filters-buttons {
-        width: 20%;
-        float: left;
+        display: block;
+        width: 100%;
         button {
-          margin: 0 0 .5em 10px;
-          width: 100%;
+          display: inline-block;
+          width: auto;
+          font-size: .8em;
+          margin: 0 .5em .5em 0;
         }
       }
     }
     .form-group {
-      margin: 0 .4em 1em 0;
-      float: left;
+      display: inline-block;
+      vertical-align: top;
+      margin: 0 0 1em 0;
       h4 {
         margin: 0 0 11px;
       }
@@ -169,19 +188,21 @@ body {
         margin: 0 0 .5em 0;
       }
       .hint {
-        border: 1px solid #whiteSmoke;
-        border-radius: 16px;
-        padding: 4px 8px;
-        font-weight: bold;
+        display: inline-block;
+        vertical-align: top;
+        width: 2em;
+        height: 2em;
         color: white;
-        background-color: #00a5ff;
-      }
-      .country-header {
+        background-color: $blue;
+        font-weight: bold;
         text-align: center;
+        line-height: 2em;
+        border-radius: 1em;
+        margin: 0 .5em 0 0;
+        padding: 0;
       }
       .checkbox-group {
         display: block;
-        padding: 0 0 0 1em;
         label {
           display: block;
           color: $medium-gray;
@@ -227,7 +248,7 @@ body {
       margin: 2em 0;
       &.submit-chart {
         padding: 1em 3em;
-        margin: .5em 0;
+        margin: 0 0 1em 0;
         width: 100%;
       }
     }
