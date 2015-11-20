@@ -388,7 +388,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
       series.push(newRow);
     };
   } else {
-    if (chartType == "pie") {
+    if (chartType == "Pie") {
       for(var key in dataSet) {
         var data = dataSet[key];
         var newRow = {};
