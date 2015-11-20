@@ -3,4 +3,4 @@
 # charting JS.
 #
 # Uses semver
-VERSION='0.0.3'
+VERSION='0.0.4'
