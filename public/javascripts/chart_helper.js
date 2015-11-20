@@ -294,6 +294,12 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
   var xAxis = [];
 
   if(overTime) {
+    dates.sort(function(a,b){
+      var aDate = Date.parse(a.split("-").join("-20"));
+      var bDate = Date.parse(b.split("-").join("-20"));
+      return aDate - bDate;
+    });
+
     for(var key in dataSet) {
       var countryData = dataSet[key];
 
@@ -435,8 +441,8 @@ function generateTitle(countries, indicator, grouping) {
 
 function generateChart(containerId, type, title, xAxis, yAxis, seriesData) {
   $('#chart-container-' + containerId).highcharts({
-    exporting: {
-      chartOptions: { // specific options for the exported image
+    exporting: { // specific options for the exported image
+      chartOptions: {
         plotOptions: {
           series: {
             dataLabels: {
@@ -447,6 +453,11 @@ function generateChart(containerId, type, title, xAxis, yAxis, seriesData) {
       },
       scale: 3,
       fallbackToExportServer: false
+    },
+    plotOptions: {
+      series: {
+        connectNulls: true,
+      }
     },
     chart: { type: type.toLowerCase() },
     title: { text: title },
