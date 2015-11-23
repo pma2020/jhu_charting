@@ -1,3 +1,5 @@
+$breakpoint: 600px;
+
 $black: #333;
 $medium-gray: lighten($black, 25%);
 $light-gray: lighten($black, 65%);
@@ -120,12 +122,25 @@ body {
 }
 
 #jhu-chart {
+  font-size: 0;
   .clearfix:after {
     content: " "; /* Older browser do not support empty content */
     visibility: hidden;
     display: block;
     height: 0;
     clear: both;
+  }
+  > div {
+    display: inline-block;
+    vertical-align: top;
+    width: 50%;
+    font-size: 16px;
+    &:first-of-type {
+      padding: 0 1em 0 0;
+    }
+    &:last-of-type {
+      padding: 0 0 0 1em;
+    }
   }
   .filters {
     margin: 0 0 2em 0;
@@ -178,6 +193,7 @@ body {
     .form-group {
       display: inline-block;
       vertical-align: top;
+      max-width: 100%;
       margin: 0 0 1em 0;
       h4 {
         margin: 0 0 11px;
@@ -215,6 +231,7 @@ body {
       .select-container {
         position: relative;
         display: inline-block;
+        max-width: 100%;
         &:after {
           content: "";
           position: absolute;
@@ -232,6 +249,7 @@ body {
           -webkit-appearance: none;
           -moz-appearance: none;
           appearance: none;
+          max-width: 100%;
           background-color: #fff;
           font-size: 1em;
           border: solid 1px $light-gray;
@@ -250,6 +268,21 @@ body {
         padding: 1em 3em;
         margin: 0 0 1em 0;
         width: 100%;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint) {
+  #jhu-chart {
+    > div {
+      display: block;
+      width: 100%;
+      &:first-of-type {
+        padding: 0;
+      }
+      &:last-of-type {
+        padding: 0;
       }
     }
   }

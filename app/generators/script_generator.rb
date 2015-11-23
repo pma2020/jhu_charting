@@ -17,7 +17,6 @@ class ScriptGenerator
 
         VERSION: #{VERSION}
       -->
-      <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'chart_styles.css')) }</style>
       <div id='jhu-chart'>
         <div class='filters'>
           <div id='series-filters-container'>
@@ -47,7 +46,7 @@ class ScriptGenerator
             <span class='help-definition'></span>
           </div>
         </div>
-        <div id='chart-container-#{container_id}' style='width:100%; height:600px;'></div>
+        <div id='chart-container-#{container_id}' style='height:600px;'></div>
       </div>
       <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
       <script src='https://code.highcharts.com/highcharts.js'></script>
