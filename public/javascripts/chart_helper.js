@@ -50,7 +50,8 @@ function keyify(text) {
   return text.toLowerCase().replace(/ /g, '_');
 }
 
-function getHelpText(containerId, type) {
+function getHelpText(containerId) {
+  var language = $('#dataset-language-picker-' + containerId).val();
   var indicator = $('#dataset_indicators_' + containerId);
   var grouping = $('#dataset_group_filters_' + containerId);
 
@@ -62,33 +63,33 @@ function getHelpText(containerId, type) {
 
   var groupingMessage;
   var indicatorMessage;
-  var errorMessage = helpText['!error'];
+  var errorMessage = helpText['!error'][language];
 
   if(groupingHelp == null) {
     if(errorMessage) {
-      groupingMessage =  grouping.val() + ": " + errorMessage;
+      groupingMessage =  grouping.find(":selected").text() + ": " + errorMessage;
     } else {
-      groupingMessage =  grouping.val() + ": " + "Uh oh, looks ike we are missing a definition for this one.";
+      groupingMessage =  grouping.find(":selected").text() + ": " + "Uh oh, looks like we are missing a definition for this one.";
     }
   } else {
     if (groupingKey == 'none') {
       groupingMessage = "";
     } else {
-      groupingMessage =  grouping.val() + ": " + marked(groupingHelp);
+      groupingMessage =  grouping.find(":selected").text() + ": " + marked(groupingHelp[language]);
     }
   }
 
   if(indicatorHelp == null) {
     if(errorMessage) {
-      indicatorMessage =  indicator.val() + ": " + errorMessage;
+      indicatorMessage =  indicator.find(":selected").text() + ": " + errorMessage;
     } else {
-      indicatorMessage =  indicator.val() + ": " + "Uh oh, looks ike we are missing a definition for this one.";
+      indicatorMessage =  indicator.find(":selected").text() + ": " + "Uh oh, looks like we are missing a definition for this one.";
     }
   } else {
     if (indicatorKey == 'none') {
       indicatorMessage = "";
     } else {
-      indicatorMessage =  indicator.val() + ": " + marked(indicatorHelp);
+      indicatorMessage =  indicator.find(":selected").text() + ": " + marked(indicatorHelp[language]);
     }
   }
 
@@ -124,6 +125,27 @@ function clearAll(containerId) {
     $(this).prop('checked', false);
   });
   validateFilters(containerId, metadata);
+};
+
+function updateLanguage(containerId) {
+  var language = $('#dataset-language-picker-' + containerId).val();
+  // Handle buttons
+  $('.i18nable-button').each(function() {
+    var type = keyify($(this).val());
+    if(labelText[type]) { $(this).val(labelText[type][language]); }
+  });
+  // Handle labels
+  $('.i18nable-label').each(function() {
+    var type = keyify($(this).data('type'));
+    if(labelText[type]) { $(this).val(labelText[type][language]); }
+  });
+  // Handle values in select inputs
+  $("select.i18nable option").each(function() {
+    var type = keyify($(this).val());
+    if(labelText[type]) { $(this).text(labelText[type][language]); }
+  });
+
+  displayHelpText(containerId);
 };
 
 function enableCharting(containerId, dates) {

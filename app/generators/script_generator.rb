@@ -19,15 +19,18 @@ class ScriptGenerator
       -->
       <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'chart_styles.css')) }</style>
       <div id='jhu-chart'>
+        <div class='language-selector-container'>
+          #{language_picker}
+        </div>
         <div class='filters'>
           <div id='series-filters-container'>
             <div id='series-filters'>
               #{data_series}
             </div>
             <div id='series-filters-buttons'>
-              <button id='select-all-#{container_id}'>Select All</button>
-              <button id='select-latest-#{container_id}'>Select Latest</button>
-              <button id='clear-all-#{container_id}'>Clear All</button>
+              <button id='select-all-#{container_id}' class='i18nable-button'>Select All</button>
+              <button id='select-latest-#{container_id}' class='i18nable-button'>Select Latest</button>
+              <button id='clear-all-#{container_id}' class='i18nable-button'>Clear All</button>
             </div>
             <div class='clearfix'></div>
           </div>
@@ -57,7 +60,9 @@ class ScriptGenerator
       <script>#{ File.read(Rails.root.join('public', 'javascripts', 'chart_helper.js')) }</script>
       <script>
         var metadata = #{@metadata.fetch(:year_by_country, {}).to_json};
+        var availableLanguages = #{@metadata.fetch(:languages, {}).to_json};
         var helpText = #{@metadata.fetch(:help_text, {}).to_json};
+        var labelText = #{@metadata.fetch(:label_text, {}).to_json};
         var data = #{chart_data};
         var chartContainer = $('#chart-container-#{container_id}');
 
@@ -67,6 +72,7 @@ class ScriptGenerator
         $('#select-all-#{container_id}').on('click', function() {selectAll('#{container_id}')});
         $('#select-latest-#{container_id}').on('click', function() {selectLatest('#{container_id}')});
         $('#clear-all-#{container_id}').on('click', function() {clearAll('#{container_id}')});
+        $('#dataset-language-picker-#{container_id}').on('change', function() {updateLanguage('#{container_id}')});
 
         $('#submit-chart-filters-#{container_id}').on('click', function() {
           var chartType = getSelectedItem('#{container_id}', 'chart_types');
@@ -94,6 +100,18 @@ class ScriptGenerator
   end
 
   private
+
+  def language_picker
+    id = "dataset-language-picker-#{container_id}".to_sym
+    <<-"EOS"
+    <div class='form-group'>
+      #{label_tag(id, "Language Picker")}
+      <span class='select-container'>
+        #{select_tag(id,  options_for_select(select_options(@metadata.fetch(:languages).keys), 'None'), class: "filter filter-language")}
+      </span>
+    </div>
+    EOS
+  end
 
   def overtime_checkbox
     collection_check_boxes(:dataset, :overtime, [['Graph series over time', 'Graph series over time']], :first, :last) do |b|
@@ -130,15 +148,17 @@ class ScriptGenerator
 
   def select_box_filter(type, label = nil, hint_text = false)
     label = type unless label
+    label_safe = label.humanize.capitalize
+    label_ref = label.downcase.underscore
     id = "dataset_#{type}_#{container_id}".to_sym
     values = @metadata.fetch(type.to_sym)
 
     <<-"EOS"
     <div class='form-group'>
-      #{label_tag(id, "#{label.humanize.capitalize}:")}
+      #{label_tag(id, "#{label_safe}:", class: 'i18nable-label', data: { type: label_ref })}
       #{hint(hint_text)}
       <span class='select-container'>
-        #{select_tag(id,  options_for_select(select_options(values), 'None'), class: "filter filter-#{type}")}
+        #{select_tag(id,  options_for_select(select_options(values), 'None'), class: "filter filter-#{type} i18nable")}
       </span>
     </div>
     EOS
