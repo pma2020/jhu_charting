@@ -115,9 +115,11 @@ class ScriptGenerator
 
   def overtime_checkbox
     collection_check_boxes(:dataset, :overtime, [['Graph series over time', 'Graph series over time']], :first, :last) do |b|
-      content_tag(:span, class: "checkbox-group") do
-        b.label do
-          b.check_box(class: "filter overtime-check-#{container_id}", disabled: 'disabled') + b.text
+      content_tag(:span, class: "checkbox-group onoffswitch") do
+        b.label(class: "onoffswitch-label") do
+          b.check_box(id: "myonoffswitch", class: "filter overtime-check-#{container_id} onoffswitch-checkbox", disabled: 'disabled') + b.text
+          content_tag(:span, nil, class: "onoffswitch-inner")
+          content_tag(:span, nil, class: "onoffswitch-switch")
         end
       end
     end
