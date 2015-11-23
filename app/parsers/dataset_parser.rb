@@ -8,8 +8,10 @@ class DatasetParser
     date: "Date",
     grouping: "Grouping"
   }.freeze
+  HELP_FILE_DELIMITER = "|".freeze
 
-  attr_reader :data, :help_data, :countries, :years, :group_filters
+
+  attr_reader :data, :help_data, :countries, :years, :group_filters, :languages
 
   def initialize(csv, help_file)
     @csv = csv
@@ -46,17 +48,18 @@ class DatasetParser
       indicators: indicators,
       chart_types: chart_types,
       year_by_country: years_by_country,
-      help_text: help_text
+      languages: language_codes,
+      help_text: help_text,
+      label_text: label_text
     }
   end
 
   def help_text
-    help_hash = Hash.new
-    help_data.each do |row|
-      term = row['Term'].downcase.gsub(' ', '_')
-      help_hash[term] = row['Definition']
-    end
-    help_hash
+    auxiliary_metadata('help')
+  end
+
+  def label_text
+    auxiliary_metadata('label')
   end
 
   def years_by_country
@@ -101,6 +104,45 @@ class DatasetParser
     keys = data.first.keys
     end_index = keys.count unless end_index
     data.first.keys[start_index..end_index]
+  end
+
+  private
+
+  def auxiliary_metadata(type = 'help')
+    tmp_hash = Hash.new
+
+    help_data.each do |row|
+      term = row['ID'].downcase.gsub(' ', '_')
+      language_hash = Hash.new
+      languages(row).each do |language|
+        language_hash[language] = row["#{type}#{HELP_FILE_DELIMITER}#{language}"]
+      end
+      tmp_hash[term] = language_hash
+    end
+
+    tmp_hash
+  end
+
+  def languages(row)
+    @languages ||= process_row_for_languages(row)
+  end
+
+  def process_row_for_languages(row)
+    languages = row.keys.collect{|key| key.split(HELP_FILE_DELIMITER).last}
+    languages.shift # Shift ID off the languages
+    languages.uniq
+  end
+
+  def language_codes
+    potential_languages.select{|k,v| languages(help_data.first).include?(k) }
+  end
+
+  def potential_languages
+    potential_languages = Hash.new
+    ISO::Language.all.each do |language|
+      potential_languages[language.name] = language.code
+    end
+    potential_languages
   end
 end
 
