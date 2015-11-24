@@ -28,8 +28,15 @@ function getCheckedItems(containerId, type) {
 };
 
 function getSelectedItem(containerId, type) {
-  var selector = $('#dataset_' + type + '_' + containerId);
-  return selector.val();
+  return $('#dataset_' + type + '_' + containerId);
+};
+
+function getSelectedItemValue(containerId, type) {
+  return getSelectedItem(containerId, type).val();
+};
+
+function getSelectedItemDisplayText(containerId, type) {
+  return getSelectedItem(containerId, type).find(":selected").text();
 };
 
 function getCountries(containerId) {
@@ -132,12 +139,17 @@ function updateLanguage(containerId) {
   // Handle buttons
   $('.i18nable-button').each(function() {
     var type = keyify($(this).val());
+    if(labelText[type]) { $(this).text(labelText[type][language]); }
+  });
+  // Handle check boxes
+  $('.i18nable-checkbox').each(function() {
+    var type = keyify($(this).data('type'));
     if(labelText[type]) { $(this).val(labelText[type][language]); }
   });
   // Handle labels
   $('.i18nable-label').each(function() {
     var type = keyify($(this).data('type'));
-    if(labelText[type]) { $(this).val(labelText[type][language]); }
+    if(labelText[type]) { $(this).text(labelText[type][language]); }
   });
   // Handle values in select inputs
   $("select.i18nable option").each(function() {
@@ -316,11 +328,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
   var xAxis = [];
 
   if(overTime) {
-    dates.sort(function(a,b){
-      var aDate = Date.parse(a.split("-").join("-20"));
-      var bDate = Date.parse(b.split("-").join("-20"));
-      return aDate - bDate;
-    });
+    dates.sort(function(a,b){ return Date.parse(a) - Date.parse(b); });
 
     for(var key in dataSet) {
       var countryData = dataSet[key];
@@ -452,16 +460,39 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
 };
 
 function generateTitle(countries, indicator, grouping) {
-  var titleResult;
-  if (grouping == 'None') {
-    titleResult = indicator + ' for ' + countries.join();
-  } else {
-    titleResult = indicator + ' by ' + grouping + ' for ' + countries.join();
-  }
+  var titleResult =  indicator;
+  if (grouping != 'None') { titleResult += ' by ' + grouping; }
+  titleResult += ' for ' + countries.join();
   return titleResult;
 };
 
 function generateChart(containerId, type, title, xAxis, yAxis, seriesData) {
+  var chartType = getSelectedItemValue(containerId, 'chart_types');
+  var selectedCountries = getCountries(containerId);
+  var selectedDates = getCheckedItems(containerId, 'year');
+  var selectedIndicator = getSelectedItemValue(containerId, 'indicators');
+  var selectedGrouping = getSelectedItemValue(containerId, 'group_filters');
+  var overTime = $('.overtime-check-' + containerId).prop('checked');
+
+  var title = generateTitle(
+    selectedCountries,
+    getSelectedItemDisplayText(containerId, 'indicators'),
+    getSelectedItemDisplayText(containerId, 'group_filters')
+  );
+
+  var chartComponents = generateSeriesData(
+    chartType,
+    selectedCountries,
+    selectedIndicator,
+    selectedGrouping,
+    selectedDates,
+    overTime
+  );
+
+  var xAxis = chartComponents[0];
+  var yAxis = getSelectedItemDisplayText(containerId, 'indicators');
+  var seriesData = chartComponents[1]
+
   $('#chart-container-' + containerId).highcharts({
     exporting: { // specific options for the exported image
       chartOptions: {
@@ -476,12 +507,8 @@ function generateChart(containerId, type, title, xAxis, yAxis, seriesData) {
       scale: 3,
       fallbackToExportServer: false
     },
-    plotOptions: {
-      series: {
-        connectNulls: true,
-      }
-    },
-    chart: { type: type.toLowerCase() },
+    plotOptions: { series: { connectNulls: true, } },
+    chart: { type: chartType.toLowerCase() },
     title: { text: title },
     xAxis: { categories: xAxis },
     yAxis: { title: { text: yAxis } },
