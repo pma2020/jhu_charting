@@ -57,6 +57,12 @@ class ScriptGenerator
       <script src='https://code.highcharts.com/modules/exporting.js'></script>
       <script src='https://code.highcharts.com/modules/offline-exporting.js'></script>
       <script>#{ File.read(Rails.root.join('public', 'javascripts', 'markdown.js')) }</script>
+      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'utility.js')) }</script>
+      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'selector.js')) }</script>
+      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'help.js')) }</script>
+      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'validation.js')) }</script>
+      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'translation.js')) }</script>
+      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'interaction.js')) }</script>
       <script>#{ File.read(Rails.root.join('public', 'javascripts', 'chart_helper.js')) }</script>
       <script>
         var metadata = #{@metadata.fetch(:year_by_country, {}).to_json};
@@ -72,7 +78,7 @@ class ScriptGenerator
         $('#select-all-#{container_id}').on('click', function() {selectAll('#{container_id}')});
         $('#select-latest-#{container_id}').on('click', function() {selectLatest('#{container_id}')});
         $('#clear-all-#{container_id}').on('click', function() {clearAll('#{container_id}')});
-        $('#dataset-language-picker-#{container_id}').on('change', function() {updateLanguage('#{container_id}')});
+        $('#dataset-language-picker').on('change', function() {updateLanguage('#{container_id}')});
         $('#submit-chart-filters-#{container_id}').on('click', function() { generateChart('#{container_id}'); });
       </script>
       <!-- END DO NOT MODIFY CONTENT-->
@@ -82,10 +88,10 @@ class ScriptGenerator
   private
 
   def language_picker
-    id = "dataset-language-picker-#{container_id}".to_sym
+    id = "dataset-language-picker".to_sym
     <<-"EOS"
     <div class='form-group'>
-      #{label_tag(id, "Language Picker")}
+      #{label_tag(id, "Language: ")}
       <span class='select-container'>
         #{select_tag(id,  options_for_select(select_options(@metadata.fetch(:languages).keys), 'None'), class: "filter filter-language")}
       </span>
