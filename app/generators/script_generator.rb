@@ -38,7 +38,7 @@ class ScriptGenerator
             #{select_box_filter('group_filters', 'Disaggregator')}
             #{select_box_filter('indicators', nil, true)}
             #{select_box_filter('chart_types')}
-            <div id='overtime-checkbox-container-#{container_id}' class='form-group'>
+            <div id='overtime-checkbox-container-#{container_id}' class='overtime-checkbox-container form-group'>
               <h4 class='i18nable-label' data-type='over-time'>Over-time:</h4>
               #{overtime_checkbox}
             </div>
