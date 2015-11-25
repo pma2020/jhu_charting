@@ -50,8 +50,27 @@ class DatasetParser
       year_by_country: years_by_country,
       languages: language_codes,
       help_text: help_text,
-      label_text: label_text
+      label_text: label_text,
+      unavailable_filters: unavailable_filters
     }
+  end
+
+  def unavailable_filters
+    unavailable_filters = Hash.new
+    data.each do |row|
+      subdata = row.select{|k,v| indicators.include?(k)}
+      current_item = unavailable_filters.fetch(row['Grouping'], [])
+      subdata.each do |k,v|
+        if v.blank?
+          current_item.push(k)
+          sub_item = unavailable_filters.fetch(k, [])
+          unavailable_filters[k] = sub_item.push(row['Grouping'])
+        end
+      end
+      unavailable_filters[row['Grouping']] = current_item
+    end
+    unavailable_filters.each{|k,v| v.uniq!}
+    unavailable_filters
   end
 
   def help_text
