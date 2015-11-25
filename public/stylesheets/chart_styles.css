@@ -1,9 +1,56 @@
+#jhu-chart {
+  font-size: 0;
+}
 #jhu-chart .clearfix:after {
   content: " ";
   visibility: hidden;
   display: block;
   height: 0;
   clear: both;
+}
+#jhu-chart > section {
+  display: inline-block;
+  vertical-align: top;
+  width: 50%;
+  font-size: 16px;
+}
+#jhu-chart > section:first-of-type {
+  padding: 0 1em 0 0;
+}
+#jhu-chart > section:last-of-type {
+  padding: 0 0 0 1em;
+}
+#jhu-chart .language-selector-container {
+  margin: 0 0 1em 0;
+}
+#jhu-chart .language-selector-container .form-group .select-container {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+#jhu-chart .language-selector-container .form-group .select-container:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 1em;
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: solid 0.5em #d9d9d9;
+  border-right: solid .5em transparent;
+  border-left: solid .5em transparent;
+  margin: -.25em 0 0 0;
+}
+#jhu-chart .language-selector-container .form-group .select-container select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  max-width: 100%;
+  background-color: #fff;
+  font-size: 1em;
+  border: solid 1px #d9d9d9;
+  border-radius: .25em;
+  padding: .5em 3em .5em 1em;
 }
 #jhu-chart .filters {
   margin: 0 0 2em 0;
@@ -54,9 +101,83 @@
   font-size: .8em;
   margin: 0 .5em .5em 0;
 }
+#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container h4 {
+  display: inline-block;
+}
+#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch {
+  position: relative;
+  display: inline-block;
+  width: 4em;
+  vertical-align: top;
+  margin: 0 0 0 .5em;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox {
+  display: none;
+}
+#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox:checked + label.onoffswitch-label span.onoffswitch-inner {
+  margin-left: 0;
+}
+#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox:checked + label.onoffswitch-label span.onoffswitch-switch {
+  right: .25em;
+}
+#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox[disabled] + label.onoffswitch-label {
+  cursor: default;
+}
+#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox[disabled] + label.onoffswitch-label span.onoffswitch-inner:before, #jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox[disabled] + label.onoffswitch-label span.onoffswitch-inner:after {
+  background-color: #d9d9d9;
+}
+#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox[disabled] + label.onoffswitch-label span.onoffswitch-switch {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label {
+  display: block;
+  overflow: hidden;
+  border-radius: .875em;
+  padding: 0;
+  cursor: pointer;
+}
+#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner {
+  transition: margin 0.3s ease-in 0s;
+  display: block;
+  width: 200%;
+  margin-left: -100%;
+}
+#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner:before, #jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner:after {
+  display: block;
+  width: 50%;
+  height: 1.75em;
+  float: left;
+  line-height: 1.75em;
+  padding: 0;
+}
+#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner:before {
+  content: "";
+  background-color: #00a5ff;
+}
+#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner:after {
+  content: "";
+  background-color: #737373;
+}
+#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-switch {
+  transition: right 0.3s ease-in 0s;
+  position: absolute;
+  top: 50%;
+  right: 2.5em;
+  bottom: 0;
+  display: block;
+  width: 1.25em;
+  height: 1.25em;
+  background-color: #fff;
+  border-radius: .625em;
+  margin: -.625em 0 0 0;
+}
 #jhu-chart .filters .form-group {
   display: inline-block;
   vertical-align: top;
+  max-width: 100%;
   margin: 0 0 1em 0;
 }
 #jhu-chart .filters .form-group h4 {
@@ -95,6 +216,7 @@
 #jhu-chart .filters .form-group .select-container {
   position: relative;
   display: inline-block;
+  max-width: 100%;
 }
 #jhu-chart .filters .form-group .select-container:after {
   content: "";
@@ -113,6 +235,7 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  max-width: 100%;
   background-color: #fff;
   font-size: 1em;
   border: solid 1px #d9d9d9;
@@ -153,4 +276,17 @@
   padding: 1em 3em;
   margin: 0 0 1em 0;
   width: 100%;
+}
+
+@media (max-width: 600px) {
+  #jhu-chart > section {
+    display: block;
+    width: 100%;
+  }
+  #jhu-chart > section:first-of-type {
+    padding: 0;
+  }
+  #jhu-chart > section:last-of-type {
+    padding: 0;
+  }
 }
