@@ -1,11 +1,12 @@
 function validateFilters(containerId, metadata) {
-  var chartType = getSelectedItem(containerId, 'chart_types');
+  var chartType = getInput(containerId, 'chart_types');
   var selectedDates = getCheckedItems(containerId, 'year');
   var selectedCountries = getCountries(containerId);
 
   enableCharting(containerId, selectedDates);
   disablePieOption(containerId, selectedCountries, selectedDates);
   toggleOverTimeOption(containerId, selectedDates, selectedCountries);
+  disableUnavailableFilters(containerId);
 };
 
 function validateDataset(dataSet, countries) {
@@ -81,4 +82,44 @@ function toggleOverTimeOption(containerId, dates, countries) {
 function enableCharting(containerId, dates) {
   if(dates.length > 0) { $('#submit-chart-filters-' + containerId).prop('disabled', '');}
   else {$('#submit-chart-filters-' + containerId).prop('disabled', 'disabled');}
+};
+
+function disableUnavailableFilters(containerId) {
+  var selectedIndicator = getSelectedItemValue(containerId, 'indicators');
+  var selectedGrouping = getSelectedItemValue(containerId, 'group_filters');
+
+  var groupFilterInput = getInput(containerId, 'group_filters');
+  var indicatorFilterInput = getInput(containerId, 'indicators');
+
+  var unavailableIndicatorFilters = unavailableFilters[selectedIndicator];
+  var unavailableGroupingFilters = unavailableFilters[selectedGrouping];
+
+  enableFilters(groupFilterInput);
+  enableFilters(indicatorFilterInput);
+
+
+  if(unavailableIndicatorFilters) {
+    disableFilters(
+      unavailableIndicatorFilters,
+      groupFilterInput);
+  }
+  if(unavailableGroupingFilters) {
+    disableFilters(
+      unavailableGroupingFilters,
+      indicatorFilterInput);
+  }
+};
+
+function enableFilters(input) {
+  input.find('option').each(function() {
+    $(this).prop('disabled', '');
+  });
+};
+
+function disableFilters(filters, input) {
+  if(filters.length > 0) {
+    filters.forEach(function(filter) {
+      input.find("option[value='" + filter + "']").prop('disabled', 'disabled');
+    });
+  }
 };
