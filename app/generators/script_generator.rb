@@ -28,9 +28,9 @@ class ScriptGenerator
               #{data_series}
             </div>
             <div id='series-filters-buttons'>
-              <button id='select-all-#{container_id}' class='i18nable-button'>Select All</button>
-              <button id='select-latest-#{container_id}' class='i18nable-button'>Select Latest</button>
-              <button id='clear-all-#{container_id}' class='i18nable-button'>Clear All</button>
+              #{button_tag('Select All', type: :button, value: 'Select All', id: "select-all-#{container_id}", class: 'i18nable-button')}
+              #{button_tag('Select Latest', type: :button, value: 'Select Latest', id: "select-latest-#{container_id}", class: 'i18nable-button')}
+              #{button_tag('Clear All', type: :button, value: 'Clear All', id: "clear-all-#{container_id}", class: 'i18nable-button')}
             </div>
             <div class='clearfix'></div>
           </div>
@@ -39,12 +39,12 @@ class ScriptGenerator
             #{select_box_filter('indicators', nil, true)}
             #{select_box_filter('chart_types')}
             <div id='overtime-checkbox-container-#{container_id}' class='form-group'>
-              <h4>Over-time:</h4>
+              <h4 class='i18nable-label' data-type='over-time'>Over-time:</h4>
               #{overtime_checkbox}
             </div>
             <div class='clearfix'></div>
           </div>
-          #{submit_tag("Chart", id: "submit-chart-filters-#{container_id}", class: 'submit-chart', disabled: 'disabled')}
+          #{button_tag('Chart', type: :button, value: 'Chart', id: "submit-chart-filters-#{container_id}", class: 'submit-chart i18nable-button', disabled: 'disabled')}
           <div class='help-center'>
             <h4>Help Center</h4>
             <span class='help-definition'></span>
@@ -57,12 +57,19 @@ class ScriptGenerator
       <script src='https://code.highcharts.com/modules/exporting.js'></script>
       <script src='https://code.highcharts.com/modules/offline-exporting.js'></script>
       <script>#{ File.read(Rails.root.join('public', 'javascripts', 'markdown.js')) }</script>
+      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'utility.js')) }</script>
+      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'selector.js')) }</script>
+      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'help.js')) }</script>
+      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'validation.js')) }</script>
+      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'translation.js')) }</script>
+      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'interaction.js')) }</script>
       <script>#{ File.read(Rails.root.join('public', 'javascripts', 'chart_helper.js')) }</script>
       <script>
         var metadata = #{@metadata.fetch(:year_by_country, {}).to_json};
         var availableLanguages = #{@metadata.fetch(:languages, {}).to_json};
         var helpText = #{@metadata.fetch(:help_text, {}).to_json};
         var labelText = #{@metadata.fetch(:label_text, {}).to_json};
+        var unavailableFilters = #{@metadata.fetch(:unavailable_filters, {}).to_json};
         var data = #{chart_data};
         var chartContainer = $('#chart-container-#{container_id}');
 
@@ -72,28 +79,8 @@ class ScriptGenerator
         $('#select-all-#{container_id}').on('click', function() {selectAll('#{container_id}')});
         $('#select-latest-#{container_id}').on('click', function() {selectLatest('#{container_id}')});
         $('#clear-all-#{container_id}').on('click', function() {clearAll('#{container_id}')});
-        $('#dataset-language-picker-#{container_id}').on('change', function() {updateLanguage('#{container_id}')});
-
-        $('#submit-chart-filters-#{container_id}').on('click', function() {
-          var chartType = getSelectedItem('#{container_id}', 'chart_types');
-          var selectedCountries = getCountries('#{container_id}');
-          var selectedDates = getCheckedItems('#{container_id}', 'year');
-          var selectedIndicator = getSelectedItem('#{container_id}', 'indicators');
-          var selectedGrouping = getSelectedItem('#{container_id}', 'group_filters');
-          var overTime = $('.overtime-check-#{container_id}').prop('checked');
-
-          var title = generateTitle(selectedCountries, selectedIndicator, selectedGrouping);
-          var chartComponents;
-          if(overTime) {
-            chartComponents= generateSeriesData(chartType, selectedCountries, selectedIndicator, selectedGrouping, selectedDates, true);
-          } else {
-            chartComponents = generateSeriesData(chartType, selectedCountries, selectedIndicator, selectedGrouping, selectedDates, false);
-          }
-          var xAxis = chartComponents[0];
-          var seriesData = chartComponents[1]
-
-          generateChart('#{container_id}', chartType, title, xAxis, selectedIndicator, seriesData);
-        });
+        $('#dataset-language-picker').on('change', function() {updateLanguage('#{container_id}')});
+        $('#submit-chart-filters-#{container_id}').on('click', function() { generateChart('#{container_id}'); });
       </script>
       <!-- END DO NOT MODIFY CONTENT-->
     EOS
@@ -102,10 +89,10 @@ class ScriptGenerator
   private
 
   def language_picker
-    id = "dataset-language-picker-#{container_id}".to_sym
+    id = "dataset-language-picker".to_sym
     <<-"EOS"
     <div class='form-group'>
-      #{label_tag(id, "Language Picker")}
+      #{label_tag(id, "Language: ")}
       <span class='select-container'>
         #{select_tag(id,  options_for_select(select_options(@metadata.fetch(:languages).keys), 'None'), class: "filter filter-language")}
       </span>
@@ -160,7 +147,7 @@ class ScriptGenerator
       #{label_tag(id, "#{label_safe}:", class: 'i18nable-label', data: { type: label_ref })}
       #{hint(hint_text)}
       <span class='select-container'>
-        #{select_tag(id,  options_for_select(select_options(values), 'None'), class: "filter filter-#{type} i18nable")}
+        #{select_tag(id,  options_for_select(select_options(values)), class: "filter filter-#{type} i18nable", prompt: "Please select a #{label_safe.singularize}")}
       </span>
     </div>
     EOS
