@@ -17,41 +17,44 @@ class ScriptGenerator
 
         VERSION: #{VERSION}
       -->
-      <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'chart_styles.css')) }</style>
       <div id='jhu-chart'>
-        <div class='language-selector-container'>
-          #{language_picker}
+        <section>
+          <div class='language-selector-container'>
+            #{language_picker}
+          </div>
+          <div class='filters'>
+            <div id='series-filters-container'>
+              <div id='series-filters'>
+                #{data_series}
+              </div>
+              <div id='series-filters-buttons'>
+                #{button_tag('Select All', type: :button, value: 'Select All', id: "select-all-#{container_id}", class: 'i18nable-button')}
+                #{button_tag('Select Latest', type: :button, value: 'Select Latest', id: "select-latest-#{container_id}", class: 'i18nable-button')}
+                #{button_tag('Clear All', type: :button, value: 'Clear All', id: "clear-all-#{container_id}", class: 'i18nable-button')}
+              </div>
+              <div class='clearfix'></div>
+            </div>
+            <div id='limiting-filters-container'>
+              #{select_box_filter('group_filters', 'Disaggregator')}
+              #{select_box_filter('indicators', nil, true)}
+              #{select_box_filter('chart_types')}
+              <div id='overtime-checkbox-container-#{container_id}' class='overtime-checkbox-container form-group'>
+                <h4 class='i18nable-label' data-type='over-time'>Over-time:</h4>
+                #{overtime_checkbox}
+              </div>
+              <div class='clearfix'></div>
+            </div>
+            #{button_tag('Chart', type: :button, value: 'Chart', id: "submit-chart-filters-#{container_id}", class: 'submit-chart i18nable-button', disabled: 'disabled')}
+            <div class='help-center'>
+              <h4>Help Center</h4>
+              <span class='help-definition'></span>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div id='chart-container-#{container_id}' style='height:600px;'></div>
         </div>
-        <div class='filters'>
-          <div id='series-filters-container'>
-            <div id='series-filters'>
-              #{data_series}
-            </div>
-            <div id='series-filters-buttons'>
-              #{button_tag('Select All', type: :button, value: 'Select All', id: "select-all-#{container_id}", class: 'i18nable-button')}
-              #{button_tag('Select Latest', type: :button, value: 'Select Latest', id: "select-latest-#{container_id}", class: 'i18nable-button')}
-              #{button_tag('Clear All', type: :button, value: 'Clear All', id: "clear-all-#{container_id}", class: 'i18nable-button')}
-            </div>
-            <div class='clearfix'></div>
-          </div>
-          <div id='limiting-filters-container'>
-            #{select_box_filter('group_filters', 'Disaggregator')}
-            #{select_box_filter('indicators', nil, true)}
-            #{select_box_filter('chart_types')}
-            <div id='overtime-checkbox-container-#{container_id}' class='overtime-checkbox-container form-group'>
-              <h4 class='i18nable-label' data-type='over-time'>Over-time:</h4>
-              #{overtime_checkbox}
-            </div>
-            <div class='clearfix'></div>
-          </div>
-          #{button_tag('Chart', type: :button, value: 'Chart', id: "submit-chart-filters-#{container_id}", class: 'submit-chart i18nable-button', disabled: 'disabled')}
-          <div class='help-center'>
-            <h4>Help Center</h4>
-            <span class='help-definition'></span>
-          </div>
-        </div>
-        <div id='chart-container-#{container_id}' style='width:100%; height:600px;'></div>
-      </div>
+      </section>
       <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
       <script src='https://code.highcharts.com/highcharts.js'></script>
       <script src='https://code.highcharts.com/modules/exporting.js'></script>
