@@ -38,7 +38,7 @@ class ScriptGenerator
             #{select_box_filter('group_filters', 'Disaggregator')}
             #{select_box_filter('indicators', nil, true)}
             #{select_box_filter('chart_types')}
-            <div id='overtime-checkbox-container-#{container_id}' class='form-group'>
+            <div id='overtime-checkbox-container-#{container_id}' class='overtime-checkbox-container form-group'>
               <h4 class='i18nable-label' data-type='over-time'>Over-time:</h4>
               #{overtime_checkbox}
             </div>
@@ -101,13 +101,15 @@ class ScriptGenerator
   end
 
   def overtime_checkbox
-    collection_check_boxes(:dataset, :overtime, [['Graph series over time', 'Graph series over time']], :first, :last) do |b|
-      content_tag(:span, class: "checkbox-group") do
-        b.label do
-          b.check_box(class: "filter overtime-check-#{container_id}", disabled: 'disabled') + b.text
-        end
-      end
-    end
+    <<-"EOS"
+    <div class="onoffswitch checkbox-group">
+      <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox filter overtime-check-#{container_id}" id="myonoffswitch" disabled='disabled'>
+      <label class="onoffswitch-label" for="myonoffswitch">
+        <span class="onoffswitch-inner"></span>
+        <span class="onoffswitch-switch"></span>
+      </label>
+    </div>
+    EOS
   end
 
   def checkbox_filter(type)
