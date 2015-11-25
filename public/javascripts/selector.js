@@ -6,16 +6,16 @@ function getCheckedItems(containerId, type) {
   return checkedItems;
 };
 
-function getSelectedItem(containerId, type) {
+function getInput(containerId, type) {
   return $('#dataset_' + type + '_' + containerId);
 };
 
 function getSelectedItemValue(containerId, type) {
-  return getSelectedItem(containerId, type).val();
+  return getInput(containerId, type).val();
 };
 
 function getSelectedItemDisplayText(containerId, type) {
-  return getSelectedItem(containerId, type).find(":selected").text();
+  return getInput(containerId, type).find(":selected").text();
 };
 
 function getCountries(containerId) {

@@ -69,6 +69,7 @@ class ScriptGenerator
         var availableLanguages = #{@metadata.fetch(:languages, {}).to_json};
         var helpText = #{@metadata.fetch(:help_text, {}).to_json};
         var labelText = #{@metadata.fetch(:label_text, {}).to_json};
+        var unavailableFilters = #{@metadata.fetch(:unavailable_filters, {}).to_json};
         var data = #{chart_data};
         var chartContainer = $('#chart-container-#{container_id}');
 
@@ -144,7 +145,7 @@ class ScriptGenerator
       #{label_tag(id, "#{label_safe}:", class: 'i18nable-label', data: { type: label_ref })}
       #{hint(hint_text)}
       <span class='select-container'>
-        #{select_tag(id,  options_for_select(select_options(values), 'None'), class: "filter filter-#{type} i18nable")}
+        #{select_tag(id,  options_for_select(select_options(values)), class: "filter filter-#{type} i18nable", prompt: "Please select a #{label_safe.singularize}")}
       </span>
     </div>
     EOS
