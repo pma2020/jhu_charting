@@ -3,7 +3,7 @@
 }
 #jhu-chart .clearfix:after {
   content: " ";
-  visibility: hidden;
+    visibility: hidden;
   display: block;
   height: 0;
   clear: both;
@@ -101,10 +101,16 @@
   font-size: .8em;
   margin: 0 .5em .5em 0;
 }
-#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container h4 {
+#jhu-chart .filters #limiting-filters-container .form-group {
+  width: 24%;
+}
+#jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container {
+  text-align: center;
+}
+#jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container h4 {
   display: inline-block;
 }
-#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch {
+#jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch {
   position: relative;
   display: inline-block;
   width: 4em;
@@ -114,38 +120,38 @@
   -moz-user-select: none;
   -ms-user-select: none;
 }
-#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox {
+#jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox {
   display: none;
 }
-#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox:checked + label.onoffswitch-label span.onoffswitch-inner {
+#jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox:checked + label.onoffswitch-label span.onoffswitch-inner {
   margin-left: 0;
 }
-#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox:checked + label.onoffswitch-label span.onoffswitch-switch {
+#jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox:checked + label.onoffswitch-label span.onoffswitch-switch {
   right: .25em;
 }
-#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox[disabled] + label.onoffswitch-label {
+#jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox[disabled] + label.onoffswitch-label {
   cursor: default;
 }
-#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox[disabled] + label.onoffswitch-label span.onoffswitch-inner:before, #jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox[disabled] + label.onoffswitch-label span.onoffswitch-inner:after {
+#jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox[disabled] + label.onoffswitch-label span.onoffswitch-inner:before, #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox[disabled] + label.onoffswitch-label span.onoffswitch-inner:after {
   background-color: #d9d9d9;
 }
-#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox[disabled] + label.onoffswitch-label span.onoffswitch-switch {
+#jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox[disabled] + label.onoffswitch-label span.onoffswitch-switch {
   background-color: rgba(255, 255, 255, 0.75);
 }
-#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label {
+#jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label {
   display: block;
   overflow: hidden;
   border-radius: .875em;
   padding: 0;
   cursor: pointer;
 }
-#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner {
+#jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner {
   transition: margin 0.3s ease-in 0s;
   display: block;
   width: 200%;
   margin-left: -100%;
 }
-#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner:before, #jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner:after {
+#jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner:before, #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner:after {
   display: block;
   width: 50%;
   height: 1.75em;
@@ -153,15 +159,15 @@
   line-height: 1.75em;
   padding: 0;
 }
-#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner:before {
+#jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner:before {
   content: "";
   background-color: #00a5ff;
 }
-#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner:after {
+#jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner:after {
   content: "";
   background-color: #737373;
 }
-#jhu-chart .filters #limiting-filters-container .overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-switch {
+#jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-switch {
   transition: right 0.3s ease-in 0s;
   position: absolute;
   top: 50%;
@@ -278,15 +284,15 @@
   width: 100%;
 }
 
-@media (max-width: 600px) {
-  #jhu-chart > section {
+@media (max-width: 900px) {
+    #jhu-chart > section {
     display: block;
     width: 100%;
   }
-  #jhu-chart > section:first-of-type {
+    #jhu-chart > section:first-of-type {
     padding: 0;
   }
-  #jhu-chart > section:last-of-type {
+    #jhu-chart > section:last-of-type {
     padding: 0;
   }
 }
