@@ -264,5 +264,7 @@ function generateChart(containerId) {
       yAxis: { title: { text: yAxis } },
       series: seriesData
     });
+
+    scrollToAnchor('#chart-container-' + containerId);
   }
 };
