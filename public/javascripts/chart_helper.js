@@ -215,7 +215,7 @@ function generateTitle(countries, indicator, grouping) {
   return titleResult;
 };
 
-function generateChart(containerId, type, title, xAxis, yAxis, seriesData) {
+function generateChart(containerId) {
   var chartType = getSelectedItemValue(containerId, 'chart_types');
   var selectedCountries = getCountries(containerId);
   var selectedDates = getCheckedItems(containerId, 'year');
@@ -223,44 +223,49 @@ function generateChart(containerId, type, title, xAxis, yAxis, seriesData) {
   var selectedGrouping = getSelectedItemValue(containerId, 'group_filters');
   var overTime = $('.overtime-check-' + containerId).prop('checked');
 
-  var title = generateTitle(
-    selectedCountries,
-    getSelectedItemDisplayText(containerId, 'indicators'),
-    getSelectedItemDisplayText(containerId, 'group_filters')
-  );
+  if(validateFilters(containerId)) {
+    var title = generateTitle(
+      selectedCountries,
+      getSelectedItemDisplayText(containerId, 'indicators'),
+      getSelectedItemDisplayText(containerId, 'group_filters')
+    );
 
-  var chartComponents = generateSeriesData(
-    chartType,
-    selectedCountries,
-    selectedIndicator,
-    selectedGrouping,
-    selectedDates,
-    overTime
-  );
+    var chartComponents = generateSeriesData(
+      chartType,
+      selectedCountries,
+      selectedIndicator,
+      selectedGrouping,
+      selectedDates,
+      overTime
+    );
 
-  var xAxis = chartComponents[0];
-  var yAxis = getSelectedItemDisplayText(containerId, 'indicators');
-  var seriesData = chartComponents[1]
+    var xAxis = chartComponents[0];
+    var yAxis = getSelectedItemDisplayText(containerId, 'indicators');
+    var seriesData = chartComponents[1]
 
-  $('#chart-container-' + containerId).highcharts({
-    exporting: { // specific options for the exported image
-      chartOptions: {
-        plotOptions: {
-          series: {
-            dataLabels: {
-              enabled: true
+    $('#chart-container-' + containerId).highcharts({
+      exporting: { // specific options for the exported image
+        chartOptions: {
+          plotOptions: {
+            series: {
+              dataLabels: {
+                enabled: true
+              }
             }
           }
-        }
+        },
+        scale: 3,
+        fallbackToExportServer: false
       },
-      scale: 3,
-      fallbackToExportServer: false
-    },
-    plotOptions: { series: { connectNulls: true, } },
-    chart: { type: chartType.toLowerCase() },
-    title: { text: title },
-    xAxis: { categories: xAxis },
-    yAxis: { title: { text: yAxis } },
-    series: seriesData
-  });
+      plotOptions: { series: { connectNulls: true, } },
+      chart: { type: chartType.toLowerCase() },
+      title: { text: title },
+      subtitle: { text: "PMA 2020" },
+      xAxis: { categories: xAxis },
+      yAxis: { title: { text: yAxis } },
+      series: seriesData
+    });
+
+    scrollToAnchor('#chart-container-' + containerId);
+  }
 };

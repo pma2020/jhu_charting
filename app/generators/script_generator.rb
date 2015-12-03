@@ -17,6 +17,9 @@ class ScriptGenerator
 
         VERSION: #{VERSION}
       -->
+      <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'chart_styles.css')) }</style>
+      <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'jhu-pma2020-ie7.css')) }</style>
+      <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'jhu-pma2020.css')) }</style>
       <div id='jhu-chart'>
         <section>
           <div class='language-selector-container'>
@@ -35,7 +38,7 @@ class ScriptGenerator
               <div class='clearfix'></div>
             </div>
             <div id='limiting-filters-container'>
-              #{select_box_filter('group_filters', 'Disaggregator')}
+              #{select_box_filter('group_filters', 'Disaggregator', true)}
               #{select_box_filter('indicators', nil, true)}
               #{select_box_filter('chart_types')}
               <div id='overtime-checkbox-container-#{container_id}' class='overtime-checkbox-container form-group'>
@@ -82,6 +85,7 @@ class ScriptGenerator
         $('#select-all-#{container_id}').on('click', function() {selectAll('#{container_id}')});
         $('#select-latest-#{container_id}').on('click', function() {selectLatest('#{container_id}')});
         $('#clear-all-#{container_id}').on('click', function() {clearAll('#{container_id}')});
+        $('.clear-select').on('click', function() {clearSelect('#{container_id}', $(this))});
         $('#dataset-language-picker').on('change', function() {updateLanguage('#{container_id}')});
         $('#submit-chart-filters-#{container_id}').on('click', function() { generateChart('#{container_id}'); });
       </script>
@@ -138,7 +142,7 @@ class ScriptGenerator
     end
   end
 
-  def select_box_filter(type, label = nil, hint_text = false)
+  def select_box_filter(type, label = nil, clear_button = false)
     label = type unless label
     label_safe = label.humanize.capitalize
     label_ref = label.downcase.underscore
@@ -148,17 +152,17 @@ class ScriptGenerator
     <<-"EOS"
     <div class='form-group'>
       #{label_tag(id, "#{label_safe}:", class: 'i18nable-label', data: { type: label_ref })}
-      #{hint(hint_text)}
-      <span class='select-container'>
+      <span class='select-container #{'select-cancelable' if clear_button}'>
         #{select_tag(id,  options_for_select(select_options(values)), class: "filter filter-#{type} i18nable", prompt: "Please select a #{label_safe.singularize}")}
       </span>
+      #{clear_button(id) if clear_button}
     </div>
     EOS
   end
 
-  def hint(hint_text)
-    if hint_text
-      "<span class='hint' title='Need help? Select a filter and a definition of the indicator will be displayed below.'>?</span>"
+  def clear_button(id)
+    button_tag(type: :button, id: "clear-#{id}", class: 'clear-select icon-button i18nable-button', data: { id: id }) do
+      content_tag(:i, nil, class: 'icon-cancel')
     end
   end
 

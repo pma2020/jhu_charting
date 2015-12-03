@@ -5,7 +5,7 @@ function appendToHash(hsh, key, value) {
   if (hsh[key] == null || hsh[key] == {}) { hsh[key] = [value]; }
   else { hsh[key].push(value) }
   return hsh;
-}
+};
 
 function multiSeries(countries, dates) {
   if (countries.length >= 1 && dates.length > 1) {
@@ -18,5 +18,11 @@ function multiSeries(countries, dates) {
 function checkValue(value) {
   if(value == null || (value.length == 1 && value.indexOf(".") >= 0)) { return null; }
   return value;
-}
+};
 
+function scrollToAnchor(aid){
+  $('html, body').animate({
+    scrollTop: $(aid).offset().top
+  }, 500);
+  return false;
+};

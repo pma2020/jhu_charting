@@ -4,6 +4,7 @@ function updateLanguage(containerId) {
   $('.i18nable-label').each(function() { $(this).text(translate($(this).data('type'), labelText)); });
   $("select.i18nable option").each(function() { $(this).text(translate($(this).val(), labelText)); });
   displayHelpText(containerId);
+  generateChart(containerId);
 };
 
 function translate(text, type) {
