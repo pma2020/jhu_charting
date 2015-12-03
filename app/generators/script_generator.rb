@@ -36,7 +36,7 @@ class ScriptGenerator
             </div>
             <div id='limiting-filters-container'>
               #{select_box_filter('group_filters', 'Disaggregator')}
-              #{select_box_filter('indicators', nil, true)}
+              #{select_box_filter('indicators', nil)}
               #{select_box_filter('chart_types')}
               <div id='overtime-checkbox-container-#{container_id}' class='overtime-checkbox-container form-group'>
                 <h4 class='i18nable-label' data-type='over-time'>Over-time:</h4>
@@ -138,7 +138,7 @@ class ScriptGenerator
     end
   end
 
-  def select_box_filter(type, label = nil, hint_text = false)
+  def select_box_filter(type, label = nil)
     label = type unless label
     label_safe = label.humanize.capitalize
     label_ref = label.downcase.underscore
@@ -148,18 +148,11 @@ class ScriptGenerator
     <<-"EOS"
     <div class='form-group'>
       #{label_tag(id, "#{label_safe}:", class: 'i18nable-label', data: { type: label_ref })}
-      #{hint(hint_text)}
       <span class='select-container'>
         #{select_tag(id,  options_for_select(select_options(values)), class: "filter filter-#{type} i18nable", prompt: "Please select a #{label_safe.singularize}")}
       </span>
     </div>
     EOS
-  end
-
-  def hint(hint_text)
-    if hint_text
-      "<span class='hint' title='Need help? Select a filter and a definition of the indicator will be displayed below.'>?</span>"
-    end
   end
 
   def data_series
