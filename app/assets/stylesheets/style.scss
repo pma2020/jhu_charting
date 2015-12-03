@@ -26,6 +26,14 @@ $blue: #00a5ff;
     background-color: lighten(desaturate($blue, 50%), 25%);
     cursor: not-allowed;
   }
+  &.icon-button {
+    margin: 0;
+    padding: .6em;
+    float: left;
+  }
+  i {
+    color: #fff;
+  }
 }
 
 @mixin select {
@@ -355,6 +363,11 @@ body {
       }
       .select-container {
         @include select;
+        &.select-cancelable {
+          max-width: 76%;
+          float: left;
+          margin-right: .2em;
+        }
       }
     }
     input[type="submit"],

@@ -1,6 +1,6 @@
 function selectAll(containerId) {
   $('.year-check-' + containerId).each(function() { $(this).prop('checked', true); });
-  validateFilters(containerId, metadata);
+  validateFilters(containerId);
 };
 
 function selectLatest(containerId) {
@@ -12,13 +12,18 @@ function selectLatest(containerId) {
   $('.date-selection').each(function() {
     $(this).find('.year-check-' + containerId).last().prop('checked', true);
   });
-  validateFilters(containerId, metadata);
+  validateFilters(containerId);
 };
 
 function clearAll(containerId) {
   $('.year-check-' + containerId).each(function() {
     $(this).prop('checked', false);
   });
-  validateFilters(containerId, metadata);
+  validateFilters(containerId);
 };
 
+function clearSelect(containerId, el) {
+  var select = el.data('id');
+  $('#' + select).prop('selectedIndex', 0);
+  validateFilters(containerId);
+}
