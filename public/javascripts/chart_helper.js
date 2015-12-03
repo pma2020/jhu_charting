@@ -260,6 +260,7 @@ function generateChart(containerId) {
       plotOptions: { series: { connectNulls: true, } },
       chart: { type: chartType.toLowerCase() },
       title: { text: title },
+      subtitle: { text: "PMA 2020" },
       xAxis: { categories: xAxis },
       yAxis: { title: { text: yAxis } },
       series: seriesData
