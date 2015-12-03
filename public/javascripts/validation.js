@@ -1,12 +1,13 @@
-function validateFilters(containerId, metadata) {
+function validateFilters(containerId) {
   var chartType = getInput(containerId, 'chart_types');
   var selectedDates = getCheckedItems(containerId, 'year');
   var selectedCountries = getCountries(containerId);
 
-  enableCharting(containerId, selectedDates);
   disablePieOption(containerId, selectedCountries, selectedDates);
   toggleOverTimeOption(containerId, selectedDates, selectedCountries);
   disableUnavailableFilters(containerId);
+
+  return chartable(containerId, selectedDates);
 };
 
 function validateDataset(dataSet, countries) {
@@ -79,10 +80,21 @@ function toggleOverTimeOption(containerId, dates, countries) {
   }
 }
 
-function enableCharting(containerId, dates) {
-  if(dates.length > 0) { $('#submit-chart-filters-' + containerId).prop('disabled', '');}
-  else {$('#submit-chart-filters-' + containerId).prop('disabled', 'disabled');}
-};
+function chartable(containerId, dates) {
+  var selectedIndicator = getSelectedItemValue(containerId, 'indicators');
+  var selectedGrouping = getSelectedItemValue(containerId, 'group_filters');
+  var chartType = getSelectedItemValue(containerId, 'chart_types');
+
+  if(dates.length > 0 && selectedIndicator.length > 0 && selectedGrouping.length > 0, chartType.length > 0) {
+    enableCharting(containerId, '');
+    return true;
+  } else {
+    enableCharting(containerId, 'disabled');
+    return false;
+  }
+}
+
+function enableCharting(containerId, state) { $('#submit-chart-filters-' + containerId).prop('disabled', state) };
 
 function disableUnavailableFilters(containerId) {
   var selectedIndicator = getSelectedItemValue(containerId, 'indicators');
