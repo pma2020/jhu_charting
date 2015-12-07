@@ -85,7 +85,7 @@ function chartable(containerId, dates) {
   var selectedGrouping = getSelectedItemValue(containerId, 'group_filters');
   var chartType = getSelectedItemValue(containerId, 'chart_types');
 
-  if(dates.length > 0 && selectedIndicator.length > 0 && selectedGrouping.length > 0, chartType.length > 0) {
+  if(dates.length > 0 && selectedIndicator.length > 0 && selectedGrouping.length > 0 && chartType.length > 0) {
     enableCharting(containerId, '');
     return true;
   } else {

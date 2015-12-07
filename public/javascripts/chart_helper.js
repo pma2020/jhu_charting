@@ -188,13 +188,13 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
       for(var key in dataSet) {
         var data = dataSet[key];
         var newRow = {};
-        newRow['name'] = key;
+        newRow['name'] = countries + ' ' + dates;
         newRow['data'] = [];
 
         data.forEach(function(row) {
           var dataElement = {};
           xAxis.push(translate(row['Category'], labelText))
-          dataElement['name'] = row['Country'];
+          dataElement['name'] = row['Category'];
           dataElement['y'] = checkValue(row[indicator]);
           newRow['data'].push(dataElement);
         });

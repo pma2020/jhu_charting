@@ -13,28 +13,32 @@ function getHelpText(containerId) {
   var indicatorMessage;
   var errorMessage = helpText['!error'][language];
 
-  if(groupingHelp == null) {
+  if (groupingKey == "") {
+    groupingMessage = "";
+  } else if(groupingHelp == null) {
     if(errorMessage) {
       groupingMessage =  grouping.find(":selected").text() + ": " + errorMessage;
     } else {
       groupingMessage =  grouping.find(":selected").text() + ": " + "Uh oh, looks like we are missing a definition for this one.";
     }
   } else {
-    if (groupingKey == 'none') {
+    if (groupingKey == 'none' && groupingHelp == null) {
       groupingMessage = "";
     } else {
       groupingMessage =  grouping.find(":selected").text() + ": " + marked(groupingHelp[language]);
     }
   }
 
-  if(indicatorHelp == null) {
+  if (indicatorKey == "") {
+    indicatorMessage = "";
+  } else if(indicatorHelp == null) {
     if(errorMessage) {
       indicatorMessage =  indicator.find(":selected").text() + ": " + errorMessage;
     } else {
       indicatorMessage =  indicator.find(":selected").text() + ": " + "Uh oh, looks like we are missing a definition for this one.";
     }
   } else {
-    if (indicatorKey == 'none') {
+    if (indicatorKey == 'none' && indicatorHelp == null) {
       indicatorMessage = "";
     } else {
       indicatorMessage =  indicator.find(":selected").text() + ": " + marked(indicatorHelp[language]);
