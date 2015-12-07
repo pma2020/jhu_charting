@@ -153,7 +153,7 @@ class ScriptGenerator
     <div class='form-group'>
       #{label_tag(id, "#{label_safe}:", class: 'i18nable-label', data: { type: label_ref })}
       <span class='select-container #{'select-cancelable' if clear_button}'>
-        #{select_tag(id,  options_for_select(select_options(values)), class: "filter filter-#{type} i18nable", prompt: "Please select a #{label_safe.singularize}")}
+        #{select_tag(id,  options_for_select(select_options(values)), class: "filter filter-#{type} i18nable", prompt: "Please select an option")}
       </span>
       #{clear_button(id) if clear_button}
     </div>
