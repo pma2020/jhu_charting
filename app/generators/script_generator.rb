@@ -161,7 +161,7 @@ class ScriptGenerator
   end
 
   def clear_button(id)
-    button_tag(type: :button, id: "clear-#{id}", class: 'clear-select icon-button i18nable-button', data: { id: id }) do
+    button_tag(type: :button, id: "clear-#{id}", class: 'clear-select icon-button', data: { id: id }) do
       content_tag(:i, nil, class: 'icon-cancel')
     end
   end
