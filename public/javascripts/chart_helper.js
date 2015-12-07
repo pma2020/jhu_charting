@@ -211,7 +211,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
 function generateTitle(countries, indicator, grouping) {
   var titleResult =  indicator;
   if (grouping != 'None') { titleResult += ' by ' + grouping; }
-  titleResult += ' for ' + countries.join();
+  titleResult += ' for ' + countries.join(', ');
   return titleResult;
 };
 
