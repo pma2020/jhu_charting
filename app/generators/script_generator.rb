@@ -21,7 +21,7 @@ class ScriptGenerator
       <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'jhu-pma2020-ie7.css')) }</style>
       <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'jhu-pma2020.css')) }</style>
       <div id='jhu-chart'>
-        <section>
+        <section class='chart-header'>
           <div class='language-selector-container'>
             #{language_picker}
           </div>
@@ -37,6 +37,10 @@ class ScriptGenerator
               </div>
               <div class='clearfix'></div>
             </div>
+          </div>
+        </section>
+        <section class='chart-sidebar'>
+          <div class='filters'>
             <div id='limiting-filters-container'>
               #{select_box_filter('group_filters', 'Disaggregator', true)}
               #{select_box_filter('indicators', nil, true)}
@@ -54,7 +58,7 @@ class ScriptGenerator
             </div>
           </div>
         </section>
-        <section>
+        <section class='chart-viewport'>
           <div id='chart-container-#{container_id}' style='height:600px;'></div>
         </div>
       </section>
@@ -150,7 +154,7 @@ class ScriptGenerator
     values = @metadata.fetch(type.to_sym)
 
     <<-"EOS"
-    <div class='form-group'>
+    <div class='form-group form-group-#{type}'>
       #{label_tag(id, "#{label_safe}:", class: 'i18nable-label', data: { type: label_ref })}
       <span class='select-container #{'select-cancelable' if clear_button}'>
         #{select_tag(id,  options_for_select(select_options(values)), class: "filter filter-#{type} i18nable", prompt: "Select option")}
