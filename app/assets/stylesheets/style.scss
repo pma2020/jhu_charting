@@ -217,7 +217,9 @@ body {
       width: 100%;
       margin: 0 0 1em 0;
       #series-filters {
-        width: 100%;
+        display: inline-block;
+        float: left;
+        width: 80%;
         border: 1px solid $light-gray;
         padding: .5em;
         margin: 0 0 .5em 0;
@@ -226,13 +228,18 @@ body {
         }
       }
       #series-filters-buttons {
-        display: block;
-        width: 100%;
+        display: inline-block;
+        float: left;
+        width: 19%;
+        margin-right: 1%;
         button {
           display: inline-block;
-          width: auto;
+          min-width: 75px;
+          width: 100%;
           font-size: .8em;
           margin: 0 .5em .5em 0;
+          padding: .5em 1em;
+          text-align: center;
         }
       }
     }
@@ -364,9 +371,10 @@ body {
       .select-container {
         @include select;
         &.select-cancelable {
-          max-width: 76%;
+          width: 80%;
+          width: calc(99% - 42px);
           float: left;
-          margin-right: .2em;
+          margin-right: 1%;
         }
       }
     }

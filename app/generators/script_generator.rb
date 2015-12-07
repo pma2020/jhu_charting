@@ -27,13 +27,13 @@ class ScriptGenerator
           </div>
           <div class='filters'>
             <div id='series-filters-container'>
+              <div id='series-filters-buttons'>
+                #{button_tag('All', type: :button, value: 'Select All', id: "select-all-#{container_id}", class: 'i18nable-button')}
+                #{button_tag('Latest', type: :button, value: 'Select Latest', id: "select-latest-#{container_id}", class: 'i18nable-button')}
+                #{button_tag('Clear', type: :button, value: 'Clear All', id: "clear-all-#{container_id}", class: 'i18nable-button')}
+              </div>
               <div id='series-filters'>
                 #{data_series}
-              </div>
-              <div id='series-filters-buttons'>
-                #{button_tag('Select All', type: :button, value: 'Select All', id: "select-all-#{container_id}", class: 'i18nable-button')}
-                #{button_tag('Select Latest', type: :button, value: 'Select Latest', id: "select-latest-#{container_id}", class: 'i18nable-button')}
-                #{button_tag('Clear All', type: :button, value: 'Clear All', id: "clear-all-#{container_id}", class: 'i18nable-button')}
               </div>
               <div class='clearfix'></div>
             </div>
