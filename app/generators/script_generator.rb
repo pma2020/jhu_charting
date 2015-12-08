@@ -59,7 +59,13 @@ class ScriptGenerator
           </div>
         </section>
         <section class='chart-viewport'>
-          <div id='chart-container-#{container_id}' style='height:600px;'></div>
+          <div id='chart-container-#{container_id}' style='height:600px;'>
+            <div class='chart-placeholder'>
+              <h4>
+                Please select filters from the available options and click 'Chart'
+              </h4>
+            </div>
+          </div>
         </div>
       </section>
       <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>

@@ -182,6 +182,16 @@ body {
       display: inline-block;
       width: calc(99% / 10 * 8);
       float: left;
+      .chart-placeholder {
+        margin: 0px auto;
+        text-align: center;
+        font-size: 2em;
+        min-height: 600px;
+        border: 1px solid #a2a2a2;
+        h4 {
+          line-height: 450px;
+        }
+      }
     }
   }
   .language-selector-container {
