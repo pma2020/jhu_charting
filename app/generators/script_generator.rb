@@ -53,7 +53,7 @@ class ScriptGenerator
             </div>
             #{button_tag('Chart', type: :button, value: 'Chart', id: "submit-chart-filters-#{container_id}", class: 'submit-chart i18nable-button', disabled: 'disabled')}
             <div class='help-center'>
-              <h4>Help Center</h4>
+              <h4 class='i18nable' data-value='Help Center'>Help Center</h4>
               <span class='help-definition'></span>
             </div>
           </div>
@@ -103,7 +103,7 @@ class ScriptGenerator
     id = "dataset-language-picker".to_sym
     <<-"EOS"
     <div class='form-group'>
-      #{label_tag(id, "Language: ")}
+      #{label_tag(id, "Language: ", class: 'i18nable-label', data: { type: 'Language' })}
       <span class='select-container'>
         #{select_tag(id,  options_for_select(select_options(@metadata.fetch(:languages).keys), 'None'), class: "filter filter-language")}
       </span>

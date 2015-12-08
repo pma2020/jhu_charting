@@ -68,7 +68,7 @@ function reduceDataBasedOnSelection(countries, grouping, dates, overTime) {
 
     return scopedData;
   } else {
-    alert(error);
+    alert(translate(error, labelText));
   }
 };
 
@@ -87,7 +87,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
         var data = countryData[countryKey];
         xAxis = dates;
         var newRow = {};
-        newRow['name'] = key + ' ' + countryKey;
+        newRow['name'] = key + ' ' + translate(countryKey, labelText);
         newRow['data'] = [];
 
         var tmpHsh = {};
@@ -115,7 +115,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
         data.forEach(function(row) {
           var dataElement = {};
 
-          country = row['Country'];
+          country = translate(row['Country'], labelText);
           category = row['Category'];
 
           dataElement['name'] = country + ' ' + category;
@@ -143,7 +143,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
       var data = dataSet[key];
 
       data.forEach(function(row) {
-        key = row['Country'] + ' ' + row['Date'];
+        key = translate(row['Country'], labelText) + ' ' + row['Date'];
         appendToHash(tmpHsh, key, checkValue(row[indicator]));
       });
     };
@@ -188,7 +188,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
       for(var key in dataSet) {
         var data = dataSet[key];
         var newRow = {};
-        newRow['name'] = countries + ' ' + dates;
+        newRow['name'] = translate(countries[0], labelText) + ' ' + dates;
         newRow['data'] = [];
 
         data.forEach(function(row) {
@@ -210,8 +210,10 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
 
 function generateTitle(countries, indicator, grouping) {
   var titleResult =  indicator;
-  if (grouping != 'None') { titleResult += ' by ' + grouping; }
-  titleResult += ' for ' + countries.join(', ');
+  var byArticle = translate('by', labelText);
+  var forArticle = translate('for', labelText);
+  if (grouping != 'None') { titleResult += ' ' + byArticle + ' ' + grouping; }
+  titleResult += ' ' + forArticle + ' ' + countries.join(', ');
   return titleResult;
 };
 
