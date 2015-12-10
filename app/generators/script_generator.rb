@@ -99,6 +99,7 @@ class ScriptGenerator
         $('.clear-select').on('click', function() {clearSelect('#{container_id}', $(this))});
         $('#dataset-language-picker').on('change', function() {updateLanguage('#{container_id}')});
         $('#submit-chart-filters-#{container_id}').on('click', function() { generateChart('#{container_id}'); });
+        $(document).ready(function(){updateLanguage('#{container_id}');});
       </script>
       <!-- END DO NOT MODIFY CONTENT-->
     EOS
