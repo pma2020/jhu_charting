@@ -266,7 +266,7 @@ function generateChart(containerId) {
         title: { text: title },
         subtitle: { text: "PMA 2020" },
         xAxis: { categories: xAxis },
-        yAxis: { title: { text: yAxis } },
+        yAxis: { min: 0, title: { text: yAxis } },
         series: seriesData
       });
 
