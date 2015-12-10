@@ -62,7 +62,7 @@ class ScriptGenerator
           <div id='chart-container-#{container_id}' style='height:600px;'>
             <div class='chart-placeholder'>
               <h4>
-                Please select filters from the available options and click 'Chart'
+                <i class='icon-chart-bar'></i>
               </h4>
             </div>
           </div>
