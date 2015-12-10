@@ -182,7 +182,7 @@ class ScriptGenerator
       <<-"EOS"
       <div class='form-group'>
         <div class='country-header'>
-          <b>#{k}</b>
+          <b class='i18nable' data-value='#{k}'>#{k}</b>
         </div>
         <div class='date-selection'>
           #{checkboxes('year', v, false, data_attributes)}
