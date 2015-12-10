@@ -72,15 +72,16 @@ class ScriptGenerator
       <script src='https://code.highcharts.com/highcharts.js'></script>
       <script src='https://code.highcharts.com/modules/exporting.js'></script>
       <script src='https://code.highcharts.com/modules/offline-exporting.js'></script>
-      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'markdown.js')) }</script>
-      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'utility.js')) }</script>
-      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'selector.js')) }</script>
-      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'help.js')) }</script>
-      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'validation.js')) }</script>
-      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'translation.js')) }</script>
-      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'interaction.js')) }</script>
-      <script>#{ File.read(Rails.root.join('public', 'javascripts', 'chart_helper.js')) }</script>
       <script>
+        #{ File.read(Rails.root.join('public', 'javascripts', 'markdown.js')) }
+        #{ File.read(Rails.root.join('public', 'javascripts', 'utility.js')) }
+        #{ File.read(Rails.root.join('public', 'javascripts', 'selector.js')) }
+        #{ File.read(Rails.root.join('public', 'javascripts', 'help.js')) }
+        #{ File.read(Rails.root.join('public', 'javascripts', 'validation.js')) }
+        #{ File.read(Rails.root.join('public', 'javascripts', 'translation.js')) }
+        #{ File.read(Rails.root.join('public', 'javascripts', 'interaction.js')) }
+        #{ File.read(Rails.root.join('public', 'javascripts', 'chart_helper.js')) }
+
         var metadata = #{@metadata.fetch(:year_by_country, {}).to_json};
         var availableLanguages = #{@metadata.fetch(:languages, {}).to_json};
         var helpText = #{@metadata.fetch(:help_text, {}).to_json};
