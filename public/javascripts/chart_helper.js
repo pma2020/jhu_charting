@@ -69,6 +69,7 @@ function reduceDataBasedOnSelection(countries, grouping, dates, overTime) {
     return scopedData;
   } else {
     alert(translate(error, labelText));
+    return false;
   }
 };
 
@@ -119,7 +120,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
           category = row['Category'];
 
           dataElement['name'] = country + ' ' + category;
-          dataElement['y'] = checkValue(tmpHsh[row['Date']]);
+          dataElement['y'] = parseFloat(checkValue(tmpHsh[row['Date']]));
 
           newRow['data'].push(dataElement);
         });
@@ -160,7 +161,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
 
       dataPoints.forEach(function(dataPoint) {
         var dataElement = {};
-        dataElement['y'] = checkValue(dataPoint);
+        dataElement['y'] = parseFloat(checkValue(dataPoint));
         newRow['data'].push(dataElement);
       });
 
@@ -178,7 +179,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
           var dataElement = {};
           xAxis.push(translate(row['Category'], labelText));
           dataElement['name'] = row['Category'];
-          dataElement['y'] = checkValue(row[indicator]);
+          dataElement['y'] = parseFloat(checkValue(row[indicator]));
           newRow['data'].push(dataElement);
         });
 
@@ -195,7 +196,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
           var dataElement = {};
           xAxis.push(translate(row['Category'], labelText))
           dataElement['name'] = row['Category'];
-          dataElement['y'] = checkValue(row[indicator]);
+          dataElement['y'] = parseFloat(checkValue(row[indicator]));
           newRow['data'].push(dataElement);
         });
 
@@ -245,29 +246,31 @@ function generateChart(containerId) {
     var yAxis = getSelectedItemDisplayText(containerId, 'indicators');
     var seriesData = chartComponents[1]
 
-    $('#chart-container-' + containerId).highcharts({
-      exporting: { // specific options for the exported image
-        chartOptions: {
-          plotOptions: {
-            series: {
-              dataLabels: {
-                enabled: true
+    if(seriesData != false) {
+      $('#chart-container-' + containerId).highcharts({
+        exporting: { // specific options for the exported image
+          chartOptions: {
+            plotOptions: {
+              series: {
+                dataLabels: {
+                  enabled: true
+                }
               }
             }
-          }
+          },
+          scale: 3,
+          fallbackToExportServer: false
         },
-        scale: 3,
-        fallbackToExportServer: false
-      },
-      plotOptions: { series: { connectNulls: true, } },
-      chart: { type: chartType.toLowerCase() },
-      title: { text: title },
-      subtitle: { text: "PMA 2020" },
-      xAxis: { categories: xAxis },
-      yAxis: { title: { text: yAxis } },
-      series: seriesData
-    });
+        plotOptions: { series: { connectNulls: true, } },
+        chart: { type: chartType.toLowerCase() },
+        title: { text: title },
+        subtitle: { text: "PMA 2020" },
+        xAxis: { categories: xAxis },
+        yAxis: { title: { text: yAxis } },
+        series: seriesData
+      });
 
-    scrollToAnchor('#chart-container-' + containerId);
+      scrollToAnchor('#chart-container-' + containerId);
+    }
   }
 };

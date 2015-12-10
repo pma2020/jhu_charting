@@ -235,11 +235,9 @@ body {
         float: left;
         width: 90%;
         width: calc(99% / 10 * 9);
-        border: 1px solid $light-gray;
-        padding: .5em;
         margin: 0 0 .5em 0;
         .form-group {
-          margin: .5em 1em;
+          margin: 0 1em 0 0;
         }
       }
       #series-filters-buttons {

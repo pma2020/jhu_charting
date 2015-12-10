@@ -42,7 +42,7 @@ class ScriptGenerator
         <section class='chart-sidebar'>
           <div class='filters'>
             <div id='limiting-filters-container'>
-              #{select_box_filter('group_filters', 'Disaggregator', true)}
+              #{select_box_filter('group_filters', 'Break data down by', true)}
               #{select_box_filter('indicators', nil, true)}
               #{select_box_filter('chart_types')}
               <div id='overtime-checkbox-container-#{container_id}' class='overtime-checkbox-container form-group'>
@@ -182,7 +182,7 @@ class ScriptGenerator
       <<-"EOS"
       <div class='form-group'>
         <div class='country-header'>
-          <b>#{k}</b>
+          <b class='i18nable' data-value='#{k}'>#{k}</b>
         </div>
         <div class='date-selection'>
           #{checkboxes('year', v, false, data_attributes)}
