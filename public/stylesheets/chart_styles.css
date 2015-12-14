@@ -24,10 +24,20 @@
   margin-right: 1%;
   float: left;
 }
+@media (max-width: 760px) {
+    #jhu-chart > section.chart-sidebar {
+    width: 100%;
+  }
+}
 #jhu-chart > section.chart-viewport {
   display: inline-block;
   width: calc(99% / 10 * 8);
   float: left;
+}
+@media (max-width: 760px) {
+    #jhu-chart > section.chart-viewport {
+    width: 100%;
+  }
 }
 #jhu-chart > section.chart-viewport .chart-placeholder {
   margin: 0px auto;
@@ -36,8 +46,9 @@
   min-height: 600px;
   border: 1px solid #a2a2a2;
 }
-#jhu-chart > section.chart-viewport .chart-placeholder h4 {
-  line-height: 450px;
+#jhu-chart > section.chart-viewport .chart-placeholder h4 i {
+  font-size: 10em;
+  line-height: 2em;
 }
 #jhu-chart .language-selector-container {
   margin: 0 0 1em 0;
@@ -111,6 +122,13 @@
 #jhu-chart .filters #series-filters-container #series-filters .form-group {
   margin: 0 1em 0 0;
 }
+@media (max-width: 760px) {
+    #jhu-chart .filters #series-filters-container #series-filters {
+    width: 100%;
+    display: block;
+    float: none;
+  }
+}
 #jhu-chart .filters #series-filters-container #series-filters-buttons {
   display: inline-block;
   float: left;
@@ -126,6 +144,21 @@
   margin: 0 .5em .5em 0;
   padding: .5em 1em;
   text-align: center;
+}
+@media (max-width: 760px) {
+    #jhu-chart .filters #series-filters-container #series-filters-buttons {
+    width: 100%;
+    display: block;
+    float: none;
+  }
+    #jhu-chart .filters #series-filters-container #series-filters-buttons button {
+    display: inline-block;
+    min-width: 75px;
+    width: calc(99% / 12 * 3);
+    font-size: .8em;
+    padding: .5em 1em;
+    text-align: center;
+  }
 }
 #jhu-chart .filters #limiting-filters-container .form-group {
   width: 100%;
@@ -334,7 +367,7 @@
   width: 100%;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 760px) {
     #jhu-chart > section {
     display: block;
     width: 100%;
