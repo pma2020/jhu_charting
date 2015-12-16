@@ -18,8 +18,7 @@ class ScriptGenerator
         VERSION: #{VERSION}
       -->
       <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'chart_styles.css')) }</style>
-      <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'jhu-pma2020-ie7.css')) }</style>
-      <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'jhu-pma2020.css')) }</style>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
       <div id='jhu-chart'>
         <section class='chart-header'>
           <div class='language-selector-container'>
@@ -42,7 +41,7 @@ class ScriptGenerator
         <section class='chart-sidebar'>
           <div class='filters'>
             <div id='limiting-filters-container'>
-              #{select_box_filter('group_filters', 'Break data down by', true)}
+              #{select_box_filter('group_filters', 'Disaggregator', true)}
               #{select_box_filter('indicators', nil, true)}
               #{select_box_filter('chart_types')}
               <div id='overtime-checkbox-container-#{container_id}' class='overtime-checkbox-container form-group'>
@@ -62,7 +61,7 @@ class ScriptGenerator
           <div id='chart-container-#{container_id}' style='height:600px;'>
             <div class='chart-placeholder'>
               <h4>
-                <i class='icon-chart-bar'></i>
+                <i class='fa fa-bar-chart'></i>
               </h4>
             </div>
           </div>
@@ -163,7 +162,7 @@ class ScriptGenerator
 
     <<-"EOS"
     <div class='form-group form-group-#{type}'>
-      #{label_tag(id, "#{label_safe}:", class: 'i18nable-label', data: { type: label_ref })}
+      #{label_tag(id, "#{label_safe}", class: 'i18nable-label', data: { type: label_ref })}
       <span class='select-container #{'select-cancelable' if clear_button}'>
         #{select_tag(id,  options_for_select(select_options(values)), class: "filter filter-#{type} i18nable", prompt: "Select option")}
       </span>
@@ -174,7 +173,7 @@ class ScriptGenerator
 
   def clear_button(id)
     button_tag(type: :button, id: "clear-#{id}", class: 'clear-select icon-button', data: { id: id }) do
-      content_tag(:i, nil, class: 'icon-cancel')
+      content_tag(:i, nil, class: 'fa fa-times')
     end
   end
 
