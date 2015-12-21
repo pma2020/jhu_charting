@@ -41,8 +41,8 @@ class ScriptGenerator
         <section class='chart-sidebar'>
           <div class='filters'>
             <div id='limiting-filters-container'>
-              #{select_box_filter('group_filters', 'Disaggregator', true)}
               #{select_box_filter('indicators', nil, true)}
+              #{select_box_filter('group_filters', 'Break down data by', true)}
               #{select_box_filter('chart_types')}
               <div id='overtime-checkbox-container-#{container_id}' class='overtime-checkbox-container form-group'>
                 <h4 class='i18nable-label' data-type='over-time'>Over-time:</h4>
@@ -64,7 +64,9 @@ class ScriptGenerator
                 <i class='fa fa-bar-chart'></i>
               </h4>
             </div>
+            <div class='clearfix'></div>
           </div>
+            <div class='clearfix'></div>
         </div>
       </section>
       <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>

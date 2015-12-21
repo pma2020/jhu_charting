@@ -186,6 +186,7 @@ body {
       display: inline-block;
       width: calc(99% / 10 * 8);
       float: left;
+      margin-bottom: 3em;
       @media (max-width: $breakpoint) {
         width: 100%;
       }
@@ -193,12 +194,13 @@ body {
         margin: 0px auto;
         text-align: center;
         font-size: 2em;
+        height: 600px;
         min-height: 600px;
         border: 1px solid #a2a2a2;
         h4 {
           i {
             font-size: 10em;
-            line-height: 2em;
+            line-height: 1.5em;
           }
         }
       }
