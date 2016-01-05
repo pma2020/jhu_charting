@@ -1,0 +1,365 @@
+$breakpoint: 760px;
+
+$black: #333;
+$medium-gray: lighten($black, 25%);
+$light-gray: lighten($black, 65%);
+
+$blue: #00a5ff;
+
+@mixin button {
+  color: #fff;
+  background-color: $blue;
+  border: none;
+  border-radius: .25em;
+  padding: .5em 1em;
+  cursor: pointer;
+  &:hover {
+    background-color: lighten($blue, 10%);
+    &:disabled {
+      background-color: lighten(desaturate($blue, 50%), 25%);
+    }
+  }
+  &:active {
+    background-color: darken($blue, 10%);
+  }
+  &:disabled {
+    background-color: lighten(desaturate($blue, 50%), 25%);
+    cursor: not-allowed;
+  }
+  &.icon-button {
+    margin: 0;
+    padding: .6em;
+    float: left;
+  }
+  i {
+    color: #fff;
+  }
+}
+
+@mixin select {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  &:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 1em;
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: solid .5em $light-gray;
+    border-right: solid .5em transparent;
+    border-left: solid .5em transparent;
+    margin: -.25em 0 0 0;
+  }
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    background-color: #fff;
+    font-size: 1em;
+    border: solid 1px $light-gray;
+    border-radius: .25em;
+    padding: .5em 3em .5em 1em;
+  }
+}
+
+#jhu-chart {
+  font-size: 0;
+  .clearfix:after {
+    content: " "; /* Older browser do not support empty content */
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+  }
+  > section {
+    display: inline-block;
+    vertical-align: top;
+    width: 50%;
+    font-size: 16px;
+    &.chart-header {
+      display: block;
+      width: 100%;
+    }
+    &.chart-sidebar {
+      display: inline-block;
+      width: calc(99% / 10 * 2);
+      margin-right: 1%;
+      float: left;
+
+      @media (max-width: $breakpoint) {
+        width: 100%;
+      }
+    }
+    &.chart-viewport {
+      display: inline-block;
+      width: calc(99% / 10 * 8);
+      float: left;
+      @media (max-width: $breakpoint) {
+        width: 100%;
+      }
+      .chart-placeholder {
+        margin: 0px auto 50px;
+        text-align: center;
+        font-size: 2em;
+        border: 1px solid #a2a2a2;
+        h4 {
+          i {
+            font-size: 10em;
+            line-height: 2em;
+          }
+        }
+      }
+    }
+  }
+  .language-selector-container {
+    margin: 0 0 1em 0;
+    .form-group {
+      .select-container {
+        @include select;
+      }
+    }
+  }
+  .filters {
+    margin: 0 0 2em 0;
+    .help-center {
+      display: none;
+      border: 1px solid $light-gray;
+      padding: 1em;
+      &.active {
+        display: block;
+      }
+      h1, h2, h3, h4 {
+        margin: 0 0 .5em 0;
+      }
+      span {
+        color: $blue;
+        font-style: italic;
+      }
+      p {
+        font-size: .8em;
+        font-style: normal;
+        margin: 0 0 1em 0;
+        &:last-of-type {
+          margin: 0;
+        }
+      }
+    }
+    #series-filters-container {
+      width: 100%;
+      margin: 0 0 1em 0;
+      #series-filters {
+        display: inline-block;
+        float: left;
+        width: 90%;
+        width: calc(99% / 10 * 9);
+        margin: 0 0 .5em 0;
+        .form-group {
+          margin: 0 1em 0 0;
+        }
+        @media (max-width: $breakpoint) {
+          width: 100%;
+          display: block;
+          float: none;
+        }
+      }
+      #series-filters-buttons {
+        display: inline-block;
+        float: left;
+        width: 10%;
+        width: calc(99% / 10 * 1);
+        margin-right: 1%;
+        button {
+          display: inline-block;
+          min-width: 75px;
+          width: 100%;
+          font-size: .8em;
+          margin: 0 .5em .5em 0;
+          padding: .5em 1em;
+          text-align: center;
+        }
+        @media (max-width: $breakpoint) {
+          width: 100%;
+          display: block;
+          float: none;
+          button {
+            display: inline-block;
+            min-width: 75px;
+            width: calc(99% / 12 * 3);
+            font-size: .8em;
+            padding: .5em 1em;
+            text-align: center;
+          }
+        }
+      }
+    }
+    #limiting-filters-container {
+      .form-group {
+        width: 100%;
+        &.form-group-chart_types {
+          width: calc(99% / 10 * 6);
+          display: inline-block;
+          float: left;
+        }
+        &.overtime-checkbox-container {
+          width: calc(99% / 10 * 4);
+          display: inline-block;
+          float: left;
+          text-align: center;
+          h4 {
+            display: inline-block;
+          }
+          .checkbox-group.onoffswitch {
+            position: relative;
+            display: block;
+            width: 4em;
+            vertical-align: top;
+            margin: 0px auto;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            input.onoffswitch-checkbox {
+              display: none;
+              &:checked + label.onoffswitch-label {
+                span.onoffswitch-inner {
+                  margin-left: 0;
+                }
+                span.onoffswitch-switch {
+                  right: .25em; 
+                }
+              }
+              &[disabled] + label.onoffswitch-label {
+                cursor: default;
+                span.onoffswitch-inner {
+                  &:before,
+                  &:after {
+                    background-color: $light-gray;
+                  }
+                }
+                span.onoffswitch-switch {
+                  background-color: rgba(255, 255, 255, .75);
+                }
+              }
+            }
+            label.onoffswitch-label {
+              display: block;
+              overflow: hidden;
+              border-radius: .875em;
+              padding: 0;
+              cursor: pointer;
+              span.onoffswitch-inner {
+                transition: margin 0.3s ease-in 0s;
+                display: block;
+                width: 200%;
+                margin-left: -100%;
+                &:before,
+                &:after {
+                  display: block;
+                  width: 50%;
+                  height: 1.75em;
+                  float: left;
+                  line-height: 1.75em;
+                  padding: 0;
+                }
+                &:before {
+                  content: "";
+                  background-color: $blue;
+                }
+                &:after {
+                  content: "";
+                  background-color: $medium-gray;
+                }
+              }
+              span.onoffswitch-switch {
+                transition: right 0.3s ease-in 0s; 
+                position: absolute;
+                top: 50%;
+                right: 2.5em;
+                bottom: 0;
+                display: block;
+                width: 1.25em;
+                height: 1.25em;
+                background-color: #fff;
+                border-radius: .625em;
+                margin: -.625em 0 0 0;
+              }
+            }
+          }
+        }
+      }
+    }
+    .form-group {
+      display: inline-block;
+      vertical-align: top;
+      max-width: 100%;
+      h4 {
+        margin: .5em;
+      }
+      > label {
+        display: block;
+        font-weight: bold;
+        margin: .5em 0;
+      }
+      .hint {
+        display: inline-block;
+        vertical-align: top;
+        width: 2em;
+        height: 2em;
+        color: white;
+        background-color: $blue;
+        font-weight: bold;
+        text-align: center;
+        line-height: 2em;
+        border-radius: 1em;
+        margin: 0 .5em 0 0;
+        padding: 0;
+      }
+      .checkbox-group {
+        display: block;
+        label {
+          display: block;
+          color: $medium-gray;
+          padding: .25em 0;
+          input {
+            margin: 0 .5em 0 0;
+          }
+        }
+      }
+      .select-container {
+        @include select;
+        width: 100%;
+        &.select-cancelable {
+          width: 80%;
+          width: calc(99% - 42px);
+          float: left;
+          margin-right: 1%;
+        }
+      }
+    }
+    input[type="submit"],
+    button {
+      @include button;
+      font-size: 1em;
+      padding: .5em 3em;
+      margin: 2em 0;
+      &.submit-chart {
+        padding: 1em 3em;
+        margin: 1em 0;
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint) {
+  #jhu-chart {
+    > section {
+      display: block;
+      width: 100%;
+    }
+  }
+}
+

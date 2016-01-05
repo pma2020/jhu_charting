@@ -58,7 +58,7 @@ class ScriptGenerator
           </div>
         </section>
         <section class='chart-viewport'>
-          <div id='chart-container-#{container_id}' style='height:600px;'>
+          <div id='chart-container-#{container_id}'>
             <div class='chart-placeholder'>
               <h4>
                 <i class='fa fa-bar-chart'></i>

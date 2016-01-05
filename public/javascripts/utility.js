@@ -1,5 +1,11 @@
 function isArray(obj) { return Object.prototype.toString.call(obj) === '[object Array]'; };
-function keyify(text) { return text.toLowerCase().replace(/ /g, '_'); }
+function keyify(text) {
+  if(typeof text === 'undefined' || text == ''){
+    console.log('Warning text may be blank!');
+  } else {
+    return text.toLowerCase().replace(/ /g, '_');
+  }
+}
 
 function appendToHash(hsh, key, value) {
   if (hsh[key] == null || hsh[key] == {}) { hsh[key] = [value]; }

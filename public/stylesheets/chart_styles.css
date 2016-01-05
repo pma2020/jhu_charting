@@ -33,7 +33,6 @@
   display: inline-block;
   width: calc(99% / 10 * 8);
   float: left;
-  margin-bottom: 3em;
 }
 @media (max-width: 760px) {
     #jhu-chart > section.chart-viewport {
@@ -41,16 +40,14 @@
   }
 }
 #jhu-chart > section.chart-viewport .chart-placeholder {
-  margin: 0px auto;
+  margin: 0px auto 50px;
   text-align: center;
   font-size: 2em;
-  height: 600px;
-  min-height: 600px;
   border: 1px solid #a2a2a2;
 }
 #jhu-chart > section.chart-viewport .chart-placeholder h4 i {
   font-size: 10em;
-  line-height: 1.5em;
+  line-height: 2em;
 }
 #jhu-chart .language-selector-container {
   margin: 0 0 1em 0;
