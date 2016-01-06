@@ -57,19 +57,27 @@ class DatasetParser
 
   def unavailable_filters
     unavailable_filters = Hash.new
+    available_filters = Hash.new
+    all_filters = data.first.keys
+
     data.each do |row|
       subdata = row.select{|k,v| indicators.include?(k)}
-      current_item = unavailable_filters.fetch(row['Grouping'], [])
+      current_item = available_filters.fetch(row['Grouping'], [])
+
       subdata.each do |k,v|
-        if v.blank?
+        if v.present? #!
           current_item.push(k)
-          sub_item = unavailable_filters.fetch(k, [])
-          unavailable_filters[k] = sub_item.push(row['Grouping'])
+          sub_item = available_filters.fetch(k, [])
+          available_filters[k] = sub_item.push(row['Grouping'])
         end
       end
-      unavailable_filters[row['Grouping']] = current_item
+      available_filters[row['Grouping']] = current_item
     end
-    unavailable_filters.each{|k,v| v.uniq!}
+
+    available_filters.each do |k,v|
+      v.uniq!
+      unavailable_filters[k] = all_filters - v
+    end
     unavailable_filters
   end
 

@@ -109,16 +109,11 @@ function disableUnavailableFilters(containerId) {
   enableFilters(groupFilterInput);
   enableFilters(indicatorFilterInput);
 
-
   if(unavailableIndicatorFilters) {
-    disableFilters(
-      unavailableIndicatorFilters,
-      groupFilterInput);
+    disableFilters(unavailableIndicatorFilters, groupFilterInput);
   }
   if(unavailableGroupingFilters) {
-    disableFilters(
-      unavailableGroupingFilters,
-      indicatorFilterInput);
+    disableFilters(unavailableGroupingFilters, indicatorFilterInput);
   }
 };
 
