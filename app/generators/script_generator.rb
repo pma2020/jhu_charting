@@ -32,13 +32,29 @@ class ScriptGenerator
                         #{language_picker}
                       </div>
                       <div id='series-filters-container'>
-                        <div id='series-filters-buttons'>
-                          #{button_tag('All', type: :button, value: 'Select All', id: "select-all-#{container_id}", class: 'i18nable-button')}
-                          #{button_tag('Latest', type: :button, value: 'Select Latest', id: "select-latest-#{container_id}", class: 'i18nable-button')}
-                          #{button_tag('Clear', type: :button, value: 'Clear All', id: "clear-all-#{container_id}", class: 'i18nable-button')}
+                        <div class='row'>
+                          <div class='col-md-12'>
+                            <div id='series-filters-buttons'>
+                              <div class="btn-group btn-group-justified" role="group">
+                                <div class="btn-group" role="group">
+                                  #{button_tag('All', type: :button, value: 'Select All', id: "select-all-#{container_id}", class: 'i18nable-button btn btn-primary')}
+                                </div>
+                                <div class="btn-group" role="group">
+                                  #{button_tag('Latest', type: :button, value: 'Select Latest', id: "select-latest-#{container_id}", class: 'i18nable-button btn btn-primary')}
+                                </div>
+                                <div class="btn-group" role="group">
+                                  #{button_tag('Clear', type: :button, value: 'Clear All', id: "clear-all-#{container_id}", class: 'i18nable-button btn btn-primary')}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div id='series-filters'>
-                          #{data_series}
+                        <div class='row'>
+                          <div class='col-md-12'>
+                            <div id='series-filters'>
+                              #{data_series}
+                            </div>
+                          </div>
                         </div>
                         <div class='clearfix'></div>
                       </div>
@@ -47,14 +63,20 @@ class ScriptGenerator
                       <div id='limiting-filters-container'>
                         #{select_box_filter('indicators', nil, true)}
                         #{select_box_filter('group_filters', 'Break down data by', true)}
-                        #{chart_type_buttons('chart_types')}
-                        <div id='overtime-checkbox-container-#{container_id}' class='overtime-checkbox-container form-group'>
-                          <h4 class='i18nable-label' data-type='over-time'>Over-time:</h4>
-                          #{overtime_checkbox}
+                        <div class='row'>
+                          <div class='col-md-8'>
+                            <h4 class='i18nable-label' data-type='chart-type'>Chart Type:</h4>
+                            #{chart_type_buttons('chart_types')}
+                          </div>
+                          <div class='col-md-4'>
+                            <div id='overtime-checkbox-container-#{container_id}' class='overtime-checkbox-container form-group'>
+                              <h4 class='i18nable-label' data-type='over-time'>Over-time:</h4>
+                              #{overtime_checkbox}
+                            </div>
+                          </div>
                         </div>
-                        <div class='clearfix'></div>
                       </div>
-                      #{button_tag('Chart', type: :button, value: 'Chart', id: "submit-chart-filters-#{container_id}", class: 'submit-chart i18nable-button', disabled: 'disabled')}
+                      #{button_tag('Chart', type: :button, value: 'Chart', id: "submit-chart-filters-#{container_id}", class: 'submit-chart i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled')}
                     </div>
                   </div>
                   <div role="tabpanel" class="tab-pane" id="help-center">
@@ -156,7 +178,7 @@ class ScriptGenerator
         $('.clear-select').on('click', function() {clearSelect('#{container_id}', $(this))});
         $('#dataset-language-picker').on('change', function() {updateLanguage('#{container_id}')});
         $('#submit-chart-filters-#{container_id}').on('click', function() { generateChart('#{container_id}'); });
-        $(document).ready(function(){updateLanguage('#{container_id}');});
+        $(document).ready(function(){ updateLanguage('#{container_id}'); });
       </script>
     EOS
   end
@@ -265,7 +287,7 @@ class ScriptGenerator
   end
 
   def clear_button(id)
-    button_tag(type: :button, id: "clear-#{id}", class: 'clear-select icon-button', data: { id: id }) do
+    button_tag(type: :button, id: "clear-#{id}", class: 'clear-select icon-button btn btn-primary', data: { id: id }) do
       content_tag(:i, nil, class: 'fa fa-times')
     end
   end

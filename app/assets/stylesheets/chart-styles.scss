@@ -8,24 +8,10 @@ $blue: #00a5ff;
 
 @mixin button {
   color: #fff;
-  background-color: $blue;
   border: none;
   border-radius: .25em;
   padding: .5em 1em;
   cursor: pointer;
-  &:hover {
-    background-color: lighten($blue, 10%);
-    &:disabled {
-      background-color: lighten(desaturate($blue, 50%), 25%);
-    }
-  }
-  &:active {
-    background-color: darken($blue, 10%);
-  }
-  &:disabled {
-    background-color: lighten(desaturate($blue, 50%), 25%);
-    cursor: not-allowed;
-  }
   &.icon-button {
     margin: 0;
     padding: .6em;
@@ -164,7 +150,7 @@ $blue: #00a5ff;
     }
   }
   .filters {
-    margin: 0 0 2em 0;
+    margin: 0;
     .help-center {
       display: none;
       border: 1px solid $light-gray;
@@ -192,10 +178,13 @@ $blue: #00a5ff;
       width: 100%;
       margin: 0 0 1em 0;
       #series-filters {
+        max-height: 15em;
+        overflow: auto;
         display: block;
         width: 100%;
         margin: 0 0 .5em 0;
         .form-group {
+          width: 100%;
           margin: 0 1em 0 0;
         }
         @media (max-width: $breakpoint) {
@@ -207,27 +196,10 @@ $blue: #00a5ff;
       #series-filters-buttons {
         display: block;
         width: 100%;
-        button {
-          display: inline-block;
-          min-width: 75px;
-          width: 100%;
-          font-size: .8em;
-          margin: 0 .5em .5em 0;
-          padding: .5em 1em;
-          text-align: center;
-        }
         @media (max-width: $breakpoint) {
           width: 100%;
           display: block;
           float: none;
-          button {
-            display: inline-block;
-            min-width: 75px;
-            width: calc(99% / 12 * 3);
-            font-size: .8em;
-            padding: .5em 1em;
-            text-align: center;
-          }
         }
       }
     }
@@ -240,9 +212,7 @@ $blue: #00a5ff;
           float: left;
         }
         &.overtime-checkbox-container {
-          width: calc(99% / 10 * 4);
-          display: inline-block;
-          float: left;
+          display: block;
           text-align: center;
           h4 {
             display: inline-block;
@@ -252,7 +222,7 @@ $blue: #00a5ff;
             display: block;
             width: 4em;
             vertical-align: top;
-            margin: 0px auto;
+            margin: 8px auto 0;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -372,18 +342,6 @@ $blue: #00a5ff;
           float: left;
           margin-right: 1%;
         }
-      }
-    }
-    input[type="submit"],
-    button {
-      @include button;
-      font-size: 1em;
-      padding: .5em 3em;
-      margin: 2em 0;
-      &.submit-chart {
-        padding: 1em 3em;
-        margin: 1em 0;
-        width: 100%;
       }
     }
   }

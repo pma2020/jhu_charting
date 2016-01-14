@@ -1,62 +1,114 @@
+/* line 55, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart {
   font-size: 0;
 }
+/* line 57, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .clearfix:after {
   content: " ";
-    visibility: hidden;
+  /* Older browser do not support empty content */
+  visibility: hidden;
   display: block;
   height: 0;
   clear: both;
 }
-#jhu-chart > section {
+/* line 65, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+#jhu-chart .row.top-row {
+  height: auto;
+}
+/* line 68, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+#jhu-chart .row.bottom-row {
+  height: auto;
+}
+/* line 71, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+#jhu-chart .row [class*='col-'] {
+  height: auto;
+}
+@media (min-width: 992px) {
+  /* line 75, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+  #jhu-chart .row.top-row {
+    height: 80vh;
+  }
+  /* line 78, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+  #jhu-chart .row.bottom-row {
+    height: 20vh;
+  }
+  /* line 81, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+  #jhu-chart .row [class*='col-'] {
+    height: 100%;
+  }
+}
+/* line 86, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+#jhu-chart section {
   display: inline-block;
   vertical-align: top;
-  width: 50%;
   font-size: 16px;
 }
-#jhu-chart > section.chart-header {
+/* line 90, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+#jhu-chart section.citation-viewport {
+  margin-top: 1%;
+  width: 100%;
+}
+/* line 94, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+#jhu-chart section.chart-sidebar {
   display: block;
   width: 100%;
 }
-#jhu-chart > section.chart-sidebar {
-  display: inline-block;
-  width: calc(99% / 10 * 2);
-  margin-right: 1%;
-  float: left;
-}
 @media (max-width: 760px) {
-    #jhu-chart > section.chart-sidebar {
+  /* line 94, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+  #jhu-chart section.chart-sidebar {
     width: 100%;
   }
 }
-#jhu-chart > section.chart-viewport {
-  display: inline-block;
-  width: calc(99% / 10 * 8);
-  float: left;
+/* line 104, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+#jhu-chart section.chart-sidebar .nav.nav-tabs li.active a {
+  background-color: #ddd;
+}
+/* line 112, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+#jhu-chart section.chart-sidebar .tab-content .tab-pane {
+  border: 1px solid #ddd;
+  border-top: none;
+  background-color: #ddd;
+  padding: 10px;
+}
+/* line 120, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+#jhu-chart section.chart-viewport {
+  height: 100%;
+  width: 100%;
 }
 @media (max-width: 760px) {
-    #jhu-chart > section.chart-viewport {
+  /* line 120, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+  #jhu-chart section.chart-viewport {
     width: 100%;
   }
 }
-#jhu-chart > section.chart-viewport .chart-placeholder {
+/* line 126, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+#jhu-chart section.chart-viewport .chart-container {
+  height: 100%;
+}
+/* line 128, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+#jhu-chart section.chart-viewport .chart-container .chart-placeholder {
+  height: 100%;
   margin: 0px auto 50px;
   text-align: center;
   font-size: 2em;
   border: 1px solid #a2a2a2;
 }
-#jhu-chart > section.chart-viewport .chart-placeholder h4 i {
+/* line 135, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+#jhu-chart section.chart-viewport .chart-container .chart-placeholder h4 i {
   font-size: 10em;
   line-height: 2em;
 }
+/* line 144, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .language-selector-container {
   margin: 0 0 1em 0;
 }
+/* line 147, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .language-selector-container .form-group .select-container {
   position: relative;
   display: inline-block;
   max-width: 100%;
 }
+/* line 29, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .language-selector-container .form-group .select-container:after {
   content: "";
   position: absolute;
@@ -70,6 +122,7 @@
   border-left: solid .5em transparent;
   margin: -.25em 0 0 0;
 }
+/* line 42, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .language-selector-container .form-group .select-container select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -81,129 +134,133 @@
   border-radius: .25em;
   padding: .5em 3em .5em 1em;
 }
+/* line 152, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters {
-  margin: 0 0 2em 0;
+  margin: 0;
 }
+/* line 154, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters .help-center {
   display: none;
   border: 1px solid #d9d9d9;
   padding: 1em;
 }
+/* line 158, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters .help-center.active {
   display: block;
 }
+/* line 161, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters .help-center h1, #jhu-chart .filters .help-center h2, #jhu-chart .filters .help-center h3, #jhu-chart .filters .help-center h4 {
   margin: 0 0 .5em 0;
 }
+/* line 164, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters .help-center span {
   color: #00a5ff;
   font-style: italic;
 }
+/* line 168, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters .help-center p {
   font-size: .8em;
   font-style: normal;
   margin: 0 0 1em 0;
 }
+/* line 172, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters .help-center p:last-of-type {
   margin: 0;
 }
+/* line 177, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #series-filters-container {
   width: 100%;
   margin: 0 0 1em 0;
 }
+/* line 180, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #series-filters-container #series-filters {
-  display: inline-block;
-  float: left;
-  width: 90%;
-  width: calc(99% / 10 * 9);
+  max-height: 15em;
+  overflow: auto;
+  display: block;
+  width: 100%;
   margin: 0 0 .5em 0;
 }
+/* line 186, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #series-filters-container #series-filters .form-group {
+  width: 100%;
   margin: 0 1em 0 0;
 }
 @media (max-width: 760px) {
-    #jhu-chart .filters #series-filters-container #series-filters {
+  /* line 180, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+  #jhu-chart .filters #series-filters-container #series-filters {
     width: 100%;
     display: block;
     float: none;
   }
 }
+/* line 196, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #series-filters-container #series-filters-buttons {
-  display: inline-block;
-  float: left;
-  width: 10%;
-  width: calc(99% / 10 * 1);
-  margin-right: 1%;
-}
-#jhu-chart .filters #series-filters-container #series-filters-buttons button {
-  display: inline-block;
-  min-width: 75px;
+  display: block;
   width: 100%;
-  font-size: .8em;
-  margin: 0 .5em .5em 0;
-  padding: .5em 1em;
-  text-align: center;
 }
 @media (max-width: 760px) {
-    #jhu-chart .filters #series-filters-container #series-filters-buttons {
+  /* line 196, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+  #jhu-chart .filters #series-filters-container #series-filters-buttons {
     width: 100%;
     display: block;
     float: none;
   }
-    #jhu-chart .filters #series-filters-container #series-filters-buttons button {
-    display: inline-block;
-    min-width: 75px;
-    width: calc(99% / 12 * 3);
-    font-size: .8em;
-    padding: .5em 1em;
-    text-align: center;
-  }
 }
+/* line 207, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #limiting-filters-container .form-group {
   width: 100%;
 }
+/* line 209, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #limiting-filters-container .form-group.form-group-chart_types {
   width: calc(99% / 10 * 6);
   display: inline-block;
   float: left;
 }
+/* line 214, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container {
-  width: calc(99% / 10 * 4);
-  display: inline-block;
-  float: left;
+  display: block;
   text-align: center;
 }
+/* line 217, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container h4 {
   display: inline-block;
 }
+/* line 220, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch {
   position: relative;
   display: block;
   width: 4em;
   vertical-align: top;
-  margin: 0px auto;
+  margin: 8px auto 0;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
 }
+/* line 229, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox {
   display: none;
 }
+/* line 232, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox:checked + label.onoffswitch-label span.onoffswitch-inner {
   margin-left: 0;
 }
+/* line 235, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox:checked + label.onoffswitch-label span.onoffswitch-switch {
   right: .25em;
 }
+/* line 239, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox[disabled] + label.onoffswitch-label {
   cursor: default;
 }
+/* line 242, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox[disabled] + label.onoffswitch-label span.onoffswitch-inner:before, #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox[disabled] + label.onoffswitch-label span.onoffswitch-inner:after {
   background-color: #d9d9d9;
 }
+/* line 247, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch input.onoffswitch-checkbox[disabled] + label.onoffswitch-label span.onoffswitch-switch {
   background-color: rgba(255, 255, 255, 0.75);
 }
+/* line 252, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label {
   display: block;
   overflow: hidden;
@@ -211,12 +268,14 @@
   padding: 0;
   cursor: pointer;
 }
+/* line 258, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner {
   transition: margin 0.3s ease-in 0s;
   display: block;
   width: 200%;
   margin-left: -100%;
 }
+/* line 263, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner:before, #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner:after {
   display: block;
   width: 50%;
@@ -225,14 +284,17 @@
   line-height: 1.75em;
   padding: 0;
 }
+/* line 272, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner:before {
   content: "";
   background-color: #00a5ff;
 }
+/* line 276, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-inner:after {
   content: "";
   background-color: #737373;
 }
+/* line 281, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters #limiting-filters-container .form-group.overtime-checkbox-container .checkbox-group.onoffswitch label.onoffswitch-label span.onoffswitch-switch {
   transition: right 0.3s ease-in 0s;
   position: absolute;
@@ -246,19 +308,23 @@
   border-radius: .625em;
   margin: -.625em 0 0 0;
 }
+/* line 299, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters .form-group {
   display: inline-block;
   vertical-align: top;
   max-width: 100%;
 }
+/* line 303, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters .form-group h4 {
   margin: .5em;
 }
+/* line 306, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters .form-group > label {
   display: block;
   font-weight: bold;
   margin: .5em 0;
 }
+/* line 311, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters .form-group .hint {
   display: inline-block;
   vertical-align: top;
@@ -273,23 +339,28 @@
   margin: 0 .5em 0 0;
   padding: 0;
 }
+/* line 325, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters .form-group .checkbox-group {
   display: block;
 }
+/* line 327, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters .form-group .checkbox-group label {
   display: block;
   color: #737373;
   padding: .25em 0;
 }
+/* line 331, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters .form-group .checkbox-group label input {
   margin: 0 .5em 0 0;
 }
+/* line 336, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters .form-group .select-container {
   position: relative;
   display: inline-block;
   max-width: 100%;
   width: 100%;
 }
+/* line 29, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters .form-group .select-container:after {
   content: "";
   position: absolute;
@@ -303,6 +374,7 @@
   border-left: solid .5em transparent;
   margin: -.25em 0 0 0;
 }
+/* line 42, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters .form-group .select-container select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -314,60 +386,17 @@
   border-radius: .25em;
   padding: .5em 3em .5em 1em;
 }
+/* line 339, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
 #jhu-chart .filters .form-group .select-container.select-cancelable {
   width: 80%;
   width: calc(99% - 42px);
   float: left;
   margin-right: 1%;
 }
-#jhu-chart .filters input[type="submit"],
-#jhu-chart .filters button {
-  color: #fff;
-  background-color: #00a5ff;
-  border: none;
-  border-radius: .25em;
-  padding: .5em 1em;
-  cursor: pointer;
-  font-size: 1em;
-  padding: .5em 3em;
-  margin: 2em 0;
-}
-#jhu-chart .filters input[type="submit"]:hover,
-#jhu-chart .filters button:hover {
-  background-color: #33b7ff;
-}
-#jhu-chart .filters input[type="submit"]:hover:disabled,
-#jhu-chart .filters button:hover:disabled {
-  background-color: #9fc9df;
-}
-#jhu-chart .filters input[type="submit"]:active,
-#jhu-chart .filters button:active {
-  background-color: #0084cc;
-}
-#jhu-chart .filters input[type="submit"]:disabled,
-#jhu-chart .filters button:disabled {
-  background-color: #9fc9df;
-  cursor: not-allowed;
-}
-#jhu-chart .filters input[type="submit"].icon-button,
-#jhu-chart .filters button.icon-button {
-  margin: 0;
-  padding: .6em;
-  float: left;
-}
-#jhu-chart .filters input[type="submit"] i,
-#jhu-chart .filters button i {
-  color: #fff;
-}
-#jhu-chart .filters input[type="submit"].submit-chart,
-#jhu-chart .filters button.submit-chart {
-  padding: 1em 3em;
-  margin: 1em 0;
-  width: 100%;
-}
 
 @media (max-width: 760px) {
-    #jhu-chart > section {
+  /* line 352, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+  #jhu-chart > section {
     display: block;
     width: 100%;
   }
