@@ -75,38 +75,81 @@ $blue: #00a5ff;
     height: 0;
     clear: both;
   }
+  .row {
+    &.top-row {
+      height: auto;
+    }
+    &.bottom-row {
+      height: auto;
+    }
+    [class*='col-'] {
+      height: auto;
+    }
+    @media (min-width: 992px) {
+      &.top-row {
+        height: 80vh;
+      }
+      &.bottom-row {
+        height: 20vh;
+      }
+      [class*='col-'] {
+        height: 100%;
+      }
+    }
+  }
   section {
     display: inline-block;
     vertical-align: top;
-    width: 50%;
     font-size: 16px;
-    /*&.chart-header {*/
-      /*display: block;*/
-      /*width: 100%;*/
-    /*}*/
+    &.citation-viewport {
+      margin-top: 1%;
+      width: 100%;
+    }
     &.chart-sidebar {
       display: block;
       width: 100%;
       @media (max-width: $breakpoint) {
         width: 100%;
       }
+      .nav {
+        &.nav-tabs {
+          li {
+            &.active {
+              a {
+                background-color: #ddd;
+              }
+            }
+          }
+        }
+      }
+      .tab-content {
+        .tab-pane {
+          border: 1px solid #ddd;
+          border-top: none;
+          background-color: #ddd;
+          padding: 10px;
+        }
+      }
     }
     &.chart-viewport {
-      display: block;
-      width: 100%;
       height: 100%;
+      width: 100%;
       @media (max-width: $breakpoint) {
         width: 100%;
       }
-      .chart-placeholder {
-        margin: 0px auto 50px;
-        text-align: center;
-        font-size: 2em;
-        border: 1px solid #a2a2a2;
-        h4 {
-          i {
-            font-size: 10em;
-            line-height: 2em;
+      .chart-container {
+        height: 100%;
+        .chart-placeholder {
+          height: 100%;
+          margin: 0px auto 50px;
+          text-align: center;
+          font-size: 2em;
+          border: 1px solid #a2a2a2;
+          h4 {
+            i {
+              font-size: 10em;
+              line-height: 2em;
+            }
           }
         }
       }

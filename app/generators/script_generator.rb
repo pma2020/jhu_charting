@@ -15,53 +15,80 @@ class ScriptGenerator
       #{stylesheets}
       <div class='container-fluid'>
         <div id='jhu-chart'>
-          <div class='row'>
+          <div class='row top-row'>
             <div class='col-md-3'>
               <section class='chart-sidebar'>
-                <div class='language-selector-container'>
-                  #{language_picker}
-                </div>
-                <div class='filters'>
-                  <div id='series-filters-container'>
-                    <div id='series-filters-buttons'>
-                      #{button_tag('All', type: :button, value: 'Select All', id: "select-all-#{container_id}", class: 'i18nable-button')}
-                      #{button_tag('Latest', type: :button, value: 'Select Latest', id: "select-latest-#{container_id}", class: 'i18nable-button')}
-                      #{button_tag('Clear', type: :button, value: 'Clear All', id: "clear-all-#{container_id}", class: 'i18nable-button')}
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                  <li role="presentation" class="active"><a href="#controls" aria-controls="controls" role="tab" data-toggle="tab">Controls</a></li>
+                  <li role="presentation"><a href="#help-center" aria-controls="help-center" role="tab" data-toggle="tab">Help Center</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane active" id="controls">
+                    <div class='filters'>
+                      <div class='language-selector-container'>
+                        #{language_picker}
+                      </div>
+                      <div id='series-filters-container'>
+                        <div id='series-filters-buttons'>
+                          #{button_tag('All', type: :button, value: 'Select All', id: "select-all-#{container_id}", class: 'i18nable-button')}
+                          #{button_tag('Latest', type: :button, value: 'Select Latest', id: "select-latest-#{container_id}", class: 'i18nable-button')}
+                          #{button_tag('Clear', type: :button, value: 'Clear All', id: "clear-all-#{container_id}", class: 'i18nable-button')}
+                        </div>
+                        <div id='series-filters'>
+                          #{data_series}
+                        </div>
+                        <div class='clearfix'></div>
+                      </div>
                     </div>
-                    <div id='series-filters'>
-                      #{data_series}
+                    <div class='filters'>
+                      <div id='limiting-filters-container'>
+                        #{select_box_filter('indicators', nil, true)}
+                        #{select_box_filter('group_filters', 'Break down data by', true)}
+                        #{select_box_filter('chart_types')}
+                        <div id='overtime-checkbox-container-#{container_id}' class='overtime-checkbox-container form-group'>
+                          <h4 class='i18nable-label' data-type='over-time'>Over-time:</h4>
+                          #{overtime_checkbox}
+                        </div>
+                        <div class='clearfix'></div>
+                      </div>
+                      #{button_tag('Chart', type: :button, value: 'Chart', id: "submit-chart-filters-#{container_id}", class: 'submit-chart i18nable-button', disabled: 'disabled')}
                     </div>
-                    <div class='clearfix'></div>
                   </div>
-                </div>
-                <div class='filters'>
-                  <div id='limiting-filters-container'>
-                    #{select_box_filter('indicators', nil, true)}
-                    #{select_box_filter('group_filters', 'Break down data by', true)}
-                    #{select_box_filter('chart_types')}
-                    <div id='overtime-checkbox-container-#{container_id}' class='overtime-checkbox-container form-group'>
-                      <h4 class='i18nable-label' data-type='over-time'>Over-time:</h4>
-                      #{overtime_checkbox}
+                  <div role="tabpanel" class="tab-pane" id="help-center">
+                    <div class='help-center'>
+                      <h4 class='i18nable' data-value='Help Center'>Help Center</h4>
+                      <span class='help-definition'></span>
                     </div>
-                    <div class='clearfix'></div>
-                  </div>
-                  #{button_tag('Chart', type: :button, value: 'Chart', id: "submit-chart-filters-#{container_id}", class: 'submit-chart i18nable-button', disabled: 'disabled')}
-                  <div class='help-center'>
-                    <h4 class='i18nable' data-value='Help Center'>Help Center</h4>
-                    <span class='help-definition'></span>
                   </div>
                 </div>
               </section>
             </div>
             <div class='col-md-9'>
               <section class='chart-viewport'>
-                <div id='chart-container-#{container_id}'>
+                <div id='chart-container-#{container_id}' class='chart-container'>
                   <div class='chart-placeholder'>
                     <h4>
                       <i class='fa fa-bar-chart'></i>
                     </h4>
                   </div>
                   <div class='clearfix'></div>
+                </div>
+              </section>
+            </div>
+          </div>
+          <div class='row bottom-row'>
+            <div class='col-md-9 col-md-offset-3'>
+              <section class='citation-viewport'>
+                <div class='panel panel-default'>
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Citations</h3>
+                  </div>
+                  <div class="panel-body">
+                    Citation content
+                  </div>
                 </div>
               </section>
             </div>
