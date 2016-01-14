@@ -50,7 +50,7 @@ function validateDataset(dataSet, countries) {
 }
 
 function disablePieOption(containerId, countries, dates) {
-  var chartSelect = $("#dataset_chart_types_" + containerId + " option[value='Pie']");
+  var pieOption = $("#dataset_chart_types_" + containerId).find($('#option-pie')).parent();
   var disablePieForCountry = false;
   var disablePieForDate = false;
 
@@ -60,13 +60,21 @@ function disablePieOption(containerId, countries, dates) {
   if(dates.length > 1) { disablePieForDate = true; }
 
   if(disablePieForCountry || disablePieForDate) {
-    chartSelect.remove();
+    pieOption.remove();
   } else {
-    if(chartSelect.length <= 0) {
+    if(pieOption.length <= 0) {
       $('#dataset_chart_types_' + containerId)
-      .append($("<option></option>")
-              .attr("value", 'Pie')
-              .text('Pie'));
+            .append($("<label></label>")
+              .attr("class", "btn btn-primary")
+              .append($("<input />")
+                .attr("type", "radio")
+                .attr("name", "options")
+                .attr("id", "option-pie")
+                .attr("autocomplete", "off")
+                .attr("checked", ""))
+              .append($("<i></i>")
+                .attr("class", "fa fa-2x fa-pie-chart")));
+
     }
   }
 };
@@ -83,7 +91,7 @@ function toggleOverTimeOption(containerId, dates, countries) {
 function chartable(containerId, dates) {
   var selectedIndicator = getSelectedItemValue(containerId, 'indicators');
   var selectedGrouping = getSelectedItemValue(containerId, 'group_filters');
-  var chartType = getSelectedItemValue(containerId, 'chart_types');
+  var chartType = getSelectedChartType(containerId, 'chart_types');
 
   if(dates.length > 0 && selectedIndicator.length > 0 && selectedGrouping.length > 0 && chartType.length > 0) {
     enableCharting(containerId, '');

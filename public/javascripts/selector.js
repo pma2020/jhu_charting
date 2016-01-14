@@ -14,6 +14,12 @@ function getSelectedItemValue(containerId, type) {
   return getInput(containerId, type).val();
 };
 
+function getSelectedChartType(containerId, type) {
+  var res = getInput(containerId, type).find("label.active").find("input").data("type");
+  console.log(res)
+  return res;
+};
+
 function getSelectedItemDisplayText(containerId, type) {
   return getInput(containerId, type).find(":selected").text();
 };

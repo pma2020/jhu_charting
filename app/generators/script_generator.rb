@@ -47,7 +47,7 @@ class ScriptGenerator
                       <div id='limiting-filters-container'>
                         #{select_box_filter('indicators', nil, true)}
                         #{select_box_filter('group_filters', 'Break down data by', true)}
-                        #{select_box_filter('chart_types')}
+                        #{chart_type_buttons('chart_types')}
                         <div id='overtime-checkbox-container-#{container_id}' class='overtime-checkbox-container form-group'>
                           <h4 class='i18nable-label' data-type='over-time'>Over-time:</h4>
                           #{overtime_checkbox}
@@ -208,21 +208,43 @@ class ScriptGenerator
     end
   end
 
-  def chart_type
+  def chart_type_buttons(label=nil)
+    id = "dataset_chart_types_#{container_id}".to_sym
+    values = @metadata.fetch(:chart_types)
+
     <<-"EOS"
-      <div class="btn-group" data-toggle="buttons">
-        <label class="btn btn-primary active">
-          <input type="checkbox" autocomplete="off" checked> Checkbox 1 (pre-checked)
-        </label>
-        <label class="btn btn-primary">
-          <input type="checkbox" autocomplete="off"> Checkbox 2
-        </label>
-        <label class="btn btn-primary">
-          <input type="checkbox" autocomplete="off"> Checkbox 3
-        </label>
+      <div id=#{id.to_s} class="btn-group" data-toggle="buttons">
+        #{chart_button(values)}
       </div>
     EOS
+  end
+
+  def chart_button(values)
+    values.collect do |value|
+      <<-"EOS"
+        <label class="btn btn-primary">
+          <input type='radio'
+                 name='options'
+                 class='filter'
+                 id='option-#{value.downcase}'
+                 data-type='#{value.downcase}'
+                 autocomplete='off' checked>
+          <i class='fa fa-2x fa-#{chart_icon(value)}'></i>
+        </label>
+      EOS
+    end.join(" ")
+  end
+
+  def chart_icon(value)
+    case value
+    when 'Column'
+      "bar-chart"
+    when 'Bar'
+      'bar-chart fa-rotate-90'
+    else
+      "#{value.downcase}-chart"
     end
+  end
 
   def select_box_filter(type, label = nil, clear_button = false)
     label = type unless label

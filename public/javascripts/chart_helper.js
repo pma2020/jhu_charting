@@ -219,7 +219,7 @@ function generateTitle(countries, indicator, grouping) {
 };
 
 function generateChart(containerId) {
-  var chartType = getSelectedItemValue(containerId, 'chart_types');
+  var chartType = getSelectedChartType(containerId, 'chart_types');
   var selectedCountries = getCountries(containerId);
   var selectedDates = getCheckedItems(containerId, 'year');
   var selectedIndicator = getSelectedItemValue(containerId, 'indicators');
