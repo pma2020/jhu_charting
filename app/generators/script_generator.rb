@@ -17,6 +17,8 @@ class ScriptGenerator
 
         VERSION: #{VERSION}
       -->
+      <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'bootstrap.min.css')) }</style>
+      <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'bootstrap-theme.min.css')) }</style>
       <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'chart_styles.css')) }</style>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
       <div id='jhu-chart'>
@@ -74,6 +76,7 @@ class ScriptGenerator
       <script src='https://code.highcharts.com/modules/exporting.js'></script>
       <script src='https://code.highcharts.com/modules/offline-exporting.js'></script>
       <script>
+        #{ File.read(Rails.root.join('public', 'javascripts', 'bootstrap.min.js')) }
         #{ File.read(Rails.root.join('public', 'javascripts', 'markdown.js')) }
         #{ File.read(Rails.root.join('public', 'javascripts', 'utility.js')) }
         #{ File.read(Rails.root.join('public', 'javascripts', 'selector.js')) }
