@@ -23,7 +23,6 @@ class ScriptGenerator
                   <li role="presentation" class="active"><a href="#controls" aria-controls="controls" role="tab" data-toggle="tab">Controls</a></li>
                   <li role="presentation"><a href="#help-center" aria-controls="help-center" role="tab" data-toggle="tab">Help Center</a></li>
                 </ul>
-
                 <!-- Tab panes -->
                 <div class="tab-content">
                   <div role="tabpanel" class="tab-pane active" id="controls">
@@ -195,11 +194,9 @@ class ScriptGenerator
     <<-"EOS"
     <div class='form-group'>
       #{label_tag(id, "Language: ", class: 'i18nable-label', data: { type: 'Language' })}
-      <span class='select-container'>
-        #{select_tag(id,
-            options_for_select(select_options(@metadata.fetch(:languages).keys), 'None'),
-            class: "filter filter-language form-control")}
-      </span>
+      #{select_tag(id,
+          options_for_select(select_options(@metadata.fetch(:languages).keys), 'None'),
+          class: "filter filter-language form-control")}
     </div>
     EOS
   end
@@ -285,18 +282,12 @@ class ScriptGenerator
     values = @metadata.fetch(type.to_sym)
 
     <<-"EOS"
-    <div class='row'>
-      <div class='col-md-12'>
-        #{label_tag(id, "#{label_safe}", class: 'i18nable-label', data: { type: label_ref })}
-      </div>
-    </div>
-    <div class='row'>
-      <div class='col-md-10'>
-        #{select_tag(id,  options_for_select(select_options(values)), class: "selectpicker filter filter-#{type} i18nable", prompt: "Select option", data: { width: '100%', "live-search" => "true" })}
-      </div>
-      <div class='col-md-2'>
-        #{clear_button(id) if clear_button}
-      </div>
+    #{label_tag(id, "#{label_safe}", class: 'i18nable-label', data: { type: label_ref })}
+    <div class="input-group">
+       #{select_tag(id,  options_for_select(select_options(values)), class: "selectpicker filter filter-#{type} i18nable", prompt: "Select option", data: {"live-search" => "true" })}
+       <span class="input-group-btn">
+          #{clear_button(id) if clear_button}
+       </span>
     </div>
     EOS
   end

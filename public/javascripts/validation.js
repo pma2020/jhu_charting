@@ -123,6 +123,8 @@ function disableUnavailableFilters(containerId) {
   if(unavailableGroupingFilters) {
     disableFilters(unavailableGroupingFilters, indicatorFilterInput);
   }
+
+  $('.selectpicker').selectpicker('refresh');
 };
 
 function enableFilters(input) {

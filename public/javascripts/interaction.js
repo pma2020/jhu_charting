@@ -25,5 +25,6 @@ function clearAll(containerId) {
 function clearSelect(containerId, el) {
   var select = el.data('id');
   $('#' + select).prop('selectedIndex', 0);
+  $('#' + select).selectpicker('deselectAll');
   validateFilters(containerId);
 }
