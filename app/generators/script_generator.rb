@@ -37,13 +37,13 @@ class ScriptGenerator
                             <div id='series-filters-buttons'>
                               <div class="btn-group btn-group-justified" role="group">
                                 <div class="btn-group" role="group">
-                                  #{button_tag('All', type: :button, value: 'Select All', id: "select-all-#{container_id}", class: 'i18nable-button btn btn-primary')}
+                                  #{button_tag('All', type: :button, value: 'All', id: "select-all-#{container_id}", class: 'i18nable-button btn btn-primary')}
                                 </div>
                                 <div class="btn-group" role="group">
-                                  #{button_tag('Latest', type: :button, value: 'Select Latest', id: "select-latest-#{container_id}", class: 'i18nable-button btn btn-primary')}
+                                  #{button_tag('Latest', type: :button, value: 'Latest', id: "select-latest-#{container_id}", class: 'i18nable-button btn btn-primary')}
                                 </div>
                                 <div class="btn-group" role="group">
-                                  #{button_tag('Clear', type: :button, value: 'Clear All', id: "clear-all-#{container_id}", class: 'i18nable-button btn btn-primary')}
+                                  #{button_tag('Clear', type: :button, value: 'Clear', id: "clear-all-#{container_id}", class: 'i18nable-button btn btn-primary')}
                                 </div>
                               </div>
                             </div>
@@ -137,29 +137,34 @@ class ScriptGenerator
 
   def stylesheets
     <<-"EOS"
-      <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'bootstrap.min.css')) }</style>
-      <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'bootstrap-theme.min.css')) }</style>
-      <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'chart_styles.css')) }</style>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/css/bootstrap-select.min.css">
+      <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'chart_styles.css')) }</style>
     EOS
+  end
+
+  def load_js(file)
+    File.read(Rails.root.join('public', 'javascripts', file))
   end
 
   def javascripts
     <<-"EOS"
       <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
+      <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'></script>
       <script src='https://code.highcharts.com/highcharts.js'></script>
       <script src='https://code.highcharts.com/modules/exporting.js'></script>
       <script src='https://code.highcharts.com/modules/offline-exporting.js'></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/js/bootstrap-select.min.js"></script>
       <script>
-        #{ File.read(Rails.root.join('public', 'javascripts', 'bootstrap.min.js')) }
-        #{ File.read(Rails.root.join('public', 'javascripts', 'markdown.js')) }
-        #{ File.read(Rails.root.join('public', 'javascripts', 'utility.js')) }
-        #{ File.read(Rails.root.join('public', 'javascripts', 'selector.js')) }
-        #{ File.read(Rails.root.join('public', 'javascripts', 'help.js')) }
-        #{ File.read(Rails.root.join('public', 'javascripts', 'validation.js')) }
-        #{ File.read(Rails.root.join('public', 'javascripts', 'translation.js')) }
-        #{ File.read(Rails.root.join('public', 'javascripts', 'interaction.js')) }
-        #{ File.read(Rails.root.join('public', 'javascripts', 'chart_helper.js')) }
+        #{ load_js('markdown.js') }
+        #{ load_js('utility.js') }
+        #{ load_js('selector.js') }
+        #{ load_js('help.js') }
+        #{ load_js('validation.js') }
+        #{ load_js('translation.js') }
+        #{ load_js('interaction.js') }
+        #{ load_js('chart_helper.js') }
 
         var metadata = #{@metadata.fetch(:year_by_country, {}).to_json};
         var availableLanguages = #{@metadata.fetch(:languages, {}).to_json};
@@ -178,7 +183,9 @@ class ScriptGenerator
         $('.clear-select').on('click', function() {clearSelect('#{container_id}', $(this))});
         $('#dataset-language-picker').on('change', function() {updateLanguage('#{container_id}')});
         $('#submit-chart-filters-#{container_id}').on('click', function() { generateChart('#{container_id}'); });
-        $(document).ready(function(){ updateLanguage('#{container_id}'); });
+        $(document).ready(function(){
+           updateLanguage('#{container_id}');
+        });
       </script>
     EOS
   end
@@ -189,7 +196,9 @@ class ScriptGenerator
     <div class='form-group'>
       #{label_tag(id, "Language: ", class: 'i18nable-label', data: { type: 'Language' })}
       <span class='select-container'>
-        #{select_tag(id,  options_for_select(select_options(@metadata.fetch(:languages).keys), 'None'), class: "filter filter-language")}
+        #{select_tag(id,
+            options_for_select(select_options(@metadata.fetch(:languages).keys), 'None'),
+            class: "filter filter-language form-control")}
       </span>
     </div>
     EOS
@@ -276,12 +285,18 @@ class ScriptGenerator
     values = @metadata.fetch(type.to_sym)
 
     <<-"EOS"
-    <div class='form-group form-group-#{type}'>
-      #{label_tag(id, "#{label_safe}", class: 'i18nable-label', data: { type: label_ref })}
-      <span class='select-container #{'select-cancelable' if clear_button}'>
-        #{select_tag(id,  options_for_select(select_options(values)), class: "filter filter-#{type} i18nable", prompt: "Select option")}
-      </span>
-      #{clear_button(id) if clear_button}
+    <div class='row'>
+      <div class='col-md-12'>
+        #{label_tag(id, "#{label_safe}", class: 'i18nable-label', data: { type: label_ref })}
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-md-10'>
+        #{select_tag(id,  options_for_select(select_options(values)), class: "selectpicker filter filter-#{type} i18nable", prompt: "Select option", data: { width: '100%', "live-search" => "true" })}
+      </div>
+      <div class='col-md-2'>
+        #{clear_button(id) if clear_button}
+      </div>
     </div>
     EOS
   end
