@@ -89,7 +89,7 @@ function toggleOverTimeOption(containerId, dates, countries) {
 }
 
 function chartable(containerId, dates) {
-  var selectedIndicator = getSelectedItemValue(containerId, 'indicators');
+  var selectedIndicator = getSelectedItemValue(containerId, 'nested_indicators');
   var selectedGrouping = getSelectedItemValue(containerId, 'group_filters');
   var chartType = getSelectedChartType(containerId, 'chart_types');
 
@@ -105,11 +105,11 @@ function chartable(containerId, dates) {
 function enableCharting(containerId, state) { $('#submit-chart-filters-' + containerId).prop('disabled', state) };
 
 function disableUnavailableFilters(containerId) {
-  var selectedIndicator = getSelectedItemValue(containerId, 'indicators');
+  var selectedIndicator = getSelectedItemValue(containerId, 'nested_indicators');
   var selectedGrouping = getSelectedItemValue(containerId, 'group_filters');
 
   var groupFilterInput = getInput(containerId, 'group_filters');
-  var indicatorFilterInput = getInput(containerId, 'indicators');
+  var indicatorFilterInput = getInput(containerId, 'nested_indicators');
 
   var unavailableIndicatorFilters = unavailableFilters[selectedIndicator];
   var unavailableGroupingFilters = unavailableFilters[selectedGrouping];
@@ -134,8 +134,11 @@ function enableFilters(input) {
 };
 
 function disableFilters(filters, input) {
+  console.log(filters);
   if(filters.length > 0) {
     filters.forEach(function(filter) {
+      console.log(input)
+      console.log(filter);
       input.find("option[value='" + filter + "']").prop('disabled', 'disabled');
     });
   }

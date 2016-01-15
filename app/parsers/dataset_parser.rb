@@ -27,6 +27,7 @@ class DatasetParser
 
   def load
     @data ||= SmarterCSV.process(@csv, csv_parse_options)
+    @indicator_categories = @data.shift
     @help_data ||= SmarterCSV.process(@help_file, csv_parse_options)
   end
 
@@ -46,6 +47,7 @@ class DatasetParser
       years: years,
       group_filters: group_filters,
       indicators: indicators,
+      nested_indicators: nested_indicators,
       chart_types: chart_types,
       year_by_country: years_by_country,
       languages: language_codes,
@@ -118,6 +120,17 @@ class DatasetParser
     @indicators ||= filters_from_columns(INDICATOR_HEADER_RANGE_START)
   end
 
+  def nested_indicators
+    result = Hash.new
+    data = @indicator_categories.to_a[INDICATOR_HEADER_RANGE_START..@indicator_categories.length]
+    categories = data.collect{|x| x.last }.uniq
+    categories.each{ |category| result[category] = Array.new }
+    data.each do |item|
+      result[item.last].push(item.first)
+    end
+    result
+  end
+
   def chart_types
     @chart_types ||= AVAILABLE_CHART_TYPES
   end
@@ -176,5 +189,14 @@ end
 class DateConverter
   def self.convert(value)
     Date.strptime(value, '%m - %Y')
+  end
+end
+
+class Indicator
+  attr_reader :val, :group
+
+  def initialize(val, group)
+    @val = val
+    @group = group
   end
 end

@@ -6,34 +6,8 @@ $light-gray: lighten($black, 65%);
 
 $blue: #00a5ff;
 
-@mixin button {
-  color: #fff;
-  border: none;
-  border-radius: .25em;
-  padding: .5em 1em;
-  cursor: pointer;
-  &.icon-button {
-    margin: 0;
-    padding: .6em;
-    float: left;
-  }
-  i {
-    color: #fff;
-  }
-}
-
-@mixin select {
-}
-
 #jhu-chart {
   font-size: 0;
-  .clearfix:after {
-    content: " "; /* Older browser do not support empty content */
-    visibility: hidden;
-    display: block;
-    height: 0;
-    clear: both;
-  }
   .row {
     &.top-row {
       height: auto;
@@ -60,16 +34,8 @@ $blue: #00a5ff;
     display: inline-block;
     vertical-align: top;
     font-size: 16px;
-    &.citation-viewport {
-      margin-top: 1%;
-      width: 100%;
-    }
     &.chart-sidebar {
-      display: block;
-      width: 100%;
-      @media (max-width: $breakpoint) {
-        width: 100%;
-      }
+      max-height: 100%;
       .nav {
         &.nav-tabs {
           li {
@@ -87,6 +53,29 @@ $blue: #00a5ff;
           border-top: none;
           background-color: #ddd;
           padding: 10px;
+          .form-group {
+            margin-bottom: 2%;
+          }
+          .input-group {
+            .input-group-btn {
+              width: 97%;
+            }
+          }
+          .data-series {
+            max-height: 33vh;
+            overflow-y: auto;
+            overflow-x: auto;
+            .checkbox-group {
+              display: block;
+              label {
+                display: block;
+                color: $medium-gray;
+                input {
+                  margin: 0 .5em 0 0;
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -113,219 +102,163 @@ $blue: #00a5ff;
         }
       }
     }
+    &.citation-viewport {
+      margin-top: 1%;
+      width: 100%;
+    }
   }
   .language-selector-container {
     margin: 0 0 1em 0;
-    .form-group {
-      .select-container {
-        @include select;
-      }
-    }
   }
-  .filters {
-    margin: 0;
-    .help-center {
-      display: none;
-      border: 1px solid $light-gray;
-      padding: 1em;
-      &.active {
-        display: block;
-      }
-      h1, h2, h3, h4 {
-        margin: 0 0 .5em 0;
-      }
-      span {
-        color: $blue;
-        font-style: italic;
-      }
-      p {
-        font-size: .8em;
-        font-style: normal;
-        margin: 0 0 1em 0;
-        &:last-of-type {
-          margin: 0;
-        }
-      }
+  .help-center {
+    display: none;
+    border: 1px solid $light-gray;
+    padding: 1em;
+    &.active {
+      display: block;
     }
-    #series-filters-container {
-      width: 100%;
+    h1, h2, h3, h4 {
+      margin: 0 0 .5em 0;
+    }
+    span {
+      color: $blue;
+      font-style: italic;
+    }
+    p {
+      font-size: .8em;
+      font-style: normal;
       margin: 0 0 1em 0;
-      #series-filters {
-        max-height: 15em;
-        overflow: auto;
-        display: block;
-        width: 100%;
-        margin: 0 0 .5em 0;
-        .form-group {
-          width: 100%;
-          margin: 0 1em 0 0;
-        }
-        @media (max-width: $breakpoint) {
-          width: 100%;
-          display: block;
-          float: none;
-        }
-      }
-      #series-filters-buttons {
-        display: block;
-        width: 100%;
-        @media (max-width: $breakpoint) {
-          width: 100%;
-          display: block;
-          float: none;
-        }
-      }
-    }
-    #limiting-filters-container {
-      .form-group {
-        width: 100%;
-        &.form-group-chart_types {
-          width: calc(99% / 10 * 6);
-          display: inline-block;
-          float: left;
-        }
-        &.overtime-checkbox-container {
-          display: block;
-          text-align: center;
-          h4 {
-            display: inline-block;
-          }
-          .checkbox-group.onoffswitch {
-            position: relative;
-            display: block;
-            width: 4em;
-            vertical-align: top;
-            margin: 8px auto 0;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            input.onoffswitch-checkbox {
-              display: none;
-              &:checked + label.onoffswitch-label {
-                span.onoffswitch-inner {
-                  margin-left: 0;
-                }
-                span.onoffswitch-switch {
-                  right: .25em; 
-                }
-              }
-              &[disabled] + label.onoffswitch-label {
-                cursor: default;
-                span.onoffswitch-inner {
-                  &:before,
-                  &:after {
-                    background-color: $light-gray;
-                  }
-                }
-                span.onoffswitch-switch {
-                  background-color: rgba(255, 255, 255, .75);
-                }
-              }
-            }
-            label.onoffswitch-label {
-              display: block;
-              overflow: hidden;
-              border-radius: .875em;
-              padding: 0;
-              cursor: pointer;
-              span.onoffswitch-inner {
-                transition: margin 0.3s ease-in 0s;
-                display: block;
-                width: 200%;
-                margin-left: -100%;
-                &:before,
-                &:after {
-                  display: block;
-                  width: 50%;
-                  height: 1.75em;
-                  float: left;
-                  line-height: 1.75em;
-                  padding: 0;
-                }
-                &:before {
-                  content: "";
-                  background-color: $blue;
-                }
-                &:after {
-                  content: "";
-                  background-color: $medium-gray;
-                }
-              }
-              span.onoffswitch-switch {
-                transition: right 0.3s ease-in 0s; 
-                position: absolute;
-                top: 50%;
-                right: 2.5em;
-                bottom: 0;
-                display: block;
-                width: 1.25em;
-                height: 1.25em;
-                background-color: #fff;
-                border-radius: .625em;
-                margin: -.625em 0 0 0;
-              }
-            }
-          }
-        }
-      }
-    }
-    .form-group {
-      display: inline-block;
-      vertical-align: top;
-      max-width: 100%;
-      h4 {
-        margin: .5em;
-      }
-      > label {
-        display: block;
-        font-weight: bold;
-        margin: .5em 0;
-      }
-      .hint {
-        display: inline-block;
-        vertical-align: top;
-        width: 2em;
-        height: 2em;
-        color: white;
-        background-color: $blue;
-        font-weight: bold;
-        text-align: center;
-        line-height: 2em;
-        border-radius: 1em;
-        margin: 0 .5em 0 0;
-        padding: 0;
-      }
-      .checkbox-group {
-        display: block;
-        label {
-          display: block;
-          color: $medium-gray;
-          padding: .25em 0;
-          input {
-            margin: 0 .5em 0 0;
-          }
-        }
-      }
-      .select-container {
-        @include select;
-        width: 100%;
-        &.select-cancelable {
-          width: 80%;
-          width: calc(99% - 42px);
-          float: left;
-          margin-right: 1%;
-        }
+      &:last-of-type {
+        margin: 0;
       }
     }
   }
-}
-
-@media (max-width: $breakpoint) {
-  #jhu-chart {
-    > section {
+  #series-filters-container {
+    width: 100%;
+    margin: 0 0 1em 0;
+    #series-filters {
+      max-height: 15em;
+      overflow: auto;
       display: block;
       width: 100%;
+      margin: 0 0 .5em 0;
+      .form-group {
+        width: 100%;
+        margin: 0 1em 0 0;
+      }
+      @media (max-width: $breakpoint) {
+        width: 100%;
+        display: block;
+        float: none;
+      }
+    }
+    #series-filters-buttons {
+      display: block;
+      width: 100%;
+      @media (max-width: $breakpoint) {
+        width: 100%;
+        display: block;
+        float: none;
+      }
+    }
+  }
+  .form-group {
+    width: 100%;
+    &.form-group-chart_types {
+      width: calc(99% / 10 * 6);
+      display: inline-block;
+      float: left;
+    }
+    &.overtime-checkbox-container {
+      display: block;
+      text-align: center;
+      h4 {
+        display: inline-block;
+      }
+      .checkbox-group.onoffswitch {
+        position: relative;
+        display: block;
+        width: 4em;
+        vertical-align: top;
+        margin: 8px auto 0;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        input.onoffswitch-checkbox {
+          display: none;
+          &:checked + label.onoffswitch-label {
+            span.onoffswitch-inner {
+              margin-left: 0;
+            }
+            span.onoffswitch-switch {
+              right: .25em; 
+            }
+          }
+          &[disabled] + label.onoffswitch-label {
+            cursor: default;
+            span.onoffswitch-inner {
+              &:before,
+              &:after {
+                background-color: $light-gray;
+              }
+            }
+            span.onoffswitch-switch {
+              background-color: rgba(255, 255, 255, .75);
+            }
+          }
+        }
+        label.onoffswitch-label {
+          display: block;
+          overflow: hidden;
+          border-radius: .875em;
+          padding: 0;
+          cursor: pointer;
+          span.onoffswitch-inner {
+            transition: margin 0.3s ease-in 0s;
+            display: block;
+            width: 200%;
+            margin-left: -100%;
+            &:before,
+            &:after {
+              display: block;
+              width: 50%;
+              height: 1.75em;
+              float: left;
+              line-height: 1.75em;
+              padding: 0;
+            }
+            &:before {
+              content: "";
+              background-color: $blue;
+            }
+            &:after {
+              content: "";
+              background-color: $medium-gray;
+            }
+          }
+          span.onoffswitch-switch {
+            transition: right 0.3s ease-in 0s; 
+            position: absolute;
+            top: 50%;
+            right: 2.5em;
+            bottom: 0;
+            display: block;
+            width: 1.25em;
+            height: 1.25em;
+            background-color: #fff;
+            border-radius: .625em;
+            margin: -.625em 0 0 0;
+          }
+        }
+      }
+    }
+  }
+  .form-group {
+    display: inline-block;
+    vertical-align: top;
+    max-width: 100%;
+    h4 {
+      margin: .5em;
     }
   }
 }
-

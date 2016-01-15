@@ -26,56 +26,28 @@ class ScriptGenerator
                 <!-- Tab panes -->
                 <div class="tab-content">
                   <div role="tabpanel" class="tab-pane active" id="controls">
-                    <div class='filters'>
-                      <div class='language-selector-container'>
-                        #{language_picker}
+                    #{language_picker}
+                    #{select_box_filter('nested_indicators', nil, true, true)}
+                    #{select_box_filter('group_filters', 'Break down data by', true)}
+                    #{data_series_limiters}
+                    <div class='data-series'>
+                      #{data_series}
+                    </div>
+                    <div class='row'>
+                      <div class='col-md-8'>
+                        #{chart_type_buttons('chart_types')}
                       </div>
-                      <div id='series-filters-container'>
-                        <div class='row'>
-                          <div class='col-md-12'>
-                            <div id='series-filters-buttons'>
-                              <div class="btn-group btn-group-justified" role="group">
-                                <div class="btn-group" role="group">
-                                  #{button_tag('All', type: :button, value: 'All', id: "select-all-#{container_id}", class: 'i18nable-button btn btn-primary')}
-                                </div>
-                                <div class="btn-group" role="group">
-                                  #{button_tag('Latest', type: :button, value: 'Latest', id: "select-latest-#{container_id}", class: 'i18nable-button btn btn-primary')}
-                                </div>
-                                <div class="btn-group" role="group">
-                                  #{button_tag('Clear', type: :button, value: 'Clear', id: "clear-all-#{container_id}", class: 'i18nable-button btn btn-primary')}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                      <div class='col-md-4'>
+                        <div id='overtime-checkbox-container-#{container_id}' class='overtime-checkbox-container form-group'>
+                          <h4 class='i18nable-label' data-type='over-time'>Over-time:</h4>
+                          #{overtime_checkbox}
                         </div>
-                        <div class='row'>
-                          <div class='col-md-12'>
-                            <div id='series-filters'>
-                              #{data_series}
-                            </div>
-                          </div>
-                        </div>
-                        <div class='clearfix'></div>
                       </div>
                     </div>
-                    <div class='filters'>
-                      <div id='limiting-filters-container'>
-                        #{select_box_filter('indicators', nil, true)}
-                        #{select_box_filter('group_filters', 'Break down data by', true)}
-                        <div class='row'>
-                          <div class='col-md-8'>
-                            <h4 class='i18nable-label' data-type='chart-type'>Chart Type:</h4>
-                            #{chart_type_buttons('chart_types')}
-                          </div>
-                          <div class='col-md-4'>
-                            <div id='overtime-checkbox-container-#{container_id}' class='overtime-checkbox-container form-group'>
-                              <h4 class='i18nable-label' data-type='over-time'>Over-time:</h4>
-                              #{overtime_checkbox}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <div class='row'>
+                      <div class='col-md-12'>
                       #{button_tag('Chart', type: :button, value: 'Chart', id: "submit-chart-filters-#{container_id}", class: 'submit-chart i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled')}
+                      </div>
                     </div>
                   </div>
                   <div role="tabpanel" class="tab-pane" id="help-center">
@@ -152,8 +124,6 @@ class ScriptGenerator
       <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
       <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'></script>
       <script src='https://code.highcharts.com/highcharts.js'></script>
-      <script src='https://code.highcharts.com/modules/exporting.js'></script>
-      <script src='https://code.highcharts.com/modules/offline-exporting.js'></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/js/bootstrap-select.min.js"></script>
       <script>
         #{ load_js('markdown.js') }
@@ -192,12 +162,16 @@ class ScriptGenerator
   def language_picker
     id = "dataset-language-picker".to_sym
     <<-"EOS"
-    <div class='form-group'>
-      #{label_tag(id, "Language: ", class: 'i18nable-label', data: { type: 'Language' })}
-      #{select_tag(id,
-          options_for_select(select_options(@metadata.fetch(:languages).keys), 'None'),
-          class: "filter filter-language form-control")}
-    </div>
+      <div class='row'>
+        <div class='col-md-12'>
+          <div class='form-group'>
+            #{label_tag(id, "Language: ", class: 'i18nable-label', data: { type: 'Language' })}
+            #{select_tag(id,
+                options_for_select(select_options(@metadata.fetch(:languages).keys), 'None'),
+                class: "filter filter-language form-control")}
+          </div>
+        </div>
+      </div>
     EOS
   end
 
@@ -241,8 +215,11 @@ class ScriptGenerator
     values = @metadata.fetch(:chart_types)
 
     <<-"EOS"
-      <div id=#{id.to_s} class="btn-group" data-toggle="buttons">
-        #{chart_button(values)}
+      <div class='form-group'>
+        <h4 class='i18nable-label' data-type='chart-type'>Chart Type:</h4>
+        <div id=#{id.to_s} class="btn-group" data-toggle="buttons">
+          #{chart_button(values)}
+        </div>
       </div>
     EOS
   end
@@ -274,7 +251,7 @@ class ScriptGenerator
     end
   end
 
-  def select_box_filter(type, label = nil, clear_button = false)
+  def select_box_filter(type, label = nil, clear_button = false, grouped = false)
     label = type unless label
     label_safe = label.humanize.capitalize
     label_ref = label.downcase.underscore
@@ -282,36 +259,72 @@ class ScriptGenerator
     values = @metadata.fetch(type.to_sym)
 
     <<-"EOS"
-    #{label_tag(id, "#{label_safe}", class: 'i18nable-label', data: { type: label_ref })}
-    <div class="input-group">
-       #{select_tag(id,  options_for_select(select_options(values)), class: "selectpicker filter filter-#{type} i18nable", prompt: "Select option", data: {"live-search" => "true" })}
-       <span class="input-group-btn">
-          #{clear_button(id) if clear_button}
-       </span>
+    <div class='row'>
+      <div class='col-md-12'>
+        <div class='form-group'>
+          #{label_tag(id, "#{label_safe}", class: 'i18nable-label', data: { type: label_ref })}
+          <div class="input-group">
+             #{select_tag(id,  options(values, grouped), class: "selectpicker filter filter-#{type} i18nable", prompt: "Select option", data: {"live-search" => "true" })}
+             <span class="input-group-btn">
+                #{clear_button(id) if clear_button}
+             </span>
+          </div>
+        </div>
+      </div>
     </div>
     EOS
-  end
-
-  def clear_button(id)
-    button_tag(type: :button, id: "clear-#{id}", class: 'clear-select icon-button btn btn-primary', data: { id: id }) do
-      content_tag(:i, nil, class: 'fa fa-times')
-    end
   end
 
   def data_series
     @metadata.fetch(:year_by_country, {}).collect do |k,v|
       data_attributes = { country: k }
       <<-"EOS"
-      <div class='form-group'>
-        <div class='country-header'>
-          <b class='i18nable' data-value='#{k}'>#{k}</b>
-        </div>
-        <div class='date-selection'>
-          #{checkboxes('year', v, false, data_attributes)}
+      <div class='row'>
+        <div class='col-md-12'>
+          <div class='country-header' data-toggle="collapse" href="#collapse-#{k}" aria-expanded="false" aria-controls="collapseExample">
+            <b class='i18nable' data-value='#{k}'>#{k}</b>
+          </div>
+          <div class='date-selection collapse' id="collapse-#{k}">
+            #{checkboxes('year', v, false, data_attributes)}
+          </div>
         </div>
       </div>
       EOS
     end.join("")
+  end
+
+  def data_series_limiters
+    <<-EOS
+    <div class='row'>
+      <div class='col-md-12'>
+        <div class="btn-group btn-group-justified" role="group">
+          <div class="btn-group" role="group">
+            #{button_tag('All', type: :button, value: 'All', id: "select-all-#{container_id}", class: 'i18nable-button btn btn-primary')}
+          </div>
+          <div class="btn-group" role="group">
+            #{button_tag('Latest', type: :button, value: 'Latest', id: "select-latest-#{container_id}", class: 'i18nable-button btn btn-primary')}
+          </div>
+          <div class="btn-group" role="group">
+            #{button_tag('Clear', type: :button, value: 'Clear', id: "clear-all-#{container_id}", class: 'i18nable-button btn btn-primary')}
+          </div>
+        </div>
+      </div>
+    </div>
+    EOS
+  end
+
+  def options(values, grouped = false)
+    if grouped
+      grouped_options_for_select(values)
+    else
+      options_for_select(select_options(values))
+    end
+  end
+
+  def clear_button(id)
+    button_tag(type: :button, id: "clear-#{id}", class: 'clear-select icon-button btn btn-primary', data: { id: id }) do
+      content_tag(:i, nil, class: 'fa fa-times')
+    end
   end
 
   def container_id

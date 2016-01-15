@@ -222,14 +222,14 @@ function generateChart(containerId) {
   var chartType = getSelectedChartType(containerId, 'chart_types');
   var selectedCountries = getCountries(containerId);
   var selectedDates = getCheckedItems(containerId, 'year');
-  var selectedIndicator = getSelectedItemValue(containerId, 'indicators');
+  var selectedIndicator = getSelectedItemValue(containerId, 'nested_indicators');
   var selectedGrouping = getSelectedItemValue(containerId, 'group_filters');
   var overTime = $('.overtime-check-' + containerId).prop('checked');
 
   if(validateFilters(containerId)) {
     var title = generateTitle(
       selectedCountries,
-      getSelectedItemDisplayText(containerId, 'indicators'),
+      getSelectedItemDisplayText(containerId, 'nested_indicators'),
       getSelectedItemDisplayText(containerId, 'group_filters')
     );
 
@@ -243,7 +243,7 @@ function generateChart(containerId) {
     );
 
     var xAxis = chartComponents[0];
-    var yAxis = getSelectedItemDisplayText(containerId, 'indicators');
+    var yAxis = getSelectedItemDisplayText(containerId, 'nested_indicators');
     var seriesData = chartComponents[1]
 
     if(seriesData != false) {
