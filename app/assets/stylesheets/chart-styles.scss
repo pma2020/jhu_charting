@@ -5,6 +5,9 @@ $medium-gray: lighten($black, 25%);
 $light-gray: lighten($black, 65%);
 
 $blue: #00a5ff;
+$medium-blue: #0078b5;
+$dark-purple: #55025a;
+$light-purple: lighten($dark-purple, 25%);
 
 #jhu-chart {
   font-size: 0;
@@ -64,7 +67,12 @@ $blue: #00a5ff;
           .data-series {
             max-height: 33vh;
             overflow-y: auto;
-            overflow-x: auto;
+            overflow-x: hidden;
+            .country-header {
+              .active {
+                color: $blue;
+              }
+            }
             .checkbox-group {
               display: block;
               label {

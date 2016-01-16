@@ -27,7 +27,7 @@ class ScriptGenerator
                 <div class="tab-content">
                   <div role="tabpanel" class="tab-pane active" id="controls">
                     #{language_picker}
-                    #{select_box_filter('nested_indicators', nil, true, true)}
+                    #{select_box_filter('nested_indicators', 'Indicators', true, true)}
                     #{select_box_filter('group_filters', 'Break down data by', true)}
                     #{data_series_limiters}
                     <div class='data-series'>
@@ -146,15 +146,14 @@ class ScriptGenerator
         $('.filter').on('change', function() { validateFilters('#{container_id}', metadata) });
         $('.filter.filter-indicators').on('change', function() { displayHelpText('#{container_id}') });
         $('.filter.filter-group_filters').on('change', function() { displayHelpText('#{container_id}') });
+        $('.year-check').on('change', function() { toggleCountryHeader($(this)) });
         $('#select-all-#{container_id}').on('click', function() {selectAll('#{container_id}')});
         $('#select-latest-#{container_id}').on('click', function() {selectLatest('#{container_id}')});
         $('#clear-all-#{container_id}').on('click', function() {clearAll('#{container_id}')});
         $('.clear-select').on('click', function() {clearSelect('#{container_id}', $(this))});
         $('#dataset-language-picker').on('change', function() {updateLanguage('#{container_id}')});
         $('#submit-chart-filters-#{container_id}').on('click', function() { generateChart('#{container_id}'); });
-        $(document).ready(function(){
-           updateLanguage('#{container_id}');
-        });
+        $(document).ready(function(){ updateLanguage('#{container_id}'); });
       </script>
     EOS
   end
@@ -201,7 +200,7 @@ class ScriptGenerator
       content_tag(:span, class: "checkbox-group") do
         b.label do
           b.check_box(
-            class: "filter #{type.singularize}-check-#{container_id}",
+            class: "filter year-check #{type.singularize}-check-#{container_id}",
             disabled: disabled,
             data: data_attributes
           ) + b.text
@@ -299,13 +298,13 @@ class ScriptGenerator
       <div class='col-md-12'>
         <div class="btn-group btn-group-justified" role="group">
           <div class="btn-group" role="group">
-            #{button_tag('All', type: :button, value: 'All', id: "select-all-#{container_id}", class: 'i18nable-button btn btn-primary')}
+            #{button_tag('All', type: :button, value: 'All', id: "select-all-#{container_id}", class: 'i18nable-button btn btn-primary', disabled: "disabled")}
           </div>
           <div class="btn-group" role="group">
-            #{button_tag('Latest', type: :button, value: 'Latest', id: "select-latest-#{container_id}", class: 'i18nable-button btn btn-primary')}
+            #{button_tag('Latest', type: :button, value: 'Latest', id: "select-latest-#{container_id}", class: 'i18nable-button btn btn-primary', disabled: "disabled")}
           </div>
           <div class="btn-group" role="group">
-            #{button_tag('Clear', type: :button, value: 'Clear', id: "clear-all-#{container_id}", class: 'i18nable-button btn btn-primary')}
+            #{button_tag('Clear', type: :button, value: 'Clear', id: "clear-all-#{container_id}", class: 'i18nable-button btn btn-primary', disabled: "disabled")}
           </div>
         </div>
       </div>
