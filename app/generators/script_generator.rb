@@ -233,7 +233,7 @@ class ScriptGenerator
                  id='option-#{value.downcase}'
                  data-type='#{value.downcase}'
                  autocomplete='off' checked>
-          <i class='fa fa-2x fa-#{chart_icon(value)}'></i>
+          <i class='fa fa-#{chart_icon(value)}'></i>
         </label>
       EOS
     end.join(" ")
@@ -244,7 +244,7 @@ class ScriptGenerator
     when 'Column'
       "bar-chart"
     when 'Bar'
-      'bar-chart fa-rotate-90'
+      'bar-chart fa-mirror'
     else
       "#{value.downcase}-chart"
     end

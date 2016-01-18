@@ -11,6 +11,9 @@ $light-purple: lighten($dark-purple, 25%);
 
 #jhu-chart {
   font-size: 0;
+  .fa-mirror {
+    transform: rotate(270deg) scale(1, -1);
+  }
   .row {
     &.top-row {
       height: auto;
