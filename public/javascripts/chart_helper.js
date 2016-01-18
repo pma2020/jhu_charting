@@ -256,20 +256,29 @@ function generateChart(containerId) {
 
     if(seriesData != false) {
       $('#chart-container-' + containerId).highcharts({
-        exporting: { // specific options for the exported image
-          chartOptions: {
-            plotOptions: {
-              series: {
-                dataLabels: {
-                  enabled: true
-                }
-              }
+        plotOptions: {
+          series: { connectNulls: true, },
+          bar: {
+            dataLabels: {
+              enabled: true
             }
           },
-          scale: 3,
-          fallbackToExportServer: false
+          column: {
+            dataLabels: {
+              enabled: true
+            }
+          },
+          line: {
+            dataLabels: {
+              enabled: true
+            }
+          },
+          pie: {
+            dataLabels: {
+              enabled: true
+            }
+          }
         },
-        plotOptions: { series: { connectNulls: true, } },
         chart: { type: chartType.toLowerCase() },
         title: { text: title },
         subtitle: { text: "PMA 2020" },
