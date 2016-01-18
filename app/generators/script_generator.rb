@@ -282,6 +282,7 @@ class ScriptGenerator
         <div class='col-md-12'>
           <div class='country-header' data-toggle="collapse" href="#collapse-#{k}" aria-expanded="false" aria-controls="collapseExample">
             <b class='i18nable' data-value='#{k}'>#{k}</b>
+            <i class="fa fa-plus"></i>
           </div>
           <div class='date-selection collapse' id="collapse-#{k}">
             #{checkboxes('year', v, false, data_attributes)}
