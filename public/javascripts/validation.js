@@ -71,9 +71,10 @@ function disablePieOption(containerId, countries, dates) {
                 .attr("name", "options")
                 .attr("id", "option-pie")
                 .attr("autocomplete", "off")
-                .attr("checked", ""))
+                .attr("checked", "")
+                .data("type", "pie"))
               .append($("<i></i>")
-                .attr("class", "fa fa-2x fa-pie-chart")));
+                .attr("class", "fa fa-pie-chart")));
 
     }
   }
