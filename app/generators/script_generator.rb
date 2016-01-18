@@ -144,7 +144,7 @@ class ScriptGenerator
         var chartContainer = $('#chart-container-#{container_id}');
 
         $('.filter').on('change', function() { validateFilters('#{container_id}', metadata) });
-        $('.filter.filter-indicators').on('change', function() { displayHelpText('#{container_id}') });
+        $('.filter.filter-nested_indicators').on('change', function() { displayHelpText('#{container_id}') });
         $('.filter.filter-group_filters').on('change', function() { displayHelpText('#{container_id}') });
         $('.year-check').on('change', function() { toggleCountryHeader($(this)) });
         $('#select-all-#{container_id}').on('click', function() {selectAll('#{container_id}')});
