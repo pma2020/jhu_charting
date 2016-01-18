@@ -125,6 +125,7 @@ $light-purple: lighten($dark-purple, 25%);
     display: none;
     border: 1px solid $light-gray;
     padding: 1em;
+    background: white;
     &.active {
       display: block;
     }
