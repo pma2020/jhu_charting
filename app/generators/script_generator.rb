@@ -216,7 +216,7 @@ class ScriptGenerator
     <<-"EOS"
       <div class='form-group'>
         <h4 class='i18nable-label' data-type='chart-type'>Chart Type:</h4>
-        <div id=#{id.to_s} class="btn-group" data-toggle="buttons">
+        <div id=#{id.to_s} data-toggle="buttons">
           #{chart_button(values)}
         </div>
       </div>
