@@ -209,12 +209,20 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
   return chartComponents;
 };
 
+function translateCountries(countries) {
+  var translated = [];
+  countries.forEach(function(country) {
+    translated.push(translate(country, labelText));
+  });
+  return translated;
+};
+
 function generateTitle(countries, indicator, grouping) {
   var titleResult =  indicator;
   var byArticle = translate('by', labelText);
   var forArticle = translate('for', labelText);
   if (grouping != 'None') { titleResult += ' ' + byArticle + ' ' + grouping; }
-  titleResult += ' ' + forArticle + ' ' + countries.join(', ');
+  titleResult += ' ' + forArticle + ' ' + translateCountries(countries).join(', ');
   return titleResult;
 };
 
