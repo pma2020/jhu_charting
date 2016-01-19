@@ -40,9 +40,9 @@ function toggleCountryHeader(el) {
 }
 
 $('.collapse').on('show.bs.collapse', function () {
-  var icon = $(this).parent().find(".country-header").find("i").removeClass("fa-plus").addClass("fa-minus");
   var checked = $(this).find("[type='checkbox']:checked").length;
   if (checked > 0) { return false; }
+  $(this).parent().find(".country-header").find("i").removeClass("fa-plus").addClass("fa-minus");
 });
 
 $('.collapse').on('shown.bs.collapse', function () {
@@ -51,9 +51,9 @@ $('.collapse').on('shown.bs.collapse', function () {
 });
 
 $('.collapse').on('hide.bs.collapse', function () {
-  var icon = $(this).parent().find(".country-header").find("i").removeClass("fa-minus").addClass("fa-plus");
   var checked = $(this).find("[type='checkbox']:checked").length;
   if (checked > 0) { return false; }
+  $(this).parent().find(".country-header").find("i").removeClass("fa-minus").addClass("fa-plus");
 });
 
 $('.collapse').on('hidden.bs.collapse', function () {
