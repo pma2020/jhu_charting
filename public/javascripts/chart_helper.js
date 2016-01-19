@@ -267,26 +267,10 @@ function generateChart(containerId) {
       $('#chart-container-' + containerId).highcharts({
         plotOptions: {
           series: { connectNulls: true, },
-          bar: {
-            dataLabels: {
-              enabled: true
-            }
-          },
-          column: {
-            dataLabels: {
-              enabled: true
-            }
-          },
-          line: {
-            dataLabels: {
-              enabled: true
-            }
-          },
-          pie: {
-            dataLabels: {
-              enabled: true
-            }
-          }
+          bar: { dataLabels: { enabled: true } },
+          column: { dataLabels: { enabled: true } },
+          line: { dataLabels: { enabled: true } },
+          pie: { dataLabels: { enabled: true } }
         },
         chart: { type: chartType.toLowerCase() },
         title: { text: title },
