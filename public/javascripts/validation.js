@@ -135,11 +135,8 @@ function enableFilters(input) {
 };
 
 function disableFilters(filters, input) {
-  console.log(filters);
   if(filters.length > 0) {
     filters.forEach(function(filter) {
-      console.log(input)
-      console.log(filter);
       input.find("option[value='" + filter + "']").prop('disabled', 'disabled');
     });
   }

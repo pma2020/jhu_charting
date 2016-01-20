@@ -124,6 +124,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
           nullIndexes.push(dates.indexOf(date));
         });
 
+        var itemIndex = 0;
         data.forEach(function(row) {
           var dataElement = {};
 
@@ -131,10 +132,15 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
           category = row['Category'];
           round = row['Round'];
 
+          var curColor = shadeColor(colors[keyify(country)], (10*itemIndex));
+          dataElement['color'] = curColor;
+          newRow['color'] = curColor;
+
           dataElement['name'] = country + ' ' + category + ' ' + round;
           dataElement['y'] = parseFloat(checkValue(tmpHsh[row['Date']]));
 
           newRow['data'].push(dataElement);
+          itemIndex++;
         });
 
         nullIndexes.forEach(function(index) {
@@ -151,7 +157,6 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
     }
   } else if(multiSeries(countries, dates)) {
     var tmpHsh = {};
-    var index = 0;
 
     for(var key in dataSet) {
       var data = dataSet[key];
@@ -174,20 +179,12 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
       newRow['data'] = [];
       newRow['name'] = countryDate;
 
-      if (keyify(chartType) == "line") {
-        curColor = shadeColor(color, (10*index));
-        newRow['color'] = curColor;
-        index++;
-      }
-
       var itemIndex = 0;
       dataPoints.forEach(function(dataPoint) {
         var dataElement = {};
-        if (keyify(chartType) != 'line') {
-          curColor = shadeColor(color, (10*itemIndex));
-          dataElement['color'] = curColor;
-          newRow['color'] = curColor;
-        }
+        curColor = shadeColor(color, (10*itemIndex));
+        dataElement['color'] = curColor;
+        newRow['color'] = curColor;
         dataElement['y'] = parseFloat(checkValue(dataPoint));
         newRow['data'].push(dataElement);
         itemIndex++;
@@ -201,7 +198,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
     for(var key in dataSet) {
       var data = dataSet[key];
       var newRow = {};
-      if (colors) { var color = colors[key] } else {  var color = DEFAULTCOLORS[countryIndex] };
+      var color = colors[keyify(countries[0])];
       newRow['name'] = dateRoundLabel(countries[0], dates[0], data[0]['Round']);
       newRow['data'] = [];
 
@@ -211,6 +208,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
         xAxis.push(translate(row['Category'], labelText))
         dataElement['name'] = row['Category'];
         dataElement['color'] = shadeColor(color, (8*itemIndex));
+        newRow['color'] = shadeColor(color, (8*itemIndex));
         dataElement['y'] = parseFloat(checkValue(row[indicator]));
         newRow['data'].push(dataElement);
         itemIndex++;
