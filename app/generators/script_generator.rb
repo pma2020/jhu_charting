@@ -199,11 +199,19 @@ class ScriptGenerator
     collection_check_boxes(:dataset, type.to_sym, select_options(values), :first, :last) do |b|
       content_tag(:span, class: "checkbox-group") do
         b.label do
+          if @metadata.fetch(:years).include?(b.text) && data_attributes.has_key?(:country)
+            year = b.text.split("-").first
+            round = get_round(data_attributes.fetch(:country), b.text)
+            text = "#{year} - #{round}"
+          else
+            text = b.text
+          end
+
           b.check_box(
             class: "filter year-check #{type.singularize}-check-#{container_id}",
             disabled: disabled,
             data: data_attributes
-          ) + b.text
+          ) + text
         end
       end
     end
@@ -248,6 +256,10 @@ class ScriptGenerator
     else
       "#{value.downcase}-chart"
     end
+  end
+
+  def get_round(country, year)
+    @metadata.fetch(:rounds_by_country)[country][year]
   end
 
   def select_box_filter(type, label = nil, clear_button = false, grouped = false)

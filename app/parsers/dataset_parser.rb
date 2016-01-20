@@ -6,6 +6,7 @@ class DatasetParser
   HEADER_MAP = {
     country: "Country",
     date: "Date",
+    round: "Round",
     grouping: "Grouping"
   }.freeze
   HELP_FILE_DELIMITER = "|".freeze
@@ -44,12 +45,12 @@ class DatasetParser
   def metadata
     {
       countries: countries,
+      rounds_by_country: rounds_by_country,
       years: years,
+      year_by_country: years_by_country,
       group_filters: group_filters,
-      indicators: indicators,
       nested_indicators: nested_indicators,
       chart_types: chart_types,
-      year_by_country: years_by_country,
       languages: language_codes,
       help_text: help_text,
       label_text: label_text,
@@ -99,6 +100,23 @@ class DatasetParser
     countries.map do |country|
       results[country] = data.find_all{|row| row[countryHeader] == country}
                              .collect{|row| row[yearHeader]}.uniq
+    end
+
+    results
+  end
+
+  def rounds_by_country
+    round_header = HEADER_MAP.fetch(:round)
+    countryHeader = HEADER_MAP.fetch(:country)
+    yearHeader = HEADER_MAP.fetch(:date)
+    results = Hash.new
+
+    countries.map do |country|
+      sub_result = Hash.new
+      data.find_all{|row| row[countryHeader] == country}.each do |row|
+        sub_result[row[yearHeader]] = row[round_header]
+      end
+      results[country] = sub_result
     end
 
     results

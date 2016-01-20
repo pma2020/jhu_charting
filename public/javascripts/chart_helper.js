@@ -104,8 +104,10 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
             }
           });
         });
+
         var country;
         var category;
+        var round;
         var nullKeys = Object.keys(tmpHsh).filter(function(key) { return tmpHsh[key] == null });
         var nullIndexes = [];
 
@@ -118,8 +120,9 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
 
           country = translate(row['Country'], labelText);
           category = row['Category'];
+          round = row['Round'];
 
-          dataElement['name'] = country + ' ' + category;
+          dataElement['name'] = country + ' ' + category + ' ' + round;
           dataElement['y'] = parseFloat(checkValue(tmpHsh[row['Date']]));
 
           newRow['data'].push(dataElement);
@@ -144,14 +147,12 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
       var data = dataSet[key];
 
       data.forEach(function(row) {
-        key = translate(row['Country'], labelText) + ' ' + row['Date'];
+        key = translate(row['Country'], labelText) + ' ' + row['Date'].split("-")[0] + ' ' + row['Round'];
         appendToHash(tmpHsh, key, checkValue(row[indicator]));
       });
     };
 
-    for(var key in dataSet) {
-      xAxis.push(translate(key, labelText));
-    }
+    for(var key in dataSet) { xAxis.push(translate(key, labelText)); }
 
     for(var countryDate in tmpHsh) {
       var newRow = {};
@@ -168,40 +169,27 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
       series.push(newRow);
     };
   } else {
-    if (chartType == "Pie") {
-      for(var key in dataSet) {
-        var data = dataSet[key];
-        var newRow = {};
-        newRow['name'] = key;
-        newRow['data'] = [];
+    var countryIndex = 0;
+    for(var key in dataSet) {
+      var data = dataSet[key];
+      var newRow = {};
+      if (colors) { var color = colors[key] } else {  var color = DEFAULTCOLORS[countryIndex] };
+      newRow['name'] = translate(countries[0], labelText) + ' ' + dates[0].split("-")[0] + ' ' + data[0]['Round'];
+      newRow['data'] = [];
 
-        data.forEach(function(row) {
-          var dataElement = {};
-          xAxis.push(translate(row['Category'], labelText));
-          dataElement['name'] = row['Category'];
-          dataElement['y'] = parseFloat(checkValue(row[indicator]));
-          newRow['data'].push(dataElement);
-        });
+      var itemIndex = 0;
+      data.forEach(function(row) {
+        var dataElement = {};
+        xAxis.push(translate(row['Category'], labelText))
+        dataElement['name'] = row['Category'];
+        dataElement['color'] = shadeColor(color, (8*itemIndex));
+        dataElement['y'] = parseFloat(checkValue(row[indicator]));
+        newRow['data'].push(dataElement);
+        itemIndex++;
+      });
 
-        series.push(newRow);
-      };
-    } else {
-      for(var key in dataSet) {
-        var data = dataSet[key];
-        var newRow = {};
-        newRow['name'] = translate(countries[0], labelText) + ' ' + dates;
-        newRow['data'] = [];
-
-        data.forEach(function(row) {
-          var dataElement = {};
-          xAxis.push(translate(row['Category'], labelText))
-          dataElement['name'] = row['Category'];
-          dataElement['y'] = parseFloat(checkValue(row[indicator]));
-          newRow['data'].push(dataElement);
-        });
-
-        series.push(newRow);
-      };
+      countryIndex++;
+      series.push(newRow);
     }
   };
 
