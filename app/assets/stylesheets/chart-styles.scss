@@ -1,15 +1,18 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,700);
 $breakpoint: 760px;
 
 $black: #333;
 $medium-gray: lighten($black, 25%);
 $light-gray: lighten($black, 65%);
 
+$light-blue: #76b1d7;
 $blue: #00a5ff;
 $medium-blue: #0078b5;
 $dark-purple: #55025a;
 $light-purple: lighten($dark-purple, 25%);
 
 #jhu-chart {
+  font-family: 'Roboto', sans-serif;
   font-size: 0;
   .fa-mirror {
     transform: rotate(270deg) scale(1, -1);
@@ -40,8 +43,26 @@ $light-purple: lighten($dark-purple, 25%);
     display: inline-block;
     vertical-align: top;
     font-size: 16px;
+    label {
+      font-weight: 300;
+    }
+    b {
+      font-weight: 300;
+    }
+    h4 {
+      font-weight: 300;
+    }
     &.chart-sidebar {
       max-height: 100%;
+      color: $dark-purple;
+      .btn {
+        &.btn-primary {
+          background-color: $light-blue;
+        }
+        &.submit-chart {
+          background-color: $dark-purple;
+        }
+      }
       .nav {
         &.nav-tabs {
           li {
@@ -71,6 +92,7 @@ $light-purple: lighten($dark-purple, 25%);
             max-height: 33vh;
             overflow-y: auto;
             overflow-x: hidden;
+            margin-top: 10px;
             .country-header {
               cursor: pointer;
               .active {
@@ -123,18 +145,20 @@ $light-purple: lighten($dark-purple, 25%);
     margin: 0 0 1em 0;
   }
   .help-center {
-    display: none;
     border: 1px solid $light-gray;
     padding: 1em;
     background: white;
     &.active {
       display: block;
     }
+    .help-definition {
+      margin-top: 10px;
+    }
     h1, h2, h3, h4 {
       margin: 0 0 .5em 0;
     }
     span {
-      color: $blue;
+      color: $dark-purple;
       font-style: italic;
     }
     p {
@@ -242,7 +266,7 @@ $light-purple: lighten($dark-purple, 25%);
             }
             &:before {
               content: "";
-              background-color: $blue;
+              background-color: $light-blue;
             }
             &:after {
               content: "";

@@ -52,8 +52,11 @@ class ScriptGenerator
                   </div>
                   <div role="tabpanel" class="tab-pane" id="help-center">
                     <div class='help-center'>
-                      <h4 class='i18nable' data-value='Help Center'>Help Center</h4>
-                      <span class='help-definition'></span>
+                      <p>
+                        Change components from the controls tab to get more info here.
+                      </p>
+                      <div class='help-definition indicator'></div>
+                      <div class='help-definition group-filter'></div>
                     </div>
                   </div>
                 </div>
