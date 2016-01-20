@@ -1,3 +1,11 @@
+var DEFAULTCOLORS = {
+  "uganda": "#B40404",
+  "kenya": "#DF7401",
+  "ethiopia": "#D7DF01",
+  "ghana": "#5FB404",
+  "other": "#088A85"
+}
+
 function filterData(dataSet, type, value) {
   var items = dataSet.filter(function(hsh) { return hsh[type] === value; });
   return items
@@ -73,10 +81,11 @@ function reduceDataBasedOnSelection(countries, grouping, dates, overTime) {
   }
 };
 
-function generateSeriesData(chartType, countries, indicator, grouping, dates, overTime) {
+function generateSeriesData(chartType, countries, indicator, grouping, dates, overTime, colors) {
   var dataSet = reduceDataBasedOnSelection(countries, grouping, dates, overTime);
   var series = [];
   var xAxis = [];
+  colors = colors || DEFAULTCOLORS;
 
   if(overTime) {
     dates.sort(function(a,b){ return Date.parse(a) - Date.parse(b); });
@@ -142,12 +151,13 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
     }
   } else if(multiSeries(countries, dates)) {
     var tmpHsh = {};
+    var index = 0;
 
     for(var key in dataSet) {
       var data = dataSet[key];
 
       data.forEach(function(row) {
-        key = translate(row['Country'], labelText) + ' ' + row['Date'].split("-")[0] + ' ' + row['Round'];
+        key = dateRoundLabel(row['Country'], row['Date'], row['Round']);
         appendToHash(tmpHsh, key, checkValue(row[indicator]));
       });
     };
@@ -155,26 +165,44 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
     for(var key in dataSet) { xAxis.push(translate(key, labelText)); }
 
     for(var countryDate in tmpHsh) {
+      currentCountry = keyify(countryDate.split(" ")[0]);
+
       var newRow = {};
+      var dataPoints = tmpHsh[countryDate];
+      var color = colors[currentCountry];
+
       newRow['data'] = [];
       newRow['name'] = countryDate;
-      var dataPoints = tmpHsh[countryDate];
 
+      if (keyify(chartType) == "line") {
+        curColor = shadeColor(color, (10*index));
+        newRow['color'] = curColor;
+        index++;
+      }
+
+      var itemIndex = 0;
       dataPoints.forEach(function(dataPoint) {
         var dataElement = {};
+        if (keyify(chartType) != 'line') {
+          curColor = shadeColor(color, (10*itemIndex));
+          dataElement['color'] = curColor;
+          newRow['color'] = curColor;
+        }
         dataElement['y'] = parseFloat(checkValue(dataPoint));
         newRow['data'].push(dataElement);
+        itemIndex++;
       });
 
       series.push(newRow);
     };
+
   } else {
     var countryIndex = 0;
     for(var key in dataSet) {
       var data = dataSet[key];
       var newRow = {};
       if (colors) { var color = colors[key] } else {  var color = DEFAULTCOLORS[countryIndex] };
-      newRow['name'] = translate(countries[0], labelText) + ' ' + dates[0].split("-")[0] + ' ' + data[0]['Round'];
+      newRow['name'] = dateRoundLabel(countries[0], dates[0], data[0]['Round']);
       newRow['data'] = [];
 
       var itemIndex = 0;
@@ -195,6 +223,10 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
 
   chartComponents = [xAxis, series];
   return chartComponents;
+};
+
+function dateRoundLabel(country, date, round) {
+  return translate(country, labelText) + ' ' + date.split("-")[0] + ' ' + round;
 };
 
 function translateCountries(countries) {

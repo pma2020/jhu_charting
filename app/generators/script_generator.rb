@@ -129,6 +129,7 @@ class ScriptGenerator
       <script src='https://code.highcharts.com/highcharts.js'></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/js/bootstrap-select.min.js"></script>
       <script>
+        #{ load_js('darken.js') }
         #{ load_js('markdown.js') }
         #{ load_js('utility.js') }
         #{ load_js('selector.js') }
