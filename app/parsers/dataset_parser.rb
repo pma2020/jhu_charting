@@ -171,7 +171,7 @@ class DatasetParser
     tmp_hash = Hash.new
 
     help_data.each do |row|
-      term = row['ID'].downcase.gsub(' ', '_')
+      term = row['id'].downcase.gsub(' ', '_')
       language_hash = Hash.new
       languages(row).each do |language|
         language_hash[language] = row["#{type}#{HELP_FILE_DELIMITER}#{language}"]
