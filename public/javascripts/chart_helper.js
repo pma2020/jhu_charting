@@ -93,11 +93,15 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
     for(var key in dataSet) {
       var countryData = dataSet[key];
 
+      var itemIndex = 1;
       for(var countryKey in countryData) {
         var data = countryData[countryKey];
         var newRow = {};
+        var country = countryData[countryKey][0]['Country'];
+        var curColor = shadeColor(colors[keyify(country)], (20*itemIndex));
         newRow['name'] = key + ' ' + translate(countryKey, labelText);
         newRow['data'] = [];
+        newRow['color'] = curColor;
 
         var tmpHsh = {};
 
@@ -119,11 +123,8 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
         var nullKeys = Object.keys(tmpHsh).filter(function(key) { return tmpHsh[key] == null });
         var nullIndexes = [];
 
-        nullKeys.forEach(function(date) {
-          nullIndexes.push(date);
-        });
+        nullKeys.forEach(function(date) { nullIndexes.push(date); });
 
-        var itemIndex = 0;
         data.forEach(function(row) {
           var dataElement = {};
 
@@ -131,15 +132,11 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
           category = row['Category'];
           round = row['Round'];
 
-          var curColor = shadeColor(colors[keyify(country)], (10*itemIndex));
-          dataElement['color'] = curColor;
-          newRow['color'] = curColor;
           dataElement['name'] = country + ' ' + category + ' ' + round;
           dataElement['y'] = parseFloat(checkValue(tmpHsh[row['Date']]));
           dataElement['x'] = (new Date(row['Date']+"-02")).getTime()
 
           newRow['data'].push(dataElement);
-          itemIndex++;
         });
 
         nullIndexes.forEach(function(date) {
@@ -152,6 +149,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
           newRow['data'].push(dataElement);
         });
 
+        itemIndex++;
         xAxis = null;
         series.push(newRow);
       };
@@ -165,59 +163,56 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
       data.forEach(function(row) {
         key = dateRoundLabel(row['Country'], row['Date'], row['Round']);
         appendToHash(tmpHsh, key, checkValue(row[indicator]));
+        //appendToHash(tmpHsh, key, { 'country': row['Country'] });
       });
     };
 
     for(var key in dataSet) { xAxis.push(translate(key, labelText)); }
 
+    var itemIndex = 1;
     for(var countryDate in tmpHsh) {
-      currentCountry = keyify(countryDate.split(" ")[0]);
-
-      var newRow = {};
+      var country = keyify(countryDate.split("|")[0]);
+      var name  = countryDate.split("|")[1];
       var dataPoints = tmpHsh[countryDate];
-      var color = colors[currentCountry];
+      var newRow = {};
+      var color = colors[country];
 
       newRow['data'] = [];
-      newRow['name'] = countryDate;
+      newRow['name'] = name;
+      newRow['color'] = shadeColor(color, (20*itemIndex));
 
-      var itemIndex = 0;
       dataPoints.forEach(function(dataPoint) {
         var dataElement = {};
-        curColor = shadeColor(color, (10*itemIndex));
-        dataElement['color'] = curColor;
-        newRow['color'] = curColor;
         dataElement['y'] = parseFloat(checkValue(dataPoint));
         newRow['data'].push(dataElement);
-        itemIndex++;
       });
 
+      itemIndex++;
       series.push(newRow);
     };
 
   } else {
-    var countryIndex = 0;
+    var itemIndex = 1;
     for(var key in dataSet) {
       var data = dataSet[key];
       var newRow = {};
       var color = colors[keyify(countries[0])];
-      newRow['name'] = dateRoundLabel(countries[0], dates[0], data[0]['Round']);
-      newRow['data'] = [];
 
-      var itemIndex = 0;
+      newRow['data'] = [];
+      newRow['name'] = dateRoundLabel(countries[0], dates[0], data[0]['Round']);
+      newRow['color'] = shadeColor(color, (20*itemIndex));
+
       data.forEach(function(row) {
         var dataElement = {};
         xAxis.push(translate(row['Category'], labelText))
         dataElement['name'] = row['Category'];
-        dataElement['color'] = shadeColor(color, (8*itemIndex));
-        newRow['color'] = shadeColor(color, (8*itemIndex));
         dataElement['y'] = parseFloat(checkValue(row[indicator]));
         newRow['data'].push(dataElement);
-        itemIndex++;
       });
 
-      countryIndex++;
       series.push(newRow);
     }
+    itemIndex++;
   };
 
   chartComponents = [xAxis, series];
@@ -225,7 +220,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
 };
 
 function dateRoundLabel(country, date, round) {
-  return translate(country, labelText) + ' ' + date.split("-")[0] + ' ' + round;
+  return country + "|" + translate(country, labelText) + ' ' + date.split("-")[0] + ' ' + round;
 };
 
 function translateCountries(countries) {
