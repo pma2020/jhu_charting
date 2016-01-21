@@ -241,11 +241,13 @@ function generateTitle(countries, indicator, grouping) {
 };
 
 function generateCitation(partners) {
-  if (partners) {
-    return "Performance Monitoring and Accountability 2020. Johns Hopkins University; " + partners + " " + new Date().toJSON().slice(0,10);
-  } else {
-    return "Performance Monitoring and Accountability 2020. Johns Hopkins University;  " + new Date().toJSON().slice(0,10);
+  var citation = "Performance Monitoring and Accountability 2020. Johns Hopkins University; ";
+  for (partner in partners) {
+    partner = partners[partner];
+    citation += translate(partner+"_P", labelText) + "; ";
   }
+  citation += " " + new Date().toJSON().slice(0,10);
+  return citation;
 };
 
 function xAxisData(overtime, components) {
@@ -260,7 +262,7 @@ function generateChart(containerId) {
   var selectedIndicator = getSelectedItemValue(containerId, 'nested_indicators');
   var selectedGrouping = getSelectedItemValue(containerId, 'group_filters');
   var overTime = $('.overtime-check-' + containerId).prop('checked');
-  $(".citation-viewport .panel .panel-body").text(generateCitation());
+  $(".citation-viewport .panel .panel-body").text(generateCitation(selectedCountries));
 
   if(validateFilters(containerId)) {
     var title = generateTitle(
