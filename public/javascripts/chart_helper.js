@@ -1,10 +1,16 @@
 var DEFAULTCOLORS = {
-  "uganda": "#B40404",
-  "kenya": "#DF7401",
-  "ethiopia": "#D7DF01",
+  "nigeria_kaduna":"#003366",
+  "burkina":"#000066",
+  "indonesia":"#660066",
+  "niger":"#993333",
+  "nigeria_lagos":"#663300",
+  "uganda": "#003300",
+  "kenya": "#999900",
+  "ethiopia": "#09465b",
   "ghana": "#5FB404",
-  "other": "#088A85"
+  "other": "#0000000"
 }
+
 
 function filterData(dataSet, type, value) {
   var items = dataSet.filter(function(hsh) { return hsh[type] === value; });
