@@ -61,7 +61,9 @@ class DatasetParser
   def unavailable_filters
     unavailable_filters = Hash.new
     available_filters = Hash.new
-    all_filters = data.first.keys
+    all_indicators = data.first.keys
+    all_disaggregators = data.collect{|row| row['Grouping']}.uniq!
+    all_filters = all_indicators + all_disaggregators
 
     data.each do |row|
       subdata = row.select{|k,v| indicators.include?(k)}
@@ -81,6 +83,7 @@ class DatasetParser
       v.uniq!
       unavailable_filters[k] = all_filters - v
     end
+
     unavailable_filters
   end
 
