@@ -95,7 +95,6 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
 
       for(var countryKey in countryData) {
         var data = countryData[countryKey];
-        xAxis = dates;
         var newRow = {};
         newRow['name'] = key + ' ' + translate(countryKey, labelText);
         newRow['data'] = [];
@@ -121,7 +120,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
         var nullIndexes = [];
 
         nullKeys.forEach(function(date) {
-          nullIndexes.push(dates.indexOf(date));
+          nullIndexes.push(date);
         });
 
         var itemIndex = 0;
@@ -135,23 +134,25 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
           var curColor = shadeColor(colors[keyify(country)], (10*itemIndex));
           dataElement['color'] = curColor;
           newRow['color'] = curColor;
-
           dataElement['name'] = country + ' ' + category + ' ' + round;
           dataElement['y'] = parseFloat(checkValue(tmpHsh[row['Date']]));
+          dataElement['x'] = (new Date(row['Date']+"-02")).getTime()
 
           newRow['data'].push(dataElement);
           itemIndex++;
         });
 
-        nullIndexes.forEach(function(index) {
+        nullIndexes.forEach(function(date) {
           var dataElement = {};
 
           dataElement['name'] = country + ' ' + category;
           dataElement['y'] = null;
+          dataElement['x'] = (new Date(date+"-02")).getTime()
 
-          newRow['data'].splice(index, 0, dataElement);
+          newRow['data'].push(dataElement);
         });
 
+        xAxis = null;
         series.push(newRow);
       };
     }
@@ -252,6 +253,11 @@ function generateCitation(partners) {
   }
 };
 
+function xAxisData(overtime, components) {
+  if (overtime) { return { type: 'datetime' } }
+  else { return { categories: components } }
+};
+
 function generateChart(containerId) {
   var chartType = getSelectedChartType(containerId, 'chart_types');
   var selectedCountries = getCountries(containerId);
@@ -277,7 +283,7 @@ function generateChart(containerId) {
       overTime
     );
 
-    var xAxis = chartComponents[0];
+    var xAxis = xAxisData(overTime, chartComponents[0]);
     var yAxis = getSelectedItemDisplayText(containerId, 'nested_indicators');
     var seriesData = chartComponents[1]
 
@@ -293,7 +299,7 @@ function generateChart(containerId) {
         chart: { type: chartType.toLowerCase() },
         title: { text: title },
         subtitle: { text: "PMA 2020" },
-        xAxis: { categories: xAxis },
+        xAxis: xAxis ,
         yAxis: { min: 0, title: { text: yAxis } },
         series: seriesData
       });
