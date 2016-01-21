@@ -12,7 +12,7 @@ class DatasetParser
   HELP_FILE_DELIMITER = "|".freeze
 
 
-  attr_reader :data, :help_data, :countries, :years, :group_filters, :languages
+  attr_reader :data, :help_data, :countries, :years, :disaggregators, :languages
 
   def initialize(csv, help_file)
     @csv = csv
@@ -23,8 +23,6 @@ class DatasetParser
   def script
     ScriptGenerator.new(metadata, data).generate
   end
-
-  private
 
   def load
     @data ||= SmarterCSV.process(@csv, csv_parse_options)
@@ -48,7 +46,7 @@ class DatasetParser
       rounds_by_country: rounds_by_country,
       years: years,
       year_by_country: years_by_country,
-      group_filters: group_filters,
+      disaggregators: disaggregators,
       nested_indicators: nested_indicators,
       chart_types: chart_types,
       languages: language_codes,
@@ -133,8 +131,8 @@ class DatasetParser
     @years ||= filter_items_for(:date)
   end
 
-  def group_filters
-    @group_filters ||= filter_items_for(:grouping)
+  def disaggregators
+    @disaggregators ||= filter_items_for(:grouping)
   end
 
   def indicators

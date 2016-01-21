@@ -91,7 +91,7 @@ function toggleOverTimeOption(containerId, dates, countries) {
 
 function chartable(containerId, dates) {
   var selectedIndicator = getSelectedItemValue(containerId, 'nested_indicators');
-  var selectedGrouping = getSelectedItemValue(containerId, 'group_filters');
+  var selectedGrouping = getSelectedItemValue(containerId, 'disaggregators');
   var chartType = getSelectedChartType(containerId, 'chart_types');
 
   if(dates.length > 0 && selectedIndicator.length > 0 && selectedGrouping.length > 0 && chartType.length > 0) {
@@ -107,9 +107,9 @@ function enableCharting(containerId, state) { $('#submit-chart-filters-' + conta
 
 function disableUnavailableFilters(containerId) {
   var selectedIndicator = getSelectedItemValue(containerId, 'nested_indicators');
-  var selectedGrouping = getSelectedItemValue(containerId, 'group_filters');
+  var selectedGrouping = getSelectedItemValue(containerId, 'disaggregators');
 
-  var groupFilterInput = getInput(containerId, 'group_filters');
+  var groupFilterInput = getInput(containerId, 'disaggregators');
   var indicatorFilterInput = getInput(containerId, 'nested_indicators');
 
   var unavailableIndicatorFilters = unavailableFilters[selectedIndicator];

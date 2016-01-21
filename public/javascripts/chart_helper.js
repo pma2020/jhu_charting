@@ -260,7 +260,7 @@ function generateChart(containerId) {
   var selectedCountries = getCountries(containerId);
   var selectedDates = getCheckedItems(containerId, 'year');
   var selectedIndicator = getSelectedItemValue(containerId, 'nested_indicators');
-  var selectedGrouping = getSelectedItemValue(containerId, 'group_filters');
+  var selectedGrouping = getSelectedItemValue(containerId, 'disaggregators');
   var overTime = $('.overtime-check-' + containerId).prop('checked');
   $(".citation-viewport .panel .panel-body").text(generateCitation(selectedCountries));
 
@@ -268,7 +268,7 @@ function generateChart(containerId) {
     var title = generateTitle(
       selectedCountries,
       getSelectedItemDisplayText(containerId, 'nested_indicators'),
-      getSelectedItemDisplayText(containerId, 'group_filters')
+      getSelectedItemDisplayText(containerId, 'disaggregators')
     );
 
     var chartComponents = generateSeriesData(

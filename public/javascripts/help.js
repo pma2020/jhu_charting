@@ -1,7 +1,7 @@
 function getHelpText(containerId) {
   var language = $('#dataset-language-picker').val();
   var indicator = $('#dataset_nested_indicators_' + containerId);
-  var grouping = $('#dataset_group_filters_' + containerId);
+  var grouping = $('#dataset_disaggregators_' + containerId);
 
   var indicatorKey = keyify(indicator.val());
   var groupingKey = keyify(grouping.val());

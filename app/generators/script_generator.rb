@@ -28,7 +28,7 @@ class ScriptGenerator
                   <div role="tabpanel" class="tab-pane active" id="controls">
                     #{language_picker}
                     #{select_box_filter('nested_indicators', 'Indicators', true, true)}
-                    #{select_box_filter('group_filters', 'Break down data by', true)}
+                    #{select_box_filter('disaggregators', 'Break down data by', true)}
                     #{data_series_limiters}
                     <div class='row'>
                       <div class='col-md-12'>
@@ -153,7 +153,7 @@ class ScriptGenerator
 
         $('.filter').on('change', function() { validateFilters('#{container_id}', metadata) });
         $('.filter.filter-nested_indicators').on('change', function() { displayHelpText('#{container_id}') });
-        $('.filter.filter-group_filters').on('change', function() { displayHelpText('#{container_id}') });
+        $('.filter.filter-disaggregators').on('change', function() { displayHelpText('#{container_id}') });
         $('.year-check').on('change', function() { toggleCountryHeader($(this)) });
         $('#select-all-#{container_id}').on('click', function() {selectAll('#{container_id}')});
         $('#select-latest-#{container_id}').on('click', function() {selectLatest('#{container_id}')});
@@ -273,7 +273,7 @@ class ScriptGenerator
   def select_box_filter(type, label = nil, clear_button = false, grouped = false)
     label = type unless label
     label_safe = label.humanize.capitalize
-    label_ref = label.downcase.underscore
+    label_ref = type =="disaggregators" ? type.singularize.downcase.underscore : label.downcase.underscore
     id = "dataset_#{type}_#{container_id}".to_sym
     values = @metadata.fetch(type.to_sym)
 
