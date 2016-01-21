@@ -3,7 +3,7 @@ $breakpoint: 760px;
 
 $black: #333;
 $medium-gray: lighten($black, 25%);
-$light-gray: lighten($black, 65%);
+$light-gray: #eaeaea;
 
 $light-blue: #76b1d7;
 $blue: #00a5ff;
@@ -58,8 +58,12 @@ $light-purple: lighten($dark-purple, 25%);
       .btn {
         &.btn-primary {
           background-color: $light-blue;
+          &.active {
+            color: #4169E1;
+          }
         }
         &.submit-chart {
+          border-color: $dark-purple;
           background-color: $dark-purple;
         }
       }
@@ -68,7 +72,7 @@ $light-purple: lighten($dark-purple, 25%);
           li {
             &.active {
               a {
-                background-color: #ddd;
+                background-color: $light-gray;
               }
             }
           }
@@ -76,12 +80,20 @@ $light-purple: lighten($dark-purple, 25%);
       }
       .tab-content {
         .tab-pane {
-          border: 1px solid #ddd;
+          border: 1px solid $light-gray;
           border-top: none;
-          background-color: #ddd;
+          background-color: $light-gray;
+          border-bottom-right-radius: 5px;
+          border-bottom-left-radius: 5px;
           padding: 10px;
+          .row {
+            margin-bottom: 5%;
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
           .form-group {
-            margin-bottom: 2%;
+            margin-bottom: 0;
           }
           .input-group {
             .input-group-btn {
@@ -92,7 +104,20 @@ $light-purple: lighten($dark-purple, 25%);
             max-height: 33vh;
             overflow-y: auto;
             overflow-x: hidden;
-            margin-top: 10px;
+            background-color: #fff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            .row {
+              margin-bottom: 5px;
+              &:last-child {
+                margin-bottom: 0px;
+              }
+            }
+            .date-selection {
+              span {
+                margin-left: 10px;
+              }
+            }
             .country-header {
               cursor: pointer;
               .active {
@@ -148,6 +173,7 @@ $light-purple: lighten($dark-purple, 25%);
     border: 1px solid $light-gray;
     padding: 1em;
     background: white;
+    border-radius: 5px;
     &.active {
       display: block;
     }
@@ -217,7 +243,7 @@ $light-purple: lighten($dark-purple, 25%);
         display: block;
         width: 4em;
         vertical-align: top;
-        margin: 8px auto 0;
+        margin: 0px auto;
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
@@ -248,6 +274,7 @@ $light-purple: lighten($dark-purple, 25%);
           display: block;
           overflow: hidden;
           border-radius: .875em;
+          border: 1px solid #ddd;
           padding: 0;
           cursor: pointer;
           span.onoffswitch-inner {
@@ -295,7 +322,7 @@ $light-purple: lighten($dark-purple, 25%);
     vertical-align: top;
     max-width: 100%;
     h4 {
-      margin: .5em;
+      margin: .5em 0;
     }
   }
 }

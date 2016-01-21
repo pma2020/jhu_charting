@@ -30,8 +30,12 @@ class ScriptGenerator
                     #{select_box_filter('nested_indicators', 'Indicators', true, true)}
                     #{select_box_filter('group_filters', 'Break down data by', true)}
                     #{data_series_limiters}
-                    <div class='data-series'>
-                      #{data_series}
+                    <div class='row'>
+                      <div class='col-md-12'>
+                        <div class='data-series'>
+                          #{data_series}
+                        </div>
+                      </div>
                     </div>
                     <div class='row'>
                       <div class='col-md-8'>
@@ -297,8 +301,8 @@ class ScriptGenerator
       <div class='row'>
         <div class='col-md-12'>
           <div class='country-header' data-toggle="collapse" href="#collapse-#{k}" aria-expanded="false" aria-controls="collapseExample">
-            <b class='i18nable' data-value='#{k}'>#{k}</b>
             <i class="fa fa-plus"></i>
+            <b class='i18nable' data-value='#{k}'>#{k}</b>
           </div>
           <div class='date-selection collapse' id="collapse-#{k}">
             #{checkboxes('year', v, false, data_attributes)}
