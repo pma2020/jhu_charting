@@ -332,3 +332,16 @@ $light-purple: lighten($dark-purple, 25%);
     }
   }
 }
+@media print {
+  section.dataset {
+    display: none;
+  }
+  #jhu-chart {
+    .chart-sidebar {
+      display: none;
+    }
+    .chart-viewport {
+      height: 90%;
+    }
+  }
+}
