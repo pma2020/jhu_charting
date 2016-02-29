@@ -6,12 +6,13 @@ class DatasetParser
   HEADER_MAP = {
     country: "Country",
     date: "Date",
+    round: "Round",
     grouping: "Grouping"
   }.freeze
   HELP_FILE_DELIMITER = "|".freeze
 
 
-  attr_reader :data, :help_data, :countries, :years, :group_filters, :languages
+  attr_reader :data, :help_data, :countries, :years, :disaggregators, :languages
 
   def initialize(csv, help_file)
     @csv = csv
@@ -23,10 +24,9 @@ class DatasetParser
     ScriptGenerator.new(metadata, data).generate
   end
 
-  private
-
   def load
     @data ||= SmarterCSV.process(@csv, csv_parse_options)
+    @indicator_categories = @data.shift
     @help_data ||= SmarterCSV.process(@help_file, csv_parse_options)
   end
 
@@ -43,11 +43,12 @@ class DatasetParser
   def metadata
     {
       countries: countries,
+      rounds_by_country: rounds_by_country,
       years: years,
-      group_filters: group_filters,
-      indicators: indicators,
-      chart_types: chart_types,
       year_by_country: years_by_country,
+      disaggregators: disaggregators,
+      nested_indicators: nested_indicators,
+      chart_types: chart_types,
       languages: language_codes,
       help_text: help_text,
       label_text: label_text,
@@ -58,7 +59,9 @@ class DatasetParser
   def unavailable_filters
     unavailable_filters = Hash.new
     available_filters = Hash.new
-    all_filters = data.first.keys
+    all_indicators = data.first.keys
+    all_disaggregators = data.collect{|row| row['Grouping']}.uniq!
+    all_filters = all_indicators + all_disaggregators
 
     data.each do |row|
       subdata = row.select{|k,v| indicators.include?(k)}
@@ -78,6 +81,7 @@ class DatasetParser
       v.uniq!
       unavailable_filters[k] = all_filters - v
     end
+
     unavailable_filters
   end
 
@@ -102,6 +106,23 @@ class DatasetParser
     results
   end
 
+  def rounds_by_country
+    round_header = HEADER_MAP.fetch(:round)
+    countryHeader = HEADER_MAP.fetch(:country)
+    yearHeader = HEADER_MAP.fetch(:date)
+    results = Hash.new
+
+    countries.map do |country|
+      sub_result = Hash.new
+      data.find_all{|row| row[countryHeader] == country}.each do |row|
+        sub_result[row[yearHeader]] = row[round_header]
+      end
+      results[country] = sub_result
+    end
+
+    results
+  end
+
   def countries
     @countries ||= filter_items_for(:country)
   end
@@ -110,12 +131,23 @@ class DatasetParser
     @years ||= filter_items_for(:date)
   end
 
-  def group_filters
-    @group_filters ||= filter_items_for(:grouping)
+  def disaggregators
+    @disaggregators ||= filter_items_for(:grouping)
   end
 
   def indicators
     @indicators ||= filters_from_columns(INDICATOR_HEADER_RANGE_START)
+  end
+
+  def nested_indicators
+    result = Hash.new
+    data = @indicator_categories.to_a[INDICATOR_HEADER_RANGE_START..@indicator_categories.length]
+    categories = data.collect{|x| x.last }.uniq
+    categories.each{ |category| result[category] = Array.new }
+    data.each do |item|
+      result[item.last].push(item.first)
+    end
+    result
   end
 
   def chart_types
@@ -139,7 +171,7 @@ class DatasetParser
     tmp_hash = Hash.new
 
     help_data.each do |row|
-      term = row['ID'].downcase.gsub(' ', '_')
+      term = row['id'].downcase.gsub(' ', '_')
       language_hash = Hash.new
       languages(row).each do |language|
         language_hash[language] = row["#{type}#{HELP_FILE_DELIMITER}#{language}"]
@@ -176,5 +208,14 @@ end
 class DateConverter
   def self.convert(value)
     Date.strptime(value, '%m - %Y')
+  end
+end
+
+class Indicator
+  attr_reader :val, :group
+
+  def initialize(val, group)
+    @val = val
+    @group = group
   end
 end

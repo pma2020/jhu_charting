@@ -1,7 +1,7 @@
 function getHelpText(containerId) {
   var language = $('#dataset-language-picker').val();
-  var indicator = $('#dataset_indicators_' + containerId);
-  var grouping = $('#dataset_group_filters_' + containerId);
+  var indicator = $('#dataset_nested_indicators_' + containerId);
+  var grouping = $('#dataset_disaggregators_' + containerId);
 
   var indicatorKey = keyify(indicator.val());
   var groupingKey = keyify(grouping.val());
@@ -45,11 +45,17 @@ function getHelpText(containerId) {
     }
   }
 
-  return groupingMessage + "\n\n" + indicatorMessage;
+  var messages = {
+    "group-filter": groupingMessage,
+    "indicator": indicatorMessage
+  }
+
+  return messages
 }
 
 function displayHelpText(containerId) {
-  $('.help-center .help-definition').html(getHelpText(containerId));
-  $('.help-center').show();
+  var helpText = getHelpText(containerId);
+  $('.help-center .help-definition.indicator').html(helpText['indicator']);
+  $('.help-center .help-definition.group-filter').html(helpText['group-filter']);
 }
 
