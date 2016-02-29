@@ -300,3 +300,18 @@
 #jhu-chart .form-group h4 {
   margin: .5em 0;
 }
+@media print {
+  /* line 336, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+  section.dataset {
+    display: none;
+  }
+
+  /* line 340, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+  #jhu-chart .chart-sidebar {
+    display: none;
+  }
+  /* line 343, /Users/jason/Projects/jhu_charting/app/assets/stylesheets/chart-styles.scss */
+  #jhu-chart .chart-viewport {
+    height: 90%;
+  }
+}
