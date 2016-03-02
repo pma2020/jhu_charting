@@ -103,7 +103,10 @@ function chartable(containerId, dates) {
   }
 }
 
-function enableCharting(containerId, state) { $('#submit-chart-filters-' + containerId).prop('disabled', state) };
+function enableCharting(containerId, state) {
+  $('#submit-chart-filters-' + containerId).prop('disabled', state)
+  $('#download-csv-' + containerId).prop('disabled', state)
+};
 
 function disableUnavailableFilters(containerId) {
   var selectedIndicator = getSelectedItemValue(containerId, 'nested_indicators');
