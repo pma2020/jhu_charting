@@ -261,13 +261,15 @@ function xAxisData(overtime, components) {
   else { return { categories: components } }
 };
 
-function generateChart(containerId) {
+function chartData(containerId, overTime) {
   var chartType = getSelectedChartType(containerId, 'chart_types');
   var selectedCountries = getCountries(containerId);
   var selectedDates = getCheckedItems(containerId, 'year');
   var selectedIndicator = getSelectedItemValue(containerId, 'nested_indicators');
   var selectedGrouping = getSelectedItemValue(containerId, 'disaggregators');
-  var overTime = $('.overtime-check-' + containerId).prop('checked');
+  if (typeof overTime == 'undefined') {
+    var overTime = $('.overtime-check-' + containerId).prop('checked');
+  }
   $(".citation-viewport .panel .panel-body").text(generateCitation(selectedCountries));
 
   if(validateFilters(containerId)) {
@@ -290,24 +292,63 @@ function generateChart(containerId) {
     var yAxis = getSelectedItemDisplayText(containerId, 'nested_indicators');
     var seriesData = chartComponents[1]
 
-    if(seriesData != false) {
-      $('#chart-container-' + containerId).highcharts({
-        plotOptions: {
-          series: { connectNulls: true, },
-          bar: { dataLabels: { enabled: true } },
-          column: { dataLabels: { enabled: true } },
-          line: { dataLabels: { enabled: true } },
-          pie: { dataLabels: { enabled: true } }
-        },
-        chart: { type: chartType.toLowerCase() },
-        title: { text: title },
-        subtitle: { text: "PMA 2020" },
-        xAxis: xAxis ,
-        yAxis: { min: 0, title: { text: yAxis } },
-        series: seriesData
-      });
+    return [xAxis, yAxis, title, chartType, selectedGrouping, seriesData];
+  }
+};
 
-      scrollToAnchor('#chart-container-' + containerId);
+function downloadCSV(containerId) {
+  var data = chartData(containerId, false) || [];
+  var xAxis = data[0];
+  var title = data[2];
+  var disaggregator = data[4];
+  var seriesData = data[5];
+
+  $.ajax({
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+    },
+    url: "/datasets/chart_csv.csv",
+    method: "POST",
+    data: {
+      series : seriesData,
+      xAxis: xAxis,
+      disaggregator: disaggregator
+    },
+    success: function(data) {
+      var link = document.createElement('a');
+      link.href = window.URL.createObjectURL(new Blob([data]));
+      link.download = title + ".csv";
+      link.click();
     }
+  });
+
+};
+
+function generateChart(containerId) {
+  var data = chartData(containerId) || [];
+  var xAxis = data[0];
+  var yAxis = data[1];
+  var title = data[2];
+  var chartType = data[3];
+  var seriesData = data[5];
+
+  if(seriesData != false) {
+    $('#chart-container-' + containerId).highcharts({
+      plotOptions: {
+        series: { connectNulls: true, },
+        bar: { dataLabels: { enabled: true } },
+        column: { dataLabels: { enabled: true } },
+        line: { dataLabels: { enabled: true } },
+        pie: { dataLabels: { enabled: true } }
+      },
+      chart: { type: chartType.toLowerCase() },
+      title: { text: title },
+      subtitle: { text: "PMA 2020" },
+      xAxis: xAxis ,
+      yAxis: { min: 0, title: { text: yAxis } },
+      series: seriesData
+    });
+
+    scrollToAnchor('#chart-container-' + containerId);
   }
 };

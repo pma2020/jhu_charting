@@ -51,6 +51,7 @@ class ScriptGenerator
                     <div class='row'>
                       <div class='col-md-12'>
                       #{button_tag('Chart', type: :button, value: 'Chart', id: "submit-chart-filters-#{container_id}", class: 'submit-chart i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled')}
+                      #{button_tag('Download CSV', type: :button, value: 'Download CSV', id: "download-csv-#{container_id}", class: 'i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled')}
                       </div>
                     </div>
                   </div>
@@ -160,7 +161,11 @@ class ScriptGenerator
         $('#clear-all-#{container_id}').on('click', function() {clearAll('#{container_id}')});
         $('.clear-select').on('click', function() {clearSelect('#{container_id}', $(this))});
         $('#dataset-language-picker').on('change', function() {updateLanguage('#{container_id}')});
-        $('#submit-chart-filters-#{container_id}').on('click', function() { generateChart('#{container_id}'); });
+        $('#submit-chart-filters-#{container_id}').on('click', function() {
+          generateChart('#{container_id}');
+          $('#download-csv-#{container_id}').prop('disabled', '');
+        });
+        $('#download-csv-#{container_id}').on('click', function() { downloadCSV('#{container_id}'); });
         $(document).ready(function(){ updateLanguage('#{container_id}'); });
       </script>
     EOS

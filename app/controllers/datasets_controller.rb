@@ -28,6 +28,17 @@ class DatasetsController < ApplicationController
     respond_with(@dataset, location: -> { datasets_path })
   end
 
+  def chart_csv
+    respond_to do |format|
+      format.csv {
+        send_data(SeriesData.new(params).generate_csv,
+                  filename: "result.csv",
+                  type: "text/csv",
+                  disposition: :attachment)
+      }
+    end
+  end
+
   private
 
   def dataset_params
