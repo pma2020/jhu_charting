@@ -66,8 +66,7 @@ class ScriptGenerator
                     </div>
                   </div>
                   <div role="tabpanel" class="tab-pane" id="style">
-                    Chart Styles
-                    <br/>
+                    <h4 class='text-center'>Chart Color Options</h4>
                     <div class='form-group'>
                       <label for='chart-background-color' class='col-md-6 text-right'>
                         Background color:
@@ -82,6 +81,12 @@ class ScriptGenerator
                     </div>
                     <div class='form-group'>
                       <label for='chart-background-color' class='col-md-6 text-right'>
+                        Label color:
+                      </label>
+                      <input class='color form-input' id="label-color"/>
+                    </div>
+                    <div class='form-group'>
+                      <label for='chart-background-color' class='col-md-6 text-right'>
                         Y-Axis color:
                       </label>
                       <input class='color form-input' id="y-axis-color"/>
@@ -92,7 +97,20 @@ class ScriptGenerator
                       </label>
                       <input class='color form-input' id="x-axis-color"/>
                     </div>
-
+                    <div class='form-group'>
+                      <label for='chart-background-color' class='col-md-6 text-right'>
+                        Tick color:
+                      </label>
+                      <input class='color form-input' id="tick-color"/>
+                    </div>
+                    <div class='form-group'>
+                      <label for='chart-background-color' class='col-md-6 text-right'>
+                        Minor Tick color:
+                      </label>
+                      <input class='color form-input' id="minor-tick-color"/>
+                    </div>
+                    <br/>
+                    <br/>
                     #{button_tag('Chart', type: :button, value: 'Update Chart', id: "submit-chart-filters-#{container_id}", class: 'submit-chart i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled')}
                   </div>
                 </div>

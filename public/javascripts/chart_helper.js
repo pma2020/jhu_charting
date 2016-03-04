@@ -331,13 +331,19 @@ function chartStyles(containerId) {
   if(yAxisColor != '#FFFFFF'){yAxisWidth=1};
   var xAxisColor = $('input#x-axis-color').val() || '#C0D0E0';
   var titleColor = $('input#title-color').val() || '#333333';
+  var labelColor = $('input#label-color').val() || '#333333';
+  var tickColor = $('input#tick-color').val() || '#333333';
+  var minorTickColor = $('input#minor-tick-color').val() || '#333333';
 
   return {
     "chart-background-color" : chartBackgroundColor,
     "y-axis-color" : yAxisColor,
     "y-axis-width" : yAxisWidth,
     "x-axis-color" : xAxisColor,
-    "title-color" : titleColor
+    "title-color" : titleColor,
+    "label-color" : labelColor,
+    "tick-color" : tickColor,
+    "minorTick-color" : minorTickColor
   }
 };
 
@@ -353,7 +359,9 @@ function generateChart(containerId) {
   if(seriesData != false) {
     $('#chart-container-' + containerId).highcharts({
       plotOptions: {
-        series: { connectNulls: true, },
+        series: {
+          connectNulls: true,
+        },
         bar: { dataLabels: { enabled: true } },
         column: { dataLabels: { enabled: true } },
         line: { dataLabels: { enabled: true } },
@@ -363,22 +371,56 @@ function generateChart(containerId) {
         type: chartType.toLowerCase(),
         backgroundColor: styles["chart-background-color"]
       },
+      legend: {
+        itemStyle: {
+          color: styles['label-color']
+        }
+      },
       title: {
         style: {
           color: styles['title-color']
         },
         text: title
       },
-      subtitle: { text: "PMA 2020" },
+      subtitle: {
+        style: {
+          color: styles['title-color']
+        },
+        text: "PMA 2020"
+      },
       xAxis: {
         lineColor: styles['x-axis-color'],
-        categories: xAxis
+        categories: xAxis,
+        title: {
+          style: {
+            color: styles['label-color']
+          }
+        },
+        labels: {
+          style: {
+            color: styles['label-color']
+          }
+        },
+        tickColor: styles['tick-color'],
+        minorTickColor: styles['minor-tick-color']
       },
       yAxis: {
         min: 0,
-        title: { text: yAxis },
+        title: {
+          text: yAxis,
+          style: {
+            color: styles['label-color']
+          }
+        },
         lineColor: styles['y-axis-color'],
-        lineWidth: styles['y-axis-width']
+        lineWidth: styles['y-axis-width'],
+        labels: {
+          style: {
+            color: styles['label-color']
+          }
+        },
+        tickColor: styles['tick-color'],
+        minorTickColor: styles['minor-tick-color']
       },
       series: seriesData
     });
