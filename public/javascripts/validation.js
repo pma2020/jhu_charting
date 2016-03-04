@@ -104,7 +104,7 @@ function chartable(containerId, dates) {
 }
 
 function enableCharting(containerId, state) {
-  $('#submit-chart-filters-' + containerId).prop('disabled', state)
+  $('.submit-chart').prop('disabled', state)
   $('#download-csv-' + containerId).prop('disabled', state)
 };
 

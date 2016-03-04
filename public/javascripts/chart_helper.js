@@ -258,7 +258,7 @@ function generateCitation(partners) {
 
 function xAxisData(overtime, components) {
   if (overtime) { return { type: 'datetime' } }
-  else { return { categories: components } }
+  else { return components }
 };
 
 function chartData(containerId, overTime) {
@@ -324,6 +324,23 @@ function downloadCSV(containerId) {
 
 };
 
+function chartStyles(containerId) {
+  var chartBackgroundColor = $('input#chart-background-color').val() || '#FFFFFF';
+  var yAxisColor = $('input#y-axis-color').val() || '#FFFFFF';
+  var yAxisWidth = 0;
+  if(yAxisColor != '#FFFFFF'){yAxisWidth=1};
+  var xAxisColor = $('input#x-axis-color').val() || '#C0D0E0';
+  var titleColor = $('input#title-color').val() || '#333333';
+
+  return {
+    "chart-background-color" : chartBackgroundColor,
+    "y-axis-color" : yAxisColor,
+    "y-axis-width" : yAxisWidth,
+    "x-axis-color" : xAxisColor,
+    "title-color" : titleColor
+  }
+};
+
 function generateChart(containerId) {
   var data = chartData(containerId) || [];
   var xAxis = data[0];
@@ -331,6 +348,7 @@ function generateChart(containerId) {
   var title = data[2];
   var chartType = data[3];
   var seriesData = data[5];
+  var styles = chartStyles();
 
   if(seriesData != false) {
     $('#chart-container-' + containerId).highcharts({
@@ -341,11 +359,27 @@ function generateChart(containerId) {
         line: { dataLabels: { enabled: true } },
         pie: { dataLabels: { enabled: true } }
       },
-      chart: { type: chartType.toLowerCase() },
-      title: { text: title },
+      chart: {
+        type: chartType.toLowerCase(),
+        backgroundColor: styles["chart-background-color"]
+      },
+      title: {
+        style: {
+          color: styles['title-color']
+        },
+        text: title
+      },
       subtitle: { text: "PMA 2020" },
-      xAxis: xAxis ,
-      yAxis: { min: 0, title: { text: yAxis } },
+      xAxis: {
+        lineColor: styles['x-axis-color'],
+        categories: xAxis
+      },
+      yAxis: {
+        min: 0,
+        title: { text: yAxis },
+        lineColor: styles['y-axis-color'],
+        lineWidth: styles['y-axis-width']
+      },
       series: seriesData
     });
 

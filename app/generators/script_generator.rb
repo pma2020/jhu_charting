@@ -22,6 +22,7 @@ class ScriptGenerator
                 <ul class="nav nav-tabs" role="tablist">
                   <li role="presentation" class="active"><a href="#controls" aria-controls="controls" role="tab" data-toggle="tab">Controls</a></li>
                   <li role="presentation"><a href="#help-center" aria-controls="help-center" role="tab" data-toggle="tab">Help Center</a></li>
+                  <li role="presentation"><a href="#style" aria-controls="style" role="tab" data-toggle="tab">Style</a></li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
@@ -63,6 +64,36 @@ class ScriptGenerator
                       <div class='help-definition indicator'></div>
                       <div class='help-definition group-filter'></div>
                     </div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="style">
+                    Chart Styles
+                    <br/>
+                    <div class='form-group'>
+                      <label for='chart-background-color' class='col-md-6 text-right'>
+                        Background color:
+                      </label>
+                      <input class='color form-input' id="chart-background-color"/>
+                    </div>
+                    <div class='form-group'>
+                      <label for='chart-background-color' class='col-md-6 text-right'>
+                        Title color:
+                      </label>
+                      <input class='color form-input' id="title-color"/>
+                    </div>
+                    <div class='form-group'>
+                      <label for='chart-background-color' class='col-md-6 text-right'>
+                        Y-Axis color:
+                      </label>
+                      <input class='color form-input' id="y-axis-color"/>
+                    </div>
+                    <div class='form-group'>
+                      <label for='chart-background-color' class='col-md-6 text-right'>
+                        X-Axis color:
+                      </label>
+                      <input class='color form-input' id="x-axis-color"/>
+                    </div>
+
+                    #{button_tag('Chart', type: :button, value: 'Update Chart', id: "submit-chart-filters-#{container_id}", class: 'submit-chart i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled')}
                   </div>
                 </div>
               </section>
@@ -162,7 +193,7 @@ class ScriptGenerator
         $('#clear-all-#{container_id}').on('click', function() {clearAll('#{container_id}')});
         $('.clear-select').on('click', function() {clearSelect('#{container_id}', $(this))});
         $('#dataset-language-picker').on('change', function() {updateLanguage('#{container_id}')});
-        $('#submit-chart-filters-#{container_id}').on('click', function() {
+        $('.submit-chart').on('click', function() {
           generateChart('#{container_id}');
           $('#download-csv-#{container_id}').prop('disabled', '');
         });
