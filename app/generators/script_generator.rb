@@ -109,6 +109,19 @@ class ScriptGenerator
                       </label>
                       <input class='color form-input' id="minor-tick-color"/>
                     </div>
+                    <h4 class='text-center'>Axis Labels</h4>
+                    <div class='form-group'>
+                      <label for='chart-background-color' class='col-md-6 text-right'>
+                        Y-Axis Label:
+                      </label>
+                      <input class='form-input' id="y-axis-label"/>
+                    </div>
+                    <div class='form-group'>
+                      <label for='chart-background-color' class='col-md-6 text-right'>
+                        X-Axis Label:
+                      </label>
+                      <input class='form-input' id="x-axis-label"/>
+                    </div>
                     <br/>
                     <br/>
                     #{button_tag('Chart', type: :button, value: 'Update Chart', id: "submit-chart-filters-#{container_id}", class: 'submit-chart i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled')}

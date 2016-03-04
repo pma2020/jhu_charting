@@ -347,14 +347,28 @@ function chartStyles(containerId) {
   }
 };
 
+function chartOverrides(containerId) {
+  var yAxisLabel = $('input#y-axis-label').val();
+  var xAxisLabel = $('input#x-axis-label').val();
+
+  return {
+    "y-axis-label" : yAxisLabel,
+    "x-axis-label" : xAxisLabel,
+  }
+};
+
 function generateChart(containerId) {
+  var styles = chartStyles();
+  var overrides = chartOverrides();
+
   var data = chartData(containerId) || [];
   var xAxis = data[0];
   var yAxis = data[1];
+  // Override y-axis-label if necessary
+  if (overrides['y-axis-label'] != "") { yAxis = overrides['y-axis-label']; }
   var title = data[2];
   var chartType = data[3];
   var seriesData = data[5];
-  var styles = chartStyles();
 
   if(seriesData != false) {
     $('#chart-container-' + containerId).highcharts({
@@ -392,6 +406,7 @@ function generateChart(containerId) {
         lineColor: styles['x-axis-color'],
         categories: xAxis,
         title: {
+          text: overrides['x-axis-label'],
           style: {
             color: styles['label-color']
           }
