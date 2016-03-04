@@ -22,6 +22,7 @@ class ScriptGenerator
                 <ul class="nav nav-tabs" role="tablist">
                   <li role="presentation" class="active"><a href="#controls" aria-controls="controls" role="tab" data-toggle="tab">Controls</a></li>
                   <li role="presentation"><a href="#help-center" aria-controls="help-center" role="tab" data-toggle="tab">Help Center</a></li>
+                  <li role="presentation"><a href="#style" aria-controls="style" role="tab" data-toggle="tab">Style</a></li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
@@ -63,6 +64,54 @@ class ScriptGenerator
                       <div class='help-definition indicator'></div>
                       <div class='help-definition group-filter'></div>
                     </div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="style">
+                    <h4 class='text-center'>Chart Color Options</h4>
+                    <div class='form-group'>
+                      <label for='chart-background-color' class='col-md-6 text-right'>
+                        Background color:
+                      </label>
+                      <input class='color form-input' id="chart-background-color"/>
+                    </div>
+                    <div class='form-group'>
+                      <label for='chart-background-color' class='col-md-6 text-right'>
+                        Title color:
+                      </label>
+                      <input class='color form-input' id="title-color"/>
+                    </div>
+                    <div class='form-group'>
+                      <label for='chart-background-color' class='col-md-6 text-right'>
+                        Label color:
+                      </label>
+                      <input class='color form-input' id="label-color"/>
+                    </div>
+                    <div class='form-group'>
+                      <label for='chart-background-color' class='col-md-6 text-right'>
+                        Y-Axis color:
+                      </label>
+                      <input class='color form-input' id="y-axis-color"/>
+                    </div>
+                    <div class='form-group'>
+                      <label for='chart-background-color' class='col-md-6 text-right'>
+                        X-Axis color:
+                      </label>
+                      <input class='color form-input' id="x-axis-color"/>
+                    </div>
+                    <div class='form-group'>
+                      <label for='chart-background-color' class='col-md-6 text-right'>
+                        Tick color:
+                      </label>
+                      <input class='color form-input' id="tick-color"/>
+                    </div>
+                    <div class='form-group'>
+                      <label for='chart-background-color' class='col-md-6 text-right'>
+                        Minor Tick color:
+                      </label>
+                      <input class='color form-input' id="minor-tick-color"/>
+                    </div>
+                    <br/>
+                    <br/>
+                    #{button_tag('Chart', type: :button, value: 'Update Chart', id: "submit-chart-filters-#{container_id}", class: 'submit-chart i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled')}
                   </div>
                 </div>
               </section>
@@ -143,6 +192,7 @@ class ScriptGenerator
         #{ load_js('translation.js') }
         #{ load_js('interaction.js') }
         #{ load_js('chart_helper.js') }
+        #{ load_js('color_picker.js') }
 
         var metadata = #{@metadata.fetch(:year_by_country, {}).to_json};
         var availableLanguages = #{@metadata.fetch(:languages, {}).to_json};
@@ -161,11 +211,12 @@ class ScriptGenerator
         $('#clear-all-#{container_id}').on('click', function() {clearAll('#{container_id}')});
         $('.clear-select').on('click', function() {clearSelect('#{container_id}', $(this))});
         $('#dataset-language-picker').on('change', function() {updateLanguage('#{container_id}')});
-        $('#submit-chart-filters-#{container_id}').on('click', function() {
+        $('.submit-chart').on('click', function() {
           generateChart('#{container_id}');
           $('#download-csv-#{container_id}').prop('disabled', '');
         });
         $('#download-csv-#{container_id}').on('click', function() { downloadCSV('#{container_id}'); });
+        $('input.color').colorPicker();
         $(document).ready(function(){ updateLanguage('#{container_id}'); });
       </script>
     EOS

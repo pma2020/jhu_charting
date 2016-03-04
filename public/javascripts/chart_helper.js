@@ -258,7 +258,7 @@ function generateCitation(partners) {
 
 function xAxisData(overtime, components) {
   if (overtime) { return { type: 'datetime' } }
-  else { return { categories: components } }
+  else { return components }
 };
 
 function chartData(containerId, overTime) {
@@ -324,6 +324,29 @@ function downloadCSV(containerId) {
 
 };
 
+function chartStyles(containerId) {
+  var chartBackgroundColor = $('input#chart-background-color').val() || '#FFFFFF';
+  var yAxisColor = $('input#y-axis-color').val() || '#FFFFFF';
+  var yAxisWidth = 0;
+  if(yAxisColor != '#FFFFFF'){yAxisWidth=1};
+  var xAxisColor = $('input#x-axis-color').val() || '#C0D0E0';
+  var titleColor = $('input#title-color').val() || '#333333';
+  var labelColor = $('input#label-color').val() || '#333333';
+  var tickColor = $('input#tick-color').val() || '#333333';
+  var minorTickColor = $('input#minor-tick-color').val() || '#333333';
+
+  return {
+    "chart-background-color" : chartBackgroundColor,
+    "y-axis-color" : yAxisColor,
+    "y-axis-width" : yAxisWidth,
+    "x-axis-color" : xAxisColor,
+    "title-color" : titleColor,
+    "label-color" : labelColor,
+    "tick-color" : tickColor,
+    "minorTick-color" : minorTickColor
+  }
+};
+
 function generateChart(containerId) {
   var data = chartData(containerId) || [];
   var xAxis = data[0];
@@ -331,21 +354,74 @@ function generateChart(containerId) {
   var title = data[2];
   var chartType = data[3];
   var seriesData = data[5];
+  var styles = chartStyles();
 
   if(seriesData != false) {
     $('#chart-container-' + containerId).highcharts({
       plotOptions: {
-        series: { connectNulls: true, },
+        series: {
+          connectNulls: true,
+        },
         bar: { dataLabels: { enabled: true } },
         column: { dataLabels: { enabled: true } },
         line: { dataLabels: { enabled: true } },
         pie: { dataLabels: { enabled: true } }
       },
-      chart: { type: chartType.toLowerCase() },
-      title: { text: title },
-      subtitle: { text: "PMA 2020" },
-      xAxis: xAxis ,
-      yAxis: { min: 0, title: { text: yAxis } },
+      chart: {
+        type: chartType.toLowerCase(),
+        backgroundColor: styles["chart-background-color"]
+      },
+      legend: {
+        itemStyle: {
+          color: styles['label-color']
+        }
+      },
+      title: {
+        style: {
+          color: styles['title-color']
+        },
+        text: title
+      },
+      subtitle: {
+        style: {
+          color: styles['title-color']
+        },
+        text: "PMA 2020"
+      },
+      xAxis: {
+        lineColor: styles['x-axis-color'],
+        categories: xAxis,
+        title: {
+          style: {
+            color: styles['label-color']
+          }
+        },
+        labels: {
+          style: {
+            color: styles['label-color']
+          }
+        },
+        tickColor: styles['tick-color'],
+        minorTickColor: styles['minor-tick-color']
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: yAxis,
+          style: {
+            color: styles['label-color']
+          }
+        },
+        lineColor: styles['y-axis-color'],
+        lineWidth: styles['y-axis-width'],
+        labels: {
+          style: {
+            color: styles['label-color']
+          }
+        },
+        tickColor: styles['tick-color'],
+        minorTickColor: styles['minor-tick-color']
+      },
       series: seriesData
     });
 
