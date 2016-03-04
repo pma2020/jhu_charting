@@ -143,6 +143,7 @@ class ScriptGenerator
         #{ load_js('translation.js') }
         #{ load_js('interaction.js') }
         #{ load_js('chart_helper.js') }
+        #{ load_js('color_picker.js') }
 
         var metadata = #{@metadata.fetch(:year_by_country, {}).to_json};
         var availableLanguages = #{@metadata.fetch(:languages, {}).to_json};
@@ -166,6 +167,7 @@ class ScriptGenerator
           $('#download-csv-#{container_id}').prop('disabled', '');
         });
         $('#download-csv-#{container_id}').on('click', function() { downloadCSV('#{container_id}'); });
+        $('input.color').colorPicker();
         $(document).ready(function(){ updateLanguage('#{container_id}'); });
       </script>
     EOS
