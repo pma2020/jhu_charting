@@ -350,10 +350,18 @@ function chartStyles(containerId) {
 function chartOverrides(containerId) {
   var yAxisLabel = $('input#y-axis-label').val();
   var xAxisLabel = $('input#x-axis-label').val();
+  var yAxisX = $('input#y-axis-x-position').val();
+  var yAxisY = $('input#y-axis-y-position').val();
+  var xAxisX = $('input#x-axis-x-position').val();
+  var xAxisY = $('input#x-axis-y-position').val();
 
   return {
     "y-axis-label" : yAxisLabel,
     "x-axis-label" : xAxisLabel,
+    "y-axis-x-position" : parseInt(yAxisX),
+    "y-axis-y-position" : parseInt(yAxisY),
+    "x-axis-x-position" : parseInt(xAxisX),
+    "x-axis-y-position" : parseInt(xAxisY),
   }
 };
 
@@ -409,7 +417,9 @@ function generateChart(containerId) {
           text: overrides['x-axis-label'],
           style: {
             color: styles['label-color']
-          }
+          },
+          x: overrides['x-axis-x-position'],
+          y: overrides['x-axis-y-position'],
         },
         labels: {
           style: {
@@ -425,7 +435,9 @@ function generateChart(containerId) {
           text: yAxis,
           style: {
             color: styles['label-color']
-          }
+          },
+          x: overrides['y-axis-x-position'],
+          y: overrides['y-axis-y-position'],
         },
         lineColor: styles['y-axis-color'],
         lineWidth: styles['y-axis-width'],
