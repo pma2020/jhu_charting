@@ -354,6 +354,7 @@ function chartOverrides(containerId) {
   var yAxisY = $('input#y-axis-y-position').val();
   var xAxisX = $('input#x-axis-x-position').val();
   var xAxisY = $('input#x-axis-y-position').val();
+  var markerSize = $('input#marker-size').val() || 4;
 
   return {
     "y-axis-label" : yAxisLabel,
@@ -362,6 +363,7 @@ function chartOverrides(containerId) {
     "y-axis-y-position" : parseInt(yAxisY),
     "x-axis-x-position" : parseInt(xAxisX),
     "x-axis-y-position" : parseInt(xAxisY),
+    "marker-size" : parseInt(markerSize),
   }
 };
 
@@ -383,6 +385,9 @@ function generateChart(containerId) {
       plotOptions: {
         series: {
           connectNulls: true,
+          marker: {
+            radius: overrides['marker-size']
+          }
         },
         bar: { dataLabels: { enabled: true } },
         column: { dataLabels: { enabled: true } },
