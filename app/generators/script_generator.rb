@@ -147,6 +147,25 @@ class ScriptGenerator
                       </label>
                       <input class='form-input' id="x-axis-y-position"/>
                     </div>
+                    <h4 class='text-center'>Marker and Labels</h4>
+                    <div class='form-group'>
+                      <label for='marker-size' class='col-md-6 text-right'>
+                        Marker Size:
+                      </label>
+                      <input class='form-input' id="marker-size" placeholder='Default: 4'/>
+                    </div>
+                    <div class='form-group'>
+                      <label for='data-label-x-position' class='col-md-6 text-right'>
+                        Data Label X:
+                      </label>
+                      <input class='form-input' id="data-label-x-position" placeholder='Default: 0' />
+                    </div>
+                    <div class='form-group'>
+                      <label for='data-label-y-position' class='col-md-6 text-right'>
+                        Data Label Y:
+                      </label>
+                      <input class='form-input' id="data-label-y-position" placeholder='Default: -6' />
+                    </div>
                     <br/>
                     <br/>
                     #{button_tag('Chart', type: :button, value: 'Update Chart', id: "submit-chart-filters-#{container_id}", class: 'submit-chart i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled')}
