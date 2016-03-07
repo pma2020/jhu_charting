@@ -152,7 +152,19 @@ class ScriptGenerator
                       <label for='marker-size' class='col-md-6 text-right'>
                         Marker Size:
                       </label>
-                      <input class='form-input' id="marker-size", placeholder='Default: 4'/>
+                      <input class='form-input' id="marker-size" placeholder='Default: 4'/>
+                    </div>
+                    <div class='form-group'>
+                      <label for='data-label-x-position' class='col-md-6 text-right'>
+                        Data Label X:
+                      </label>
+                      <input class='form-input' id="data-label-x-position" placeholder='Default: 0' />
+                    </div>
+                    <div class='form-group'>
+                      <label for='data-label-y-position' class='col-md-6 text-right'>
+                        Data Label Y:
+                      </label>
+                      <input class='form-input' id="data-label-y-position" placeholder='Default: -6' />
                     </div>
                     <br/>
                     <br/>
