@@ -40,7 +40,7 @@ class SeriesData
   end
 
   def csv_row_keys
-    @xAxis.fetch("categories")
+    @xAxis || []
   end
 
   def transposed_data_values

@@ -22,6 +22,6 @@ class SeriesRow
   end
 
   def disaggregator_values
-    @xAxis.fetch("categories", [])
+    @xAxis || []
   end
 end
