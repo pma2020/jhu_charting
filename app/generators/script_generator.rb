@@ -12,7 +12,6 @@ class ScriptGenerator
   def generate
     <<-"EOS"
       #{attribution}
-      #{stylesheets}
       <div class='container-fluid'>
         <div id='jhu-chart'>
           <div class='row top-row'>
@@ -218,16 +217,6 @@ class ScriptGenerator
         VERSION: #{VERSION}
       -->
     EOS
-  end
-
-  def stylesheets
-    <<-"EOS"
-      <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'chart_styles.css')) }</style>
-    EOS
-  end
-
-  def load_js(file)
-    File.read(Rails.root.join('public', 'javascripts', file))
   end
 
   def javascripts

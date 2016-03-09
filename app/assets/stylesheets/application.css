@@ -15,5 +15,5 @@
  *= require font-awesome
  *= require bootstrap-select
  *
- *= style
+ *= require_tree .
  */
