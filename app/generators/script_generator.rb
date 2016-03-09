@@ -124,30 +124,30 @@ class ScriptGenerator
                       </label>
                       <input class='form-input' id="x-axis-label"/>
                     </div>
-                    <h4 class='text-center'>Axis Position</h4>
+                    <h4 class='text-center'>Axis Title Position</h4>
                     <div class='form-group'>
                       <label for='y-axis-x-position' class='col-md-6 text-right'>
                         Y-Axis X:
                       </label>
-                      <input class='form-input' id="y-axis-x-position"/>
+                      <input class='form-input' id="y-axis-x-position" placeholder='Default: 0'/>
                     </div>
                     <div class='form-group'>
                       <label for='y-axis-y-position' class='col-md-6 text-right'>
                         Y-Axis Y:
                       </label>
-                      <input class='form-input' id="y-axis-y-position"/>
+                      <input class='form-input' id="y-axis-y-position" placeholder='Default: 0'/>
                     </div>
                     <div class='form-group'>
                       <label for='x-axis-x-position' class='col-md-6 text-right'>
                         X-Axis X:
                       </label>
-                      <input class='form-input' id="x-axis-x-position"/>
+                      <input class='form-input' id="x-axis-x-position" placeholder='Default: 0'/>
                     </div>
                     <div class='form-group'>
                       <label for='x-axis-y-position' class='col-md-6 text-right'>
                         X-Axis Y:
                       </label>
-                      <input class='form-input' id="x-axis-y-position"/>
+                      <input class='form-input' id="x-axis-y-position" placeholder='Default: 0'/>
                     </div>
                     <h4 class='text-center'>Marker and Labels</h4>
                     <div class='form-group'>
