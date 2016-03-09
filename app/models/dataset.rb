@@ -14,4 +14,8 @@ class Dataset < ActiveRecord::Base
   def script
     parse.script
   end
+
+  def embed_code(host)
+    "<script id='load_jhu_pma_chart' src='http://#{host}/embed.js' data-host='http://#{host}/' data-id='#{id}'></script>"
+  end
 end

@@ -1,5 +1,9 @@
 class DatasetsController < ApplicationController
-  before_action :set_dataset, only: [:show, :destroy]
+  before_action :set_dataset, only: [:show, :embed, :destroy]
+  after_action :allow_iframe, only: :embed
+
+  layout false
+  layout 'application', :except => :embed
 
   respond_to :html
 
@@ -9,6 +13,9 @@ class DatasetsController < ApplicationController
   end
 
   def show
+  end
+
+  def embed
   end
 
   def create
@@ -47,5 +54,9 @@ class DatasetsController < ApplicationController
 
   def set_dataset
     @dataset = Dataset.find(params[:id])
+  end
+
+  def allow_iframe
+    response.headers.except! 'X-Frame-Options'
   end
 end

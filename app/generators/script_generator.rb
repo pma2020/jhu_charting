@@ -12,7 +12,6 @@ class ScriptGenerator
   def generate
     <<-"EOS"
       #{attribution}
-      #{stylesheets}
       <div class='container-fluid'>
         <div id='jhu-chart'>
           <div class='row top-row'>
@@ -220,37 +219,9 @@ class ScriptGenerator
     EOS
   end
 
-  def stylesheets
-    <<-"EOS"
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/css/bootstrap-select.min.css">
-      <style>#{ File.read(Rails.root.join('public', 'stylesheets', 'chart_styles.css')) }</style>
-    EOS
-  end
-
-  def load_js(file)
-    File.read(Rails.root.join('public', 'javascripts', file))
-  end
-
   def javascripts
     <<-"EOS"
-      <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
-      <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'></script>
-      <script src='https://code.highcharts.com/highcharts.js'></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/js/bootstrap-select.min.js"></script>
       <script>
-        #{ load_js('darken.js') }
-        #{ load_js('markdown.js') }
-        #{ load_js('utility.js') }
-        #{ load_js('selector.js') }
-        #{ load_js('help.js') }
-        #{ load_js('validation.js') }
-        #{ load_js('translation.js') }
-        #{ load_js('interaction.js') }
-        #{ load_js('chart_helper.js') }
-        #{ load_js('color_picker.js') }
-
         var metadata = #{@metadata.fetch(:year_by_country, {}).to_json};
         var availableLanguages = #{@metadata.fetch(:languages, {}).to_json};
         var helpText = #{@metadata.fetch(:help_text, {}).to_json};
@@ -275,6 +246,30 @@ class ScriptGenerator
         $('#download-csv-#{container_id}').on('click', function() { downloadCSV('#{container_id}'); });
         $('input.color').colorPicker();
         $(document).ready(function(){ updateLanguage('#{container_id}'); });
+
+        $('.collapse').on('show.bs.collapse', function () {
+          var checked = $(this).find("[type='checkbox']:checked").length;
+          if (checked > 0) { return false; }
+          console.log('wh')
+          $(this).parent().find(".country-header").find("i").removeClass("fa-plus").addClass("fa-minus");
+        });
+
+        $('.collapse').on('shown.bs.collapse', function () {
+          var openItems = $('.collapse.in').length;
+          console.log("here")
+          if (openItems > 0) { console.log("open!"); $('.btn-group-justified button').attr('disabled', false); }
+        });
+
+        $('.collapse').on('hide.bs.collapse', function () {
+          var checked = $(this).find("[type='checkbox']:checked").length;
+          if (checked > 0) { return false; }
+          $(this).parent().find(".country-header").find("i").removeClass("fa-minus").addClass("fa-plus");
+        });
+
+        $('.collapse').on('hidden.bs.collapse', function () {
+          var openItems = $('.collapse.in').length;
+          if (openItems == 0) { $('.btn-group-justified button').attr('disabled', true); }
+        });
       </script>
     EOS
   end

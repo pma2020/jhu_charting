@@ -38,25 +38,3 @@ function toggleCountryHeader(el) {
     container.find(".country-header b.i18nable").removeClass("active");
   }
 }
-
-$('.collapse').on('show.bs.collapse', function () {
-  var checked = $(this).find("[type='checkbox']:checked").length;
-  if (checked > 0) { return false; }
-  $(this).parent().find(".country-header").find("i").removeClass("fa-plus").addClass("fa-minus");
-});
-
-$('.collapse').on('shown.bs.collapse', function () {
-  var openItems = $('.collapse.in').length;
-  if (openItems > 0) { $('.btn-group-justified button').attr('disabled', false); }
-});
-
-$('.collapse').on('hide.bs.collapse', function () {
-  var checked = $(this).find("[type='checkbox']:checked").length;
-  if (checked > 0) { return false; }
-  $(this).parent().find(".country-header").find("i").removeClass("fa-minus").addClass("fa-plus");
-});
-
-$('.collapse').on('hidden.bs.collapse', function () {
-  var openItems = $('.collapse.in').length;
-  if (openItems == 0) { $('.btn-group-justified button').attr('disabled', true); }
-});

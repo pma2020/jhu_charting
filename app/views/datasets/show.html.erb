@@ -1,7 +1,10 @@
 <section class="dataset">
   <h3><%= @dataset.name %></h3>
-
-  <%= text_area_tag :script, @dataset.parse.script %>
+  
+  Embed with:
+  <code>
+    <%= @dataset.embed_code(request.host_with_port) %>
+  </code>
 </section>
 
 <section class="charted-dataset">
