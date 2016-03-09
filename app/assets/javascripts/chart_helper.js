@@ -381,8 +381,7 @@ function generateChart(containerId) {
   // Override y-axis-label if necessary
   if (overrides['y-axis-label'] != "") { yAxis = overrides['y-axis-label']; }
   var title = data[2];
-  var chartType = data[3];
-  if(chartType != undefined) { chartType = chartType.toLowerCase(); }
+  var chartType = data[3].toLowerCase();
   var seriesData = data[5];
 
   if(seriesData != false) {

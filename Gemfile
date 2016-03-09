@@ -1,24 +1,27 @@
 source 'https://rubygems.org'
 ruby "2.2.1"
 
+source 'https://rails-assets.tenex.tech' do
+  gem 'rails-assets-jquery'
+  gem 'rails-assets-bootstrap'
+  gem 'rails-assets-highcharts'
+  gem 'rails-assets-bootstrap-select'
+end
+
 gem 'rails', '4.2.4'
 gem 'pg'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
-
 gem 'refile', '~> 0.6.0', require: 'refile/rails'
 gem 'responders'
 gem 'smarter_csv'
 gem 'iso'
-
-gem 'jquery-rails'
+gem "font-awesome-rails"
 gem 'turbolinks'
+gem 'rack-cors', require: 'rack/cors'
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'factory_girl_rails'
   gem 'pry-rails'
