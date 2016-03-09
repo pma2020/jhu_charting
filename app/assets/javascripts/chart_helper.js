@@ -357,6 +357,7 @@ function chartOverrides(containerId) {
   var markerSize = $('input#marker-size').val() || 4;
   var dataLabelX = $('input#data-label-x-position').val();
   var dataLabelY = $('input#data-label-y-position').val();
+  var font = $('.bfh-selectbox-option').text()
 
   return {
     "y-axis-label" : yAxisLabel,
@@ -368,6 +369,7 @@ function chartOverrides(containerId) {
     "marker-size" : parseInt(markerSize),
     "data-label-x-position" : parseInt(dataLabelX),
     "data-label-y-position" : parseInt(dataLabelY),
+    "chart-font" : font,
   }
 };
 
@@ -383,6 +385,8 @@ function generateChart(containerId) {
   var title = data[2];
   var chartType = data[3].toLowerCase();
   var seriesData = data[5];
+
+  console.log(overrides)
 
   if(seriesData != false) {
     $('#chart-container-' + containerId).highcharts({
@@ -404,7 +408,10 @@ function generateChart(containerId) {
       },
       chart: {
         type: chartType,
-        backgroundColor: styles["chart-background-color"]
+        backgroundColor: styles["chart-background-color"],
+        style: {
+          fontFamily: overrides['chart-font']
+        }
       },
       legend: {
         itemStyle: {

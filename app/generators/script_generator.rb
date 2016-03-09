@@ -65,6 +65,9 @@ class ScriptGenerator
                     </div>
                   </div>
                   <div role="tabpanel" class="tab-pane" id="style">
+                    <h4 class='text-center'>Chart Font</h4>
+                    <div class="bfh-selectbox bfh-fonts" data-font="Arial">
+                    </div>
                     <h4 class='text-center'>Chart Color Options</h4>
                     <div class='form-group'>
                       <label for='chart-background-color' class='col-md-6 text-right'>
