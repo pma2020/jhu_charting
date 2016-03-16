@@ -4,8 +4,9 @@ class ScriptGenerator
   include ActionView::Helpers
   include ActionView::Context
 
-  def initialize(metadata = {}, data = {})
+  def initialize(metadata = {}, denormalized_data = {}, data = {})
     @metadata = metadata
+    @denormalized_data = denormalized_data
     @data = data
   end
 
@@ -231,6 +232,7 @@ class ScriptGenerator
         var labelText = #{@metadata.fetch(:label_text, {}).to_json};
         var unavailableFilters = #{@metadata.fetch(:unavailable_filters, {}).to_json};
         var data = #{chart_data};
+        var denormalizedData = #{denormalized_chart_data};
         var chartContainer = $('#chart-container-#{container_id}');
 
         $('.filter').on('change', function() { validateFilters('#{container_id}', metadata) });
@@ -460,6 +462,10 @@ class ScriptGenerator
 
   def container_id
     @container_id ||= SecureRandom.hex(15)
+  end
+
+  def denormalized_chart_data
+    @denormalized_data.to_json
   end
 
   def chart_data

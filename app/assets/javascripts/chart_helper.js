@@ -58,11 +58,17 @@ function scopeDataSet(data, scope, countries) {
 
 function reduceDataBasedOnSelection(countries, grouping, dates, overTime) {
   var reducedDataSet;
+  var dataSetInUse;
+  if (overTime) {
+    dataSetInUse = denormalizedData;
+  } else {
+    dataSetInUse = data;
+  }
 
   reducedDataSet = dataIntersection([
-    reduceDataSet(data, countries, 'Country'),
-    reduceDataSet(data, dates, 'Date'),
-    reduceDataSet(data, grouping, 'Grouping')
+    reduceDataSet(dataSetInUse, countries, 'Country'),
+    reduceDataSet(dataSetInUse, dates, 'Date'),
+    reduceDataSet(dataSetInUse, grouping, 'Grouping')
   ]);
 
   var dataTestResult = validateDataset(reducedDataSet, countries);
@@ -280,8 +286,34 @@ function generateCitation(partners) {
 };
 
 function xAxisData(overtime, components) {
-  if (overtime) { return { type: 'datetime' } }
-  else { return components }
+  var styles = chartStyles();
+  var overrides = chartOverrides();
+  var xAxis = {};
+
+  if (overtime) {
+    xAxis['type'] = 'datetime';
+  } else {
+    xAxis['categories'] = components;
+  }
+
+  xAxis['lineColor'] = styles['x-axis-color'];
+  xAxis['title'] = {
+    text: overrides['x-axis-label'],
+    style: {
+      color: styles['label-color']
+    },
+    x: overrides['x-axis-x-position'],
+    y: overrides['x-axis-y-position'],
+  };
+  xAxis['labels'] = {
+    style: {
+      color: styles['label-color']
+    }
+  };
+  xAxis['tickColor'] = styles['tick-color'];
+  xAxis['minorTickColor'] = styles['minor-tick-color'];
+
+  return xAxis;
 };
 
 function unassessedRoundsWarning(unassessedRounds) {
@@ -470,25 +502,7 @@ function generateChart(containerId) {
         },
         text: "PMA 2020"
       },
-      xAxis: {
-        lineColor: styles['x-axis-color'],
-        categories: xAxis,
-        title: {
-          text: overrides['x-axis-label'],
-          style: {
-            color: styles['label-color']
-          },
-          x: overrides['x-axis-x-position'],
-          y: overrides['x-axis-y-position'],
-        },
-        labels: {
-          style: {
-            color: styles['label-color']
-          }
-        },
-        tickColor: styles['tick-color'],
-        minorTickColor: styles['minor-tick-color']
-      },
+      xAxis: xAxis,
       yAxis: {
         min: 0,
         title: {
