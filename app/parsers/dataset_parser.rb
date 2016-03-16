@@ -21,6 +21,7 @@ class DatasetParser
   end
 
   def script
+    normalize_data
     ScriptGenerator.new(metadata, data).generate
   end
 
@@ -202,6 +203,45 @@ class DatasetParser
       potential_languages[language.name] = language.code
     end
     potential_languages
+  end
+
+  def normalize_data
+    all_grouping_categories.each do |grouping_category|
+      grouped_data.each do |k,v|
+        unless v.include?(grouping_category)
+          puts "Adding blank row #{grouping_category} to #{k}"
+          row = blank_row(k[0], k[2], k[1], grouping_category[0], grouping_category[1])
+          data << row
+        end
+      end
+    end
+  end
+
+  def all_grouping_categories
+    grouping_categories = data.collect do |row|
+      [row["Grouping"], row["Category"]]
+    end.uniq
+    grouping_categories.delete(["", ""])
+    grouping_categories
+  end
+
+  def grouped_data
+    x = data.group_by{|x| [x['Country'], x['Round'], x['Date']] }
+    x.delete(["", "", ""]) # remove headers
+    x.each {|k,v| x[k] = v.collect{|y| [y['Grouping'], y['Category']] }}
+  end
+
+  def blank_row(country, date, round, grouping, category)
+    instance = data.last.dup
+    instance.each do |k,v|
+      instance[k] = nil
+    end
+    instance['Country'] = country
+    instance['Date'] = date
+    instance['Round'] = round
+    instance['Grouping'] = grouping
+    instance['Category'] = category
+    instance
   end
 end
 

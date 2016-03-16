@@ -42,11 +42,12 @@ function validateDataset(dataSet, countries) {
     if($.inArray(el, uniqueLength) === -1) uniqueLength.push(el);
   });
 
-  if (uniqueLength.length > 1) {
-    return [false, 'Sorry, the disaggregator you have chosen can not be charted with multiple Countries. Please choose another one or reduce the countries chosen to 1.']
-  } else {
+  console.log('here')
+  //if (uniqueLength.length > 1) {
+    //return [false, 'Sorry, the disaggregator you have chosen can not be charted with multiple Countries. Please choose another one or reduce the countries chosen to 1.']
+  //} else {
     return [true, null]
-  }
+  //}
 }
 
 function disablePieOption(containerId, countries, dates) {
