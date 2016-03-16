@@ -90,6 +90,7 @@ function reduceDataBasedOnSelection(countries, grouping, dates, overTime) {
 function generateSeriesData(chartType, countries, indicator, grouping, dates, overTime, colors) {
   var dataSet = reduceDataBasedOnSelection(countries, grouping, dates, overTime);
   var series = [];
+  var unassessedRounds = {};
   var xAxis = [];
   colors = colors || DEFAULTCOLORS;
 
@@ -169,11 +170,9 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
       data.forEach(function(row) {
         key = dateRoundLabel(row['Country'], row['Date'], row['Round']);
         appendToHash(tmpHsh, key, checkValue(row[indicator]));
-        //appendToHash(tmpHsh, key, { 'country': row['Country'] });
       });
     };
 
-    for(var key in dataSet) { xAxis.push(translate(key, labelText)); }
 
     var itemIndex = 1;
     for(var countryDate in tmpHsh) {
@@ -189,13 +188,35 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
 
       dataPoints.forEach(function(dataPoint) {
         var dataElement = {};
-        dataElement['y'] = parseFloat(checkValue(dataPoint));
+        var val = checkValue(dataPoint);
+        dataElement['y'] = parseFloat(val);
         newRow['data'].push(dataElement);
       });
 
       itemIndex++;
       series.push(newRow);
     };
+
+    var index = 0;
+    for(var key in dataSet) {
+      var hasNaN = false;
+      var translatedText = translate(key, labelText);
+      series.forEach(function(round) {
+        if (isNaN(round['data'][index]['y'])){
+          hasNaN = true;
+          if (unassessedRounds[key] == null || unassessedRounds[key] == undefined) {
+            unassessedRounds[key] = [];
+          }
+          unassessedRounds[key].push(round['name']);
+        }
+      });
+      if (hasNaN) {
+        xAxis.push(translatedText + '*');
+      } else {
+        xAxis.push(translatedText);
+      }
+      index++;
+    }
 
   } else {
     var itemIndex = 1;
@@ -221,7 +242,9 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
     itemIndex++;
   };
 
-  chartComponents = [xAxis, series];
+
+
+  chartComponents = [xAxis, series, unassessedRounds];
   return chartComponents;
 };
 
@@ -261,6 +284,15 @@ function xAxisData(overtime, components) {
   else { return components }
 };
 
+function unassessedRoundsWarning(unassessedRounds) {
+  var warnings = [];
+  Object.keys(unassessedRounds).forEach(function(indicator) {
+    var warningString = indicator + '* was not assessed in: ' + unassessedRounds[indicator].join(', ');
+    warnings.push(warningString);
+  });
+  return warnings.join("\n");
+};
+
 function chartData(containerId, overTime) {
   var chartType = getSelectedChartType(containerId, 'chart_types');
   var selectedCountries = getCountries(containerId);
@@ -290,9 +322,10 @@ function chartData(containerId, overTime) {
 
     var xAxis = xAxisData(overTime, chartComponents[0]);
     var yAxis = getSelectedItemDisplayText(containerId, 'nested_indicators');
-    var seriesData = chartComponents[1]
+    var seriesData = chartComponents[1];
+    var warnings = unassessedRoundsWarning(chartComponents[2]);
 
-    return [xAxis, yAxis, title, chartType, selectedGrouping, seriesData];
+    return [xAxis, yAxis, title, chartType, selectedGrouping, seriesData, warnings];
   }
 };
 
@@ -385,8 +418,7 @@ function generateChart(containerId) {
   var title = data[2];
   var chartType = data[3].toLowerCase();
   var seriesData = data[5];
-
-  console.log(overrides)
+  var warnings = data[6];
 
   if(seriesData != false) {
     $('#chart-container-' + containerId).highcharts({
@@ -408,10 +440,18 @@ function generateChart(containerId) {
       },
       chart: {
         type: chartType,
+        marginBottom: 150,
         backgroundColor: styles["chart-background-color"],
         style: {
           fontFamily: overrides['chart-font']
         }
+      },
+      credits: {
+        text: warnings,
+        position: {
+          align: 'center',
+          y: -5
+        },
       },
       legend: {
         itemStyle: {
