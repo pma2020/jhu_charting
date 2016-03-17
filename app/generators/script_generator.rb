@@ -50,6 +50,12 @@ class ScriptGenerator
                       </div>
                     </div>
                     <div class='row'>
+                      <label for='chart-background-color' class='col-md-6 text-right'>
+                        Black and White:
+                      </label>
+                      <input type="checkbox" class="filter black-and-white-check" id="dataset_black_and_white_#{container_id}">
+                    </div>
+                    <div class='row'>
                       <div class='col-md-12'>
                       #{button_tag('Chart', type: :button, value: 'Chart', id: "submit-chart-filters-#{container_id}", class: 'submit-chart i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled')}
                       #{button_tag('Download CSV', type: :button, value: 'Download CSV', id: "download-csv-#{container_id}", class: 'i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled')}
