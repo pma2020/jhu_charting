@@ -501,6 +501,19 @@ function generateChart(containerId) {
           fontFamily: overrides['chart-font']
         }
       },
+      exporting: { // specific options for the exported image
+        chartOptions: {
+          plotOptions: {
+            series: {
+              dataLabels: {
+                enabled: true
+              }
+            }
+          }
+        },
+        scale: 3,
+        fallbackToExportServer: false
+      },
       credits: {
         text: warnings,
         position: {
