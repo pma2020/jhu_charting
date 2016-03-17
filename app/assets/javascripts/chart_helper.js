@@ -10,6 +10,18 @@ var DEFAULTCOLORS = {
   "ghana": "#5FB404",
   "other": "#0000000"
 }
+var BLACK_AND_WHITE_COLORS = {
+  'nigeria_kaduna':'#111111',
+  'burkina':'#444444',
+  'indonesia':'#555555',
+  'niger':'#777777',
+  'nigeria_lagos':'#888888',
+  'uganda':'#999999',
+  'kenya':'#AAAAAA',
+  'ethiopia':'#BBBBBB',
+  'ghana':'#EEEEEE',
+  'other':'#000000'
+}
 
 
 function filterData(dataSet, type, value) {
@@ -93,12 +105,17 @@ function reduceDataBasedOnSelection(countries, grouping, dates, overTime) {
   }
 };
 
-function generateSeriesData(chartType, countries, indicator, grouping, dates, overTime, colors) {
+function generateSeriesData(chartType, countries, indicator, grouping, dates, overTime, blackAndWhite) {
   var dataSet = reduceDataBasedOnSelection(countries, grouping, dates, overTime);
   var series = [];
   var unassessedRounds = {};
   var xAxis = [];
-  colors = colors || DEFAULTCOLORS;
+  var colors;
+  if (blackAndWhite) {
+    colors = BLACK_AND_WHITE_COLORS
+  } else {
+    colors = DEFAULTCOLORS
+  }
 
   if(overTime) {
     dates.sort(function(a,b){ return Date.parse(a) - Date.parse(b); });
@@ -179,7 +196,6 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
       });
     };
 
-
     var itemIndex = 1;
     for(var countryDate in tmpHsh) {
       var country = keyify(countryDate.split("|")[0]);
@@ -187,10 +203,15 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
       var dataPoints = tmpHsh[countryDate];
       var newRow = {};
       var color = colors[country];
+      var shadedColor;
+
+      if (blackAndWhite){shadedColor = color}
+      else{shadedColor = shadeColor(color, (20*itemIndex))}
+
 
       newRow['data'] = [];
       newRow['name'] = name;
-      newRow['color'] = shadeColor(color, (20*itemIndex));
+      newRow['color'] = shadedColor;
 
       dataPoints.forEach(function(dataPoint) {
         var dataElement = {};
@@ -331,6 +352,7 @@ function chartData(containerId, overTime) {
   var selectedDates = getCheckedItems(containerId, 'year');
   var selectedIndicator = getSelectedItemValue(containerId, 'nested_indicators');
   var selectedGrouping = getSelectedItemValue(containerId, 'disaggregators');
+  var blackAndWhite = getCheckValue(containerId, 'black_and_white');
   if (typeof overTime == 'undefined') {
     var overTime = $('.overtime-check-' + containerId).prop('checked');
   }
@@ -349,7 +371,8 @@ function chartData(containerId, overTime) {
       selectedIndicator,
       selectedGrouping,
       selectedDates,
-      overTime
+      overTime,
+      blackAndWhite
     );
 
     var xAxis = xAxisData(overTime, chartComponents[0]);

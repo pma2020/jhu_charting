@@ -10,6 +10,10 @@ function getInput(containerId, type) {
   return $('#dataset_' + type + '_' + containerId);
 };
 
+function getCheckValue(containerId, type) {
+  return getInput(containerId, type)[0].checked;
+}
+
 function getSelectedItemValue(containerId, type) {
   return getInput(containerId, type).val();
 };
