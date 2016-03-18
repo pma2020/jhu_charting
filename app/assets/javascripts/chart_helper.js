@@ -1,27 +1,22 @@
 var DEFAULTCOLORS = {
-  "nigeria_kaduna":"#003366",
-  "burkina":"#000066",
-  "indonesia":"#660066",
-  "niger":"#993333",
-  "nigeria_lagos":"#663300",
-  "uganda": "#003300",
-  "kenya": "#999900",
-  "ethiopia": "#09465b",
-  "ghana": "#5FB404",
-  "other": "#0000000"
+  "nigeria_kaduna":"#e41a1c",
+  "burkina":"#377eb8",
+  "indonesia":"#4daf4a",
+  "niger":"#984ea3",
+  "nigeria_lagos":"#ff7f00",
+  "uganda":"#ffff33",
+  "kenya":"#a65628",
+  "ethiopia":"#f781bf",
+  "ghana":"#999999",
+  "other":"#6a3d9a"
 }
-var BLACK_AND_WHITE_COLORS = {
-  'nigeria_kaduna':'#111111',
-  'burkina':'#444444',
-  'indonesia':'#555555',
-  'niger':'#777777',
-  'nigeria_lagos':'#888888',
-  'uganda':'#999999',
-  'kenya':'#AAAAAA',
-  'ethiopia':'#BBBBBB',
-  'ghana':'#EEEEEE',
-  'other':'#000000'
-}
+var BLACK_AND_WHITE_COLORS = [
+  '#111111',
+  '#444444',
+  '#777777',
+  '#AAAAAA',
+  '#EEEEEE',
+]
 
 
 function filterData(dataSet, type, value) {
@@ -128,7 +123,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
         var data = countryData[countryKey];
         var newRow = {};
         var country = countryData[countryKey][0]['Country'];
-        var curColor = shadeColor(colors[keyify(country)], (20*itemIndex));
+        var curColor = shadeColor(colors[keyify(country)], (5*itemIndex));
         newRow['name'] = key + ' ' + translate(countryKey, labelText);
         newRow['data'] = [];
         newRow['color'] = curColor;
@@ -196,22 +191,30 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
       });
     };
 
-    var itemIndex = 1;
+    var itemIndex = 0;
     for(var countryDate in tmpHsh) {
       var country = keyify(countryDate.split("|")[0]);
       var name  = countryDate.split("|")[1];
       var dataPoints = tmpHsh[countryDate];
       var newRow = {};
-      var color = colors[country];
+      var color;
       var shadedColor;
 
-      if (blackAndWhite){shadedColor = color}
-      else{shadedColor = shadeColor(color, (20*itemIndex))}
+      if (Object.keys(tmpHsh).length > 5 && blackAndWhite) {
+        alert('Black and White color scheme is only available for 5 or fewer Country/Rounds. Please select fewer Country/Rounds and try again');
+        return false;
+      }
 
+      if (blackAndWhite) {
+        color = colors[itemIndex];
+      } else {
+        color = colors[country]
+        color = shadeColor(color, (5*itemIndex + 1));
+      }
 
       newRow['data'] = [];
       newRow['name'] = name;
-      newRow['color'] = shadedColor;
+      newRow['color'] = color;
 
       dataPoints.forEach(function(dataPoint) {
         var dataElement = {};
@@ -254,7 +257,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
 
       newRow['data'] = [];
       newRow['name'] = dateRoundLabel(countries[0], dates[0], data[0]['Round']);
-      newRow['color'] = shadeColor(color, (20*itemIndex));
+      newRow['color'] = shadeColor(color, (5*itemIndex));
 
       data.forEach(function(row) {
         var dataElement = {};
@@ -268,8 +271,6 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
     }
     itemIndex++;
   };
-
-
 
   chartComponents = [xAxis, series, unassessedRounds];
   return chartComponents;
@@ -297,44 +298,18 @@ function generateTitle(countries, indicator, grouping) {
 };
 
 function generateCitation(partners) {
-  var citation = "Performance Monitoring and Accountability 2020. Johns Hopkins University; ";
+  var citation = "Performance Monitoring and Accountability 2020. Johns Hopkins University; <br/>";
+  var index = 1;
   for (partner in partners) {
     partner = partners[partner];
     citation += translate(partner+"_P", labelText) + "; ";
+    if (index % 3 == 0 && index != 0) {
+      citation += "<br/>";
+    }
+    index++;
   }
   citation += " " + new Date().toJSON().slice(0,10);
   return citation;
-};
-
-function xAxisData(overtime, components) {
-  var styles = chartStyles();
-  var overrides = chartOverrides();
-  var xAxis = {};
-
-  if (overtime) {
-    xAxis['type'] = 'datetime';
-  } else {
-    xAxis['categories'] = components;
-  }
-
-  xAxis['lineColor'] = styles['x-axis-color'];
-  xAxis['title'] = {
-    text: overrides['x-axis-label'],
-    style: {
-      color: styles['label-color']
-    },
-    x: overrides['x-axis-x-position'],
-    y: overrides['x-axis-y-position'],
-  };
-  xAxis['labels'] = {
-    style: {
-      color: styles['label-color']
-    }
-  };
-  xAxis['tickColor'] = styles['tick-color'];
-  xAxis['minorTickColor'] = styles['minor-tick-color'];
-
-  return xAxis;
 };
 
 function unassessedRoundsWarning(unassessedRounds) {
@@ -343,7 +318,7 @@ function unassessedRoundsWarning(unassessedRounds) {
     var warningString = indicator + '* was not assessed in: ' + unassessedRounds[indicator].join(', ');
     warnings.push(warningString);
   });
-  return warnings.join("\n");
+  return warnings.join("<br/>");
 };
 
 function chartData(containerId, overTime) {
@@ -353,10 +328,10 @@ function chartData(containerId, overTime) {
   var selectedIndicator = getSelectedItemValue(containerId, 'nested_indicators');
   var selectedGrouping = getSelectedItemValue(containerId, 'disaggregators');
   var blackAndWhite = getCheckValue(containerId, 'black_and_white');
+  var citationText = generateCitation(selectedCountries);
   if (typeof overTime == 'undefined') {
     var overTime = $('.overtime-check-' + containerId).prop('checked');
   }
-  $(".citation-viewport .panel .panel-body").text(generateCitation(selectedCountries));
 
   if(validateFilters(containerId)) {
     var title = generateTitle(
@@ -380,85 +355,24 @@ function chartData(containerId, overTime) {
     var seriesData = chartComponents[1];
     var warnings = unassessedRoundsWarning(chartComponents[2]);
 
-    return [xAxis, yAxis, title, chartType, selectedGrouping, seriesData, warnings];
+    return [xAxis, yAxis, title, chartType, selectedGrouping, seriesData, warnings, citationText];
   }
 };
 
-function downloadCSV(containerId) {
-  var data = chartData(containerId, false) || [];
-  var xAxis = data[0];
-  var title = data[2];
-  var disaggregator = data[4];
-  var seriesData = data[5];
-
-  $.ajax({
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+function legendContent(lableColor, seriesCount) {
+  var legendContent = {
+    itemStyle: {
+      color: lableColor
     },
-    url: "/datasets/chart_csv.csv",
-    method: "POST",
-    data: {
-      series : seriesData,
-      xAxis: xAxis,
-      disaggregator: disaggregator
-    },
-    success: function(data) {
-      var link = document.createElement('a');
-      link.href = window.URL.createObjectURL(new Blob([data]));
-      link.download = title + ".csv";
-      link.click();
-    }
-  });
-
-};
-
-function chartStyles(containerId) {
-  var chartBackgroundColor = $('input#chart-background-color').val() || '#FFFFFF';
-  var yAxisColor = $('input#y-axis-color').val() || '#FFFFFF';
-  var yAxisWidth = 0;
-  if(yAxisColor != '#FFFFFF'){yAxisWidth=1};
-  var xAxisColor = $('input#x-axis-color').val() || '#C0D0E0';
-  var titleColor = $('input#title-color').val() || '#333333';
-  var labelColor = $('input#label-color').val() || '#333333';
-  var tickColor = $('input#tick-color').val() || '#333333';
-  var minorTickColor = $('input#minor-tick-color').val() || '#333333';
-
-  return {
-    "chart-background-color" : chartBackgroundColor,
-    "y-axis-color" : yAxisColor,
-    "y-axis-width" : yAxisWidth,
-    "x-axis-color" : xAxisColor,
-    "title-color" : titleColor,
-    "label-color" : labelColor,
-    "tick-color" : tickColor,
-    "minorTick-color" : minorTickColor
   }
-};
-
-function chartOverrides(containerId) {
-  var yAxisLabel = $('input#y-axis-label').val();
-  var xAxisLabel = $('input#x-axis-label').val();
-  var yAxisX = $('input#y-axis-x-position').val();
-  var yAxisY = $('input#y-axis-y-position').val();
-  var xAxisX = $('input#x-axis-x-position').val();
-  var xAxisY = $('input#x-axis-y-position').val();
-  var markerSize = $('input#marker-size').val() || 4;
-  var dataLabelX = $('input#data-label-x-position').val();
-  var dataLabelY = $('input#data-label-y-position').val();
-  var font = $('.bfh-selectbox-option').text()
-
-  return {
-    "y-axis-label" : yAxisLabel,
-    "x-axis-label" : xAxisLabel,
-    "y-axis-x-position" : parseInt(yAxisX),
-    "y-axis-y-position" : parseInt(yAxisY),
-    "x-axis-x-position" : parseInt(xAxisX),
-    "x-axis-y-position" : parseInt(xAxisY),
-    "marker-size" : parseInt(markerSize),
-    "data-label-x-position" : parseInt(dataLabelX),
-    "data-label-y-position" : parseInt(dataLabelY),
-    "chart-font" : font,
+  if (seriesCount > 5) {
+    legendContent['align'] = 'right',
+    legendContent['verticalAlign'] = 'top',
+    legendContent['layout'] = 'vertical',
+    legendContent['x'] = 0,
+    legendContent['y'] = 40
   }
+  return legendContent
 };
 
 function generateChart(containerId) {
@@ -474,6 +388,9 @@ function generateChart(containerId) {
   var chartType = data[3].toLowerCase();
   var seriesData = data[5];
   var warnings = data[6];
+  var citationText = data[7];
+
+  var footerText = warnings + '<br/><br/>' + citationText;
 
   if(seriesData != false) {
     $('#chart-container-' + containerId).highcharts({
@@ -515,17 +432,13 @@ function generateChart(containerId) {
         fallbackToExportServer: false
       },
       credits: {
-        text: warnings,
+        text: footerText,
         position: {
           align: 'center',
-          y: -5
+          y: -100
         },
       },
-      legend: {
-        itemStyle: {
-          color: styles['label-color']
-        }
-      },
+      legend: legendContent(styles['label-color'], seriesData.length),
       title: {
         style: {
           color: styles['title-color']
