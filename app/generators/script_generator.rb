@@ -195,20 +195,6 @@ class ScriptGenerator
               </section>
             </div>
           </div>
-          <div class='row bottom-row'>
-            <div class='col-md-9 col-md-offset-3'>
-              <section class='citation-viewport'>
-                <div class='panel panel-default'>
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Citations</h3>
-                  </div>
-                  <div class="panel-body">
-                    Citation content
-                  </div>
-                </div>
-              </section>
-            </div>
-          </div>
         </div>
       </div>
       #{javascripts}
