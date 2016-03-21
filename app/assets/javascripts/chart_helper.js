@@ -33,6 +33,57 @@ function dataIntersection(arrays) {
   return result;
 };
 
+function select(item, key) {
+  var result = [];
+  if (isArray(item) == true) {
+    item.forEach(function(row) {
+      result.push(row[key]);
+    });
+  }
+  return result;
+}
+
+function uniq(array) {
+  return array.filter(function(i,x,a){return x==a.indexOf(i);});
+};
+
+function addRow(data, category, countryRound) {
+  var keys = Object.keys(data[0]);
+  var tmpItem = {};
+  // null out everything
+  keys.forEach(function(key) { tmpItem[key] = null; });
+  tmpItem['Country'] = countryRound.split("|")[0];
+  tmpItem['Round'] = countryRound.split("|")[1];
+  tmpItem['Date'] = countryRound.split("|")[2];
+  tmpItem['Category'] = category;
+  data.push(tmpItem);
+};
+
+function syncDataSets(data) {
+  var sets = {};
+  data.forEach(function(row) {
+    var key = row['Country'] + "|" + row['Round'] + "|" + row['Date'];
+    if (sets[key] == null) {
+      sets[key] = [row['Category']];
+    } else {
+      var items = sets[key];
+      items.push(row['Category']);
+      sets[key] = items;
+    }
+  });
+  var allValues  = uniq($.map(sets, function(v) { return v; }));
+
+  Object.keys(sets).forEach(function(countryRound) {
+    allValues.forEach(function(category) {
+      if (sets[countryRound].indexOf(category) == -1) {
+        addRow(data, category, countryRound);
+      }
+    });
+  });
+
+  return data;
+};
+
 function reduceDataSet(data, filters, filterType) {
   var result = [];
   if (isArray(filters) == true) {
@@ -65,20 +116,21 @@ function scopeDataSet(data, scope, countries) {
 
 function reduceDataBasedOnSelection(countries, grouping, dates, overTime) {
   var reducedDataSet;
-  var dataSetInUse;
-  if (overTime) {
-    dataSetInUse = denormalizedData;
-  } else {
-    dataSetInUse = data;
-  }
+  var syncedData;
 
   reducedDataSet = dataIntersection([
-    reduceDataSet(dataSetInUse, countries, 'Country'),
-    reduceDataSet(dataSetInUse, dates, 'Date'),
-    reduceDataSet(dataSetInUse, grouping, 'Grouping')
+    reduceDataSet(data, countries, 'Country'),
+    reduceDataSet(data, dates, 'Date'),
+    reduceDataSet(data, grouping, 'Grouping')
   ]);
 
-  var dataTestResult = validateDataset(reducedDataSet, countries);
+  if (overTime) {
+    syncedData = reducedDataSet;
+  } else {
+    syncedData = syncDataSets(reducedDataSet);
+  }
+
+  var dataTestResult = validateDataset(syncedData, countries);
   var validData = dataTestResult[0];
   var error = dataTestResult[1];
 
@@ -130,6 +182,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
 
         var tmpHsh = {};
 
+        // Gather the possible keys
         data.forEach(function(row) {
           dates.forEach(function(date) {
             if(date == row['Date']) {

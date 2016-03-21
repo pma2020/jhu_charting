@@ -21,9 +21,9 @@ class DatasetParser
   end
 
   def script
-    denormalized_data = data.dup
-    normalize_data
-    ScriptGenerator.new(metadata, denormalized_data, data).generate
+    #denormalized_data = data.dup
+    #normalize_data
+    ScriptGenerator.new(metadata, data).generate
   end
 
   def load
