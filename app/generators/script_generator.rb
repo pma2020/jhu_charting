@@ -4,9 +4,9 @@ class ScriptGenerator
   include ActionView::Helpers
   include ActionView::Context
 
-  def initialize(metadata = {}, denormalized_data = {}, data = {})
+  def initialize(metadata = {}, data = {})
     @metadata = metadata
-    @denormalized_data = denormalized_data
+    #@denormalized_data = denormalized_data
     @data = data
   end
 
@@ -247,14 +247,12 @@ class ScriptGenerator
         $('.collapse').on('show.bs.collapse', function () {
           var checked = $(this).find("[type='checkbox']:checked").length;
           if (checked > 0) { return false; }
-          console.log('wh')
           $(this).parent().find(".country-header").find("i").removeClass("fa-plus").addClass("fa-minus");
         });
 
         $('.collapse').on('shown.bs.collapse', function () {
           var openItems = $('.collapse.in').length;
-          console.log("here")
-          if (openItems > 0) { console.log("open!"); $('.btn-group-justified button').attr('disabled', false); }
+          if (openItems > 0) { $('.btn-group-justified button').attr('disabled', false); }
         });
 
         $('.collapse').on('hide.bs.collapse', function () {
