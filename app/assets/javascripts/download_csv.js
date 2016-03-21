@@ -5,24 +5,33 @@ function downloadCSV(containerId) {
   var disaggregator = data[4];
   var seriesData = data[5];
 
-  $.ajax({
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
-    },
-    url: "/datasets/chart_csv.csv",
-    method: "POST",
-    data: {
-      series : seriesData,
-      xAxis: xAxis,
-      disaggregator: disaggregator
-    },
-    success: function(data) {
-      var link = document.createElement('a');
-      link.href = window.URL.createObjectURL(new Blob([data]));
-      link.download = title + ".csv";
-      link.click();
-    }
-  });
-
+  $form = $("<form></form>");
+  $form.attr('action', "/datasets/chart_csv.csv");
+  $form.attr('method', "POST");
+  $('<input>').attr({
+    type: 'hidden',
+    id: 'series',
+    name: 'series',
+    value: JSON.stringify(seriesData)
+  }).appendTo($form);
+  $('<input>').attr({
+    type: 'hidden',
+    id: 'xAxis',
+    name: 'xAxis',
+    value: JSON.stringify(xAxis)
+  }).appendTo($form);
+  $('<input>').attr({
+    type: 'hidden',
+    id: 'disaggregator',
+    name: 'disaggregator',
+    value: disaggregator
+  }).appendTo($form);
+  $('<input>').attr({
+    type: 'hidden',
+    id: 'authenticity_token',
+    name: 'authenticity_token',
+    value: $('meta[name="csrf-token"]').attr('content')
+  }).appendTo($form);
+  $form.submit();
 };
 

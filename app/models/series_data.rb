@@ -2,9 +2,9 @@ class SeriesData
   attr_reader :series
 
   def initialize(opts = {})
-    @series = opts.fetch("series").values
+    @series = JSON.parse(opts.fetch("series"))
     @disaggregator = opts.fetch("disaggregator")
-    @xAxis = opts.fetch("xAxis")
+    @xAxis = JSON.parse(opts.fetch("xAxis"))
   end
 
 
@@ -12,7 +12,7 @@ class SeriesData
     @data = Hash.new
     @series.each do |row|
       series_row = SeriesRow.new(row, @xAxis)
-      @data[series_row.header] = series_row.data
+      @data[series_row.header] = series_row.series_values
     end
     @data
   end
@@ -40,10 +40,10 @@ class SeriesData
   end
 
   def csv_row_keys
-    @xAxis || []
+    @xAxis['categories'] || []
   end
 
   def transposed_data_values
-    data.values.collect(&:values).transpose
+    data.values.transpose
   end
 end

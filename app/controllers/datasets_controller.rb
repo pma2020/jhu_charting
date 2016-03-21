@@ -40,8 +40,7 @@ class DatasetsController < ApplicationController
       format.csv {
         send_data(SeriesData.new(params).generate_csv,
                   filename: "result.csv",
-                  type: "text/csv",
-                  disposition: :attachment)
+                  type: "text/csv")
       }
     end
   end
