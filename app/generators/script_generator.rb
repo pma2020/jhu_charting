@@ -6,7 +6,6 @@ class ScriptGenerator
 
   def initialize(metadata = {}, data = {})
     @metadata = metadata
-    #@denormalized_data = denormalized_data
     @data = data
   end
 
@@ -224,7 +223,6 @@ class ScriptGenerator
         var labelText = #{@metadata.fetch(:label_text, {}).to_json};
         var unavailableFilters = #{@metadata.fetch(:unavailable_filters, {}).to_json};
         var data = #{chart_data};
-        var denormalizedData = #{denormalized_chart_data};
         var chartContainer = $('#chart-container-#{container_id}');
 
         $('.filter').on('change', function() { validateFilters('#{container_id}', metadata) });
@@ -400,12 +398,13 @@ class ScriptGenerator
   def data_series
     @metadata.fetch(:year_by_country, {}).collect do |k,v|
       data_attributes = { country: k }
+      nice_country_name = k.titleize
       <<-"EOS"
       <div class='row'>
         <div class='col-md-12'>
           <div class='country-header' data-toggle="collapse" href="#collapse-#{k}" aria-expanded="false" aria-controls="collapseExample">
             <i class="fa fa-plus"></i>
-            <b class='i18nable' data-value='#{k}'>#{k}</b>
+            <b class='i18nable' data-value='#{nice_country_name}'>#{nice_country_name}</b>
           </div>
           <div class='date-selection collapse' id="collapse-#{k}">
             #{checkboxes('year', v, false, data_attributes)}
@@ -452,10 +451,6 @@ class ScriptGenerator
 
   def container_id
     @container_id ||= SecureRandom.hex(15)
-  end
-
-  def denormalized_chart_data
-    @denormalized_data.to_json
   end
 
   def chart_data

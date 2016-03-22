@@ -176,7 +176,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
         var newRow = {};
         var country = countryData[countryKey][0]['Country'];
         var curColor = shadeColor(colors[keyify(country)], (5*itemIndex));
-        newRow['name'] = key + ' ' + translate(countryKey, labelText);
+        newRow['name'] = titleCase(key) + ' ' + translate(countryKey, labelText);
         newRow['data'] = [];
         newRow['color'] = curColor;
 
@@ -330,13 +330,13 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
 };
 
 function dateRoundLabel(country, date, round) {
-  return country + "|" + translate(country, labelText) + ' ' + date.split("-")[0] + ' ' + round;
+  return titleCase(country) + "|" + titleCase(translate(country, labelText)) + ' ' + date.split("-")[0] + ' ' + round;
 };
 
 function translateCountries(countries) {
   var translated = [];
   countries.forEach(function(country) {
-    translated.push(translate(country, labelText));
+    translated.push(titleCase(translate(country, labelText)));
   });
   return translated;
 };
