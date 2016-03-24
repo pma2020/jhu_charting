@@ -5,10 +5,7 @@ class Dataset < ActiveRecord::Base
   validates_presence_of :name
 
   def parse
-    DatasetParser.new(
-      csv_file.backend.path(csv_file.id),
-      help_file.backend.path(help_file.id)
-    )
+    DatasetParser.new(csv_file, help_file)
   end
 
   def script

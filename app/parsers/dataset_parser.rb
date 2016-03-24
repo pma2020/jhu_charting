@@ -21,15 +21,15 @@ class DatasetParser
   end
 
   def script
-    #denormalized_data = data.dup
-    #normalize_data
     ScriptGenerator.new(metadata, data).generate
   end
 
   def load
-    @data ||= SmarterCSV.process(@csv, csv_parse_options)
+    @data ||= SmarterCSV.process(@csv.download, csv_parse_options)
     @indicator_categories = @data.shift
-    @help_data ||= SmarterCSV.process(@help_file, csv_parse_options)
+    @help_data ||= SmarterCSV.process(File.open(
+      @help_file.download,"r:bom|utf-8"
+    ), csv_parse_options)
   end
 
   def csv_parse_options
