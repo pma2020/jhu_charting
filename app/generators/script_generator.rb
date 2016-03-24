@@ -402,12 +402,12 @@ class ScriptGenerator
       <<-"EOS"
       <div class='row'>
         <div class='col-md-12'>
-          <div class='country-header' data-toggle="collapse" href="#collapse-#{k}" aria-expanded="false" aria-controls="collapseExample">
+          <div class='country-header' data-toggle="collapse" href="#collapse-#{k.parameterize}" aria-expanded="false" aria-controls="collapseExample">
             <i class="fa fa-plus"></i>
             <b class='i18nable' data-value='#{nice_country_name}'>#{nice_country_name}</b>
           </div>
-          <div class='date-selection collapse' id="collapse-#{k}">
-            #{checkboxes('year', v, false, data_attributes)}
+          <div class='date-selection collapse' id="collapse-#{k.parameterize}">
+            #{checkboxes("#{k.parameterize}-year", v, false, data_attributes)}
           </div>
         </div>
       </div>
