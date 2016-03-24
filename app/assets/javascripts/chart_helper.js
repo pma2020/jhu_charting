@@ -306,7 +306,14 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
     for(var key in dataSet) {
       var data = dataSet[key];
       var newRow = {};
-      var color = colors[keyify(countries[0])];
+      var color;
+
+      if (blackAndWhite) {
+        color = colors[itemIndex];
+      } else {
+        color = colors[keyify(countries[0])]
+        color = shadeColor(color, (5*itemIndex + 1));
+      }
 
       newRow['data'] = [];
       newRow['name'] = dateRoundLabel(countries[0], dates[0], data[0]['Round']);

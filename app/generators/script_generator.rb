@@ -317,7 +317,8 @@ class ScriptGenerator
           end
 
           b.check_box(
-            class: "filter year-check #{type.singularize}-check-#{container_id}",
+            id: "dataset_year_#{b.text}",
+            class: "filter year-check year-check-#{container_id}",
             disabled: disabled,
             data: data_attributes
           ) + text
