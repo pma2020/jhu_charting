@@ -287,6 +287,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
       series.forEach(function(round) {
         if (isNaN(round['data'][index]['y'])){
           hasNaN = true;
+          round['data'][index]['y'] = null;
           if (unassessedRounds[key] == null || unassessedRounds[key] == undefined) {
             unassessedRounds[key] = [];
           }
