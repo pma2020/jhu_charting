@@ -1,24 +1,3 @@
-var DEFAULTCOLORS = {
-  "nigeria_kaduna":"#e41a1c",
-  "burkina":"#377eb8",
-  "indonesia":"#4daf4a",
-  "niger":"#984ea3",
-  "nigeria_lagos":"#ff7f00",
-  "uganda":"#ffff33",
-  "kenya":"#a65628",
-  "ethiopia":"#f781bf",
-  "ghana":"#999999",
-  "other":"#6a3d9a"
-}
-var BLACK_AND_WHITE_COLORS = [
-  '#111111',
-  '#444444',
-  '#777777',
-  '#AAAAAA',
-  '#EEEEEE',
-]
-
-
 function filterData(dataSet, type, value) {
   var items = dataSet.filter(function(hsh) { return hsh[type] === value; });
   return items
@@ -157,12 +136,6 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
   var series = [];
   var unassessedRounds = {};
   var xAxis = [];
-  var colors;
-  if (blackAndWhite) {
-    colors = BLACK_AND_WHITE_COLORS
-  } else {
-    colors = DEFAULTCOLORS
-  }
 
   if(overTime) {
     dates.sort(function(a,b){ return Date.parse(a) - Date.parse(b); });
@@ -170,15 +143,22 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
     for(var key in dataSet) {
       var countryData = dataSet[key];
 
-      var itemIndex = 1;
+      var roundIndex = 0;
       for(var countryKey in countryData) {
         var data = countryData[countryKey];
         var newRow = {};
-        var country = countryData[countryKey][0]['Country'];
-        var curColor = shadeColor(colors[keyify(country)], (5*itemIndex));
+
+        var countryIndex = countries.indexOf(countryData[countryKey][0]['Country']);
+        if (blackAndWhite) {
+          var color = blackAndWhiteValue(Object.keys(countryData).length, roundIndex);
+          if (color == false) { return false }
+          newRow['color'] = color;
+        } else {
+          newRow['color'] = colorValue(Object.keys(countryData).length, countryIndex, roundIndex)
+        }
+
         newRow['name'] = titleCase(key) + ' ' + translate(countryKey, labelText);
         newRow['data'] = [];
-        newRow['color'] = curColor;
 
         var tmpHsh = {};
 
@@ -227,7 +207,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
           newRow['data'].push(dataElement);
         });
 
-        itemIndex++;
+        roundIndex++;
         xAxis = null;
         series.push(newRow);
       };
@@ -244,30 +224,31 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
       });
     };
 
-    var itemIndex = 0;
+    var countryIndex = 0;
+    var roundIndex = 0;
     for(var countryDate in tmpHsh) {
       var country = keyify(countryDate.split("|")[0]);
+      var lastCountry;
+      if (lastCountry == null) { lastCountry = country; }
       var name  = countryDate.split("|")[1];
       var dataPoints = tmpHsh[countryDate];
       var newRow = {};
-      var color;
-      var shadedColor;
 
-      if (Object.keys(tmpHsh).length > 5 && blackAndWhite) {
-        alert('Black and White color scheme is only available for 5 or fewer Country/Rounds. Please select fewer Country/Rounds and try again');
-        return false;
+      if (country != lastCountry) {
+        countryIndex++;
+        roundIndex = 0;
       }
 
-      if (blackAndWhite) {
-        color = colors[itemIndex];
+      if (blackAndWhite == true) {
+        var color = blackAndWhiteValue(Object.keys(tmpHsh).length, roundIndex);
+        if (color == false) { return false }
+        newRow['color'] = color;
       } else {
-        color = colors[country]
-        color = shadeColor(color, (5*itemIndex + 1));
+        newRow['color'] = colorValue(countries.length, countryIndex, roundIndex);
       }
 
       newRow['data'] = [];
       newRow['name'] = name;
-      newRow['color'] = color;
 
       dataPoints.forEach(function(dataPoint) {
         var dataElement = {};
@@ -276,7 +257,8 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
         newRow['data'].push(dataElement);
       });
 
-      itemIndex++;
+      lastCountry = country;
+      roundIndex++;
       series.push(newRow);
     };
 
@@ -307,18 +289,9 @@ function generateSeriesData(chartType, countries, indicator, grouping, dates, ov
     for(var key in dataSet) {
       var data = dataSet[key];
       var newRow = {};
-      var color;
-
-      if (blackAndWhite) {
-        color = colors[itemIndex];
-      } else {
-        color = colors[keyify(countries[0])]
-        color = shadeColor(color, (5*itemIndex + 1));
-      }
 
       newRow['data'] = [];
       newRow['name'] = dateRoundLabel(countries[0], dates[0], data[0]['Round']);
-      newRow['color'] = shadeColor(color, (5*itemIndex));
 
       data.forEach(function(row) {
         var dataElement = {};
