@@ -39,7 +39,7 @@ function shadeColor(color, percent) {
 
 function blackAndWhiteValue(seriesSize, index) {
   if(seriesSize > BLACK_AND_WHITE_MAX) {
-    alert('Black and White color scheme is only available for 5 or fewer Country/Rounds. Please select fewer Country/Rounds and try again');
+    alert("Black and White color scheme is only available for " + BLACK_AND_WHITE_MAX + " or fewer Country/Rounds. Please select fewer Country/Rounds and try again");
     return false;
   }
   return BLACK_AND_WHITE_COLORS[index];
