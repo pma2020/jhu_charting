@@ -1,9 +1,9 @@
-function getCheckedItems(containerId, type) {
-  var checkedItems = [];
-  $('.' + type + '-check-' + containerId + ':checked').each(function() {
-    checkedItems.push($(this).val());
+function getSelectedYearRounds() {
+  var year_rounds = [];
+  $('.year-check:checked').each(function() {
+    year_rounds.push({ year: $(this).data('date'), round: $(this).data('round')});
   });
-  return checkedItems;
+  return year_rounds;
 };
 
 function getInput(containerId, type) {
@@ -28,7 +28,7 @@ function getSelectedItemDisplayText(containerId, type) {
 
 function getCountries(containerId) {
   var countries = [];
-  $('.year-check-' + containerId + ':checked').each(function() {
+  $('.year-check:checked').each(function() {
     countries.push($(this).data('country'));
   });
 

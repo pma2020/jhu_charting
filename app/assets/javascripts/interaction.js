@@ -1,22 +1,22 @@
 function selectAll(containerId) {
-  $('.collapse.in .year-check-' + containerId).each(function() { $(this).prop('checked', true); });
+  $('.collapse.in .year-check').each(function() { $(this).prop('checked', true); });
   validateFilters(containerId);
 };
 
 function selectLatest(containerId) {
   $('.date-selection').each(function() {
-    $('.year-check-' + containerId).each(function() {
+    $('.year-check').each(function() {
       $(this).prop('checked', false);
     });
   });
   $('.date-selection.collapse.in').each(function() {
-    $(this).find('.year-check-' + containerId).last().prop('checked', true);
+    $(this).find('.year-check').last().prop('checked', true);
   });
   validateFilters(containerId);
 };
 
 function clearAll(containerId) {
-  $('.year-check-' + containerId).each(function() {
+  $('.year-check').each(function() {
     $(this).prop('checked', false);
   });
   validateFilters(containerId);

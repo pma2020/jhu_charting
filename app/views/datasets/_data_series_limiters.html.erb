@@ -1,0 +1,15 @@
+<div class='row'>
+  <div class='col-md-12'>
+    <div class="btn-group btn-group-justified" role="group">
+      <div class="btn-group" role="group">
+        <%= button_tag('All', type: :button, value: 'All', id: "select-all-#{@container_id}", class: 'i18nable-button btn btn-primary', disabled: "disabled") %>
+      </div>
+      <div class="btn-group" role="group">
+        <%= button_tag('Latest', type: :button, value: 'Latest', id: "select-latest-#{@container_id}", class: 'i18nable-button btn btn-primary', disabled: "disabled") %>
+      </div>
+      <div class="btn-group" role="group">
+        <%= button_tag('Clear', type: :button, value: 'Clear', id: "clear-all-#{@container_id}", class: 'i18nable-button btn btn-primary', disabled: "disabled") %>
+      </div>
+    </div>
+  </div>
+</div>
