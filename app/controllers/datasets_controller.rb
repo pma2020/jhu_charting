@@ -15,7 +15,6 @@ class DatasetsController < ApplicationController
   def show
     @metadata = @dataset.parse.metadata
     @data = @dataset.parse.data
-    @container_id = SecureRandom.hex(15)
   end
 
   def embed

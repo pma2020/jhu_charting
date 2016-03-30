@@ -1,0 +1,131 @@
+<div class='container-fluid'>
+  <div id='jhu-chart'>
+    <div class='row top-row'>
+      <div class='col-md-3'>
+        <section class='chart-sidebar'>
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#controls" aria-controls="controls" role="tab" data-toggle="tab">Controls</a></li>
+            <li role="presentation"><a href="#help-center" aria-controls="help-center" role="tab" data-toggle="tab">Help Center</a></li>
+            <li role="presentation"><a href="#style" aria-controls="style" role="tab" data-toggle="tab">Style</a></li>
+          </ul>
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="controls">
+              <div class='row'>
+                <div class='col-md-12'>
+                  <div class='form-group'>
+                    <%= label_tag("dataset-language-picker".to_sym, "Language: ", class: 'i18nable-label', data: { type: 'Language' }) %>
+                    <%= select_tag("dataset-language-picker".to_sym, options_for_select(select_options(@metadata.fetch(:languages).keys), 'None'), class: "filter filter-language form-control") %>
+                  </div>
+                </div>
+              </div>
+              <%= render partial: 'select_box_filter', locals: {
+                type: 'nested_indicators',
+                label_value: 'Indicators',
+                grouped: true } %>
+              <%= render partial: 'select_box_filter', locals: {
+                type: 'disaggregators',
+                label_value: 'Break down data by',
+                grouped: false } %>
+              <%= render partial: 'data_series_limiters' %>
+              <%= render partial: 'data_series' %>
+              <div class='row'>
+                <div class='col-md-8'>
+                  <%= render partial: 'chart_type_buttons' %>
+                </div>
+                <div class='col-md-4'>
+                  <%= render partial: 'overtime_checkbox' %>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-md-4'>
+                  <%= render partial: 'black_and_white_button' %>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-md-12'>
+                  <%= button_tag('Chart', type: :button, value: 'Chart', id: "submit-chart-filters", class: 'submit-chart i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled') %>
+                  <%= button_tag('Download CSV', type: :button, value: 'Download CSV', id: "download-csv", class: 'i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled') %>
+                </div>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="help-center">
+              <div class='help-center'>
+                <p>
+                Change components from the controls tab to get more info here.
+                </p>
+                <div class='help-definition indicator'></div>
+                <div class='help-definition group-filter'></div>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="style">
+              <%= render partial: 'style_controls' %>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class='col-md-9'>
+        <section class='chart-viewport'>
+          <div id='chart-container' class='chart-container'>
+            <div class='chart-placeholder'>
+              <h4>
+                <i class='fa fa-bar-chart'></i>
+              </h4>
+            </div>
+            <div class='clearfix'></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+var metadata = <%= @metadata.fetch(:year_by_country, {}).to_json.html_safe %>;
+var availableLanguages = <%= @metadata.fetch(:languages, {}).to_json.html_safe %>;
+var helpText = <%= @metadata.fetch(:help_text, {}).to_json.html_safe %>;
+var labelText = <%= @metadata.fetch(:label_text, {}).to_json.html_safe %>;
+var unavailableFilters = <%= @metadata.fetch(:unavailable_filters, {}).to_json.html_safe %>;
+var data = <%= @data.to_json.html_safe %>;
+var chartContainer = $('#chart-container');
+
+$('.filter').on('change', function() { validateFilters(metadata) });
+$('.filter.filter-nested_indicators').on('change', function() { displayHelpText() });
+$('.filter.filter-disaggregators').on('change', function() { displayHelpText() });
+$('.year-check').on('change', function() { toggleCountryHeader($(this)) });
+$('#select-all').on('click', function() {selectAll()});
+$('#select-latest').on('click', function() {selectLatest()});
+$('#clear-all').on('click', function() {clearAll()});
+$('.clear-select').on('click', function() {clearSelect($(this))});
+$('#dataset-language-picker').on('change', function() {updateLanguage()});
+$('.submit-chart').on('click', function() {
+  generateChart();
+  $('#download-csv').prop('disabled', '');
+});
+$('#download-csv').on('click', function() { downloadCSV(); });
+$('input.color').colorPicker();
+$(document).ready(function(){ updateLanguage(); });
+
+$('.collapse').on('show.bs.collapse', function () {
+  var checked = $(this).find("[type='checkbox']:checked").length;
+  if (checked > 0) { return false; }
+  $(this).parent().find(".country-header").find("i").removeClass("fa-plus").addClass("fa-minus");
+});
+
+$('.collapse').on('shown.bs.collapse', function () {
+  var openItems = $('.collapse.in').length;
+  if (openItems > 0) { $('.btn-group-justified button').attr('disabled', false); }
+});
+
+$('.collapse').on('hide.bs.collapse', function () {
+  var checked = $(this).find("[type='checkbox']:checked").length;
+  if (checked > 0) { return false; }
+  $(this).parent().find(".country-header").find("i").removeClass("fa-minus").addClass("fa-plus");
+});
+
+$('.collapse').on('hidden.bs.collapse', function () {
+  var openItems = $('.collapse.in').length;
+  if (openItems == 0) { $('.btn-group-justified button').attr('disabled', true); }
+});
+</script>
+

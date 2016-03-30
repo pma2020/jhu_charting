@@ -1,7 +1,7 @@
 <% label_value = type unless label_value %>
 <% label_safe = label_value.humanize.capitalize %>
 <% label_ref = type =="disaggregators" ? type.singularize.downcase.underscore : label_value.downcase.underscore %>
-<% id = "dataset_#{type}_#{@container_id}".to_sym %>
+<% id = "dataset_#{type}".to_sym %>
 <% values = @metadata.fetch(type.to_sym) %>
 
 <div class='row'>

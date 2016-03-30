@@ -1,5 +1,5 @@
-function downloadCSV(containerId) {
-  var data = chartData(containerId, false) || [];
+function downloadCSV() {
+  var data = chartData(false) || [];
   var xAxis = data[0];
   var title = data[2];
   var disaggregator = data[4];
