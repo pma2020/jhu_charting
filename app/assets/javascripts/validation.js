@@ -1,6 +1,6 @@
 function validateFilters(containerId) {
   var chartType = getInput(containerId, 'chart_types');
-  var selectedDates = getCheckedItems(containerId, 'year');
+  var selectedDates = getSelectedYearRounds();
   var selectedCountries = getCountries(containerId);
 
   disablePieOption(containerId, selectedCountries, selectedDates);
@@ -90,7 +90,11 @@ function chartable(containerId, dates) {
   var selectedGrouping = getSelectedItemValue(containerId, 'disaggregators');
   var chartType = getSelectedChartType(containerId, 'chart_types');
 
-  if(dates.length > 0 && selectedIndicator.length > 0 && selectedGrouping.length > 0 && chartType.length > 0) {
+  if(dates.length > 0 &&
+     selectedIndicator.length > 0 &&
+       selectedGrouping.length > 0 &&
+         chartType != undefined &&
+         chartType.length > 0) {
     enableCharting(containerId, '');
     return true;
   } else {

@@ -1,0 +1,19 @@
+<% id = "dataset_chart_types_#{container_id}".to_sym %>
+<% values = @metadata.fetch(:chart_types) %>
+
+<div class='form-group'>
+  <h4 class='i18nable-label' data-type='chart-type'>Chart Type:</h4>
+  <div id=<%= id.to_s %> data-toggle="buttons">
+    <% values.each do |value| %>
+      <label class="btn btn-primary">
+        <input type='radio'
+             name='options'
+             class='filter'
+             id='option-<%= value.downcase %>'
+             data-type='<%= value.downcase %>'
+             autocomplete='off' checked>
+        <i class='fa fa-<%= chart_icon(value) %>'></i>
+      </label>
+    <% end %>
+  </div>
+</div>

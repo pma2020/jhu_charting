@@ -93,13 +93,17 @@ function scopeDataSet(data, scope, countries) {
   return scopedData;
 };
 
-function reduceDataBasedOnSelection(countries, grouping, dates, overTime) {
+function reduceDataBasedOnSelection(countries, grouping, dateRounds, overTime) {
   var reducedDataSet;
   var syncedData;
+
+  var dates = dateRounds.map(function(obj){return obj.year});
+  var rounds = dateRounds.map(function(obj){return obj.round});
 
   reducedDataSet = dataIntersection([
     reduceDataSet(data, countries, 'Country'),
     reduceDataSet(data, dates, 'Date'),
+    reduceDataSet(data, rounds, 'Round'),
     reduceDataSet(data, grouping, 'Grouping')
   ]);
 
@@ -131,8 +135,9 @@ function reduceDataBasedOnSelection(countries, grouping, dates, overTime) {
   }
 };
 
-function generateSeriesData(chartType, countries, indicator, grouping, dates, overTime, blackAndWhite) {
-  var dataSet = reduceDataBasedOnSelection(countries, grouping, dates, overTime);
+function generateSeriesData(chartType, countries, indicator, grouping, dateRounds, overTime, blackAndWhite) {
+  var dataSet = reduceDataBasedOnSelection(countries, grouping, dateRounds, overTime);
+  var dates = dateRounds.map(function(obj){return obj.year});
   var series = [];
   var unassessedRounds = {};
   var xAxis = [];
@@ -358,7 +363,7 @@ function unassessedRoundsWarning(unassessedRounds) {
 function chartData(containerId, overTime) {
   var chartType = getSelectedChartType(containerId, 'chart_types');
   var selectedCountries = getCountries(containerId);
-  var selectedDates = getCheckedItems(containerId, 'year');
+  var selectedYearRounds = getSelectedYearRounds();
   var selectedIndicator = getSelectedItemValue(containerId, 'nested_indicators');
   var selectedGrouping = getSelectedItemValue(containerId, 'disaggregators');
   var blackAndWhite = getCheckValue(containerId, 'black_and_white');
@@ -379,7 +384,7 @@ function chartData(containerId, overTime) {
       selectedCountries,
       selectedIndicator,
       selectedGrouping,
-      selectedDates,
+      selectedYearRounds,
       overTime,
       blackAndWhite
     );

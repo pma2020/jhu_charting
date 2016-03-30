@@ -1,0 +1,19 @@
+<% label_value = type unless label_value %>
+<% label_safe = label_value.humanize.capitalize %>
+<% label_ref = type =="disaggregators" ? type.singularize.downcase.underscore : label_value.downcase.underscore %>
+<% id = "dataset_#{type}_#{@container_id}".to_sym %>
+<% values = @metadata.fetch(type.to_sym) %>
+
+<div class='row'>
+  <div class='col-md-12'>
+    <div class='form-group'>
+      <%= label_tag(id, label_safe, class: 'i18nable-label', data: { type: label_ref }) %>
+      <div class="input-group">
+        <%= select_tag(id,  options(values, grouped), class: "selectpicker filter filter-#{type} i18nable", prompt: "Select option", data: {"live-search" => "true" }) %>
+        <span class="input-group-btn">
+          <%= clear_button(id) %>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
