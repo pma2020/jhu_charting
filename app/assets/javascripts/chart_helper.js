@@ -231,6 +231,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dateRound
 
     var countryIndex = 0;
     var roundIndex = 0;
+    var totalIndex = 0;
     for(var countryDate in tmpHsh) {
       var country = keyify(countryDate.split("|")[0]);
       var lastCountry;
@@ -245,7 +246,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dateRound
       }
 
       if (blackAndWhite == true) {
-        var color = blackAndWhiteValue(Object.keys(tmpHsh).length, roundIndex);
+        var color = blackAndWhiteValue(Object.keys(tmpHsh).length, totalIndex);
         if (color == false) { return false }
         newRow['color'] = color;
       } else {
@@ -264,6 +265,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dateRound
 
       lastCountry = country;
       roundIndex++;
+      totalIndex++;
       series.push(newRow);
     };
 
