@@ -1,6 +1,6 @@
 function getHelpText() {
   var language = $('#dataset-language-picker').val();
-  var indicator = $('#dataset_nested_indicators');
+  var indicator = $('#dataset_indicators');
   var grouping = $('#dataset_disaggregators');
 
   var indicatorKey = keyify(indicator.val());

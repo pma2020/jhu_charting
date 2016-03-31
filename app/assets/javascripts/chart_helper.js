@@ -366,7 +366,7 @@ function chartData(overTime) {
   var chartType = getSelectedChartType('chart_types');
   var selectedCountries = getCountries();
   var selectedYearRounds = getSelectedYearRounds();
-  var selectedIndicator = getSelectedItemValue('nested_indicators');
+  var selectedIndicator = getSelectedItemValue('indicators');
   var selectedGrouping = getSelectedItemValue('disaggregators');
   var blackAndWhite = getCheckValue('black_and_white');
   var citationText = generateCitation(selectedCountries);
@@ -377,7 +377,7 @@ function chartData(overTime) {
   if(validateFilters()) {
     var title = generateTitle(
       selectedCountries,
-      getSelectedItemDisplayText('nested_indicators'),
+      getSelectedItemDisplayText('indicators'),
       getSelectedItemDisplayText('disaggregators')
     );
 
@@ -392,7 +392,7 @@ function chartData(overTime) {
     );
 
     var xAxis = xAxisData(overTime, chartComponents[0]);
-    var yAxis = getSelectedItemDisplayText('nested_indicators');
+    var yAxis = getSelectedItemDisplayText('indicators');
     var seriesData = chartComponents[1];
     var warnings = unassessedRoundsWarning(chartComponents[2]);
 

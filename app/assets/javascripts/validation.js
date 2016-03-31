@@ -86,7 +86,7 @@ function toggleOverTimeOption(dates, countries) {
 }
 
 function chartable(dates) {
-  var selectedIndicator = getSelectedItemValue('nested_indicators');
+  var selectedIndicator = getSelectedItemValue('indicators');
   var selectedGrouping = getSelectedItemValue('disaggregators');
   var chartType = getSelectedChartType('chart_types');
 
@@ -109,11 +109,11 @@ function enableCharting(state) {
 };
 
 function disableUnavailableFilters() {
-  var selectedIndicator = getSelectedItemValue('nested_indicators');
+  var selectedIndicator = getSelectedItemValue('indicators');
   var selectedGrouping = getSelectedItemValue('disaggregators');
 
   var groupFilterInput = getInput('disaggregators');
-  var indicatorFilterInput = getInput('nested_indicators');
+  var indicatorFilterInput = getInput('indicators');
 
   var unavailableIndicatorFilters = unavailableFilters[selectedIndicator];
   var unavailableGroupingFilters = unavailableFilters[selectedGrouping];
