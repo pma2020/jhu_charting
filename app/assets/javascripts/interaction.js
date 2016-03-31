@@ -1,5 +1,8 @@
 function selectAll() {
-  $('.collapse.in .year-check').each(function() { $(this).prop('checked', true); });
+  $('.collapse.in .year-check').each(function() {
+    $(this).prop('checked', true);
+    $(this).parents(".country-collapse").find('.country-header b.i18nable').removeClass("active").addClass("active");
+  });
   validateFilters();
 };
 
@@ -11,6 +14,7 @@ function selectLatest() {
   });
   $('.date-selection.collapse.in').each(function() {
     $(this).find('.year-check').last().prop('checked', true);
+    $(this).parents(".country-collapse").find('.country-header b.i18nable').removeClass("active").addClass("active");
   });
   validateFilters();
 };
@@ -18,6 +22,7 @@ function selectLatest() {
 function clearAll() {
   $('.year-check').each(function() {
     $(this).prop('checked', false);
+    $(this).parents(".country-collapse").find('.country-header b.i18nable').removeClass("active");
   });
   validateFilters();
 };

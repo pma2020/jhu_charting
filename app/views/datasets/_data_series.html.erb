@@ -4,7 +4,7 @@
       <% @metadata.fetch(:rounds_by_country, {}).each do |country, date_round| %>
         <% nice_country_name = country.titleize %>
         <div class='row'>
-          <div class='col-md-12'>
+          <div class='col-md-12 country-collapse'>
             <div class='country-header' data-toggle="collapse" href="#collapse-<%= country.parameterize %>" aria-expanded="false" aria-controls="collapseExample">
               <i class="fa fa-plus"></i>
               <b class='i18nable' data-value='<%= nice_country_name %>'><%= nice_country_name %></b>
