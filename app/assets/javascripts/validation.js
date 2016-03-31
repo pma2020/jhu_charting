@@ -1,13 +1,13 @@
-function validateFilters(containerId) {
-  var chartType = getInput(containerId, 'chart_types');
+function validateFilters() {
+  var chartType = getInput('chart_types');
   var selectedDates = getSelectedYearRounds();
-  var selectedCountries = getCountries(containerId);
+  var selectedCountries = getCountries();
 
-  disablePieOption(containerId, selectedCountries, selectedDates);
-  toggleOverTimeOption(containerId, selectedDates, selectedCountries);
-  disableUnavailableFilters(containerId);
+  disablePieOption(selectedCountries, selectedDates);
+  toggleOverTimeOption(selectedDates, selectedCountries);
+  disableUnavailableFilters();
 
-  return chartable(containerId, selectedDates);
+  return chartable(selectedDates);
 };
 
 function validateDataset(dataSet, countries) {
@@ -45,8 +45,8 @@ function validateDataset(dataSet, countries) {
   return [true, null]
 }
 
-function disablePieOption(containerId, countries, dates) {
-  var pieOption = $("#dataset_chart_types_" + containerId).find($('#option-pie')).parent();
+function disablePieOption(countries, dates) {
+  var pieOption = $("#dataset_chart_types").find($('#option-pie')).parent();
   var disablePieForCountry = false;
   var disablePieForDate = false;
 
@@ -59,7 +59,7 @@ function disablePieOption(containerId, countries, dates) {
     pieOption.remove();
   } else {
     if(pieOption.length <= 0) {
-      $('#dataset_chart_types_' + containerId)
+      $('#dataset_chart_types')
             .append($("<label></label>")
               .attr("class", "btn btn-primary")
               .append($("<input />")
@@ -76,8 +76,8 @@ function disablePieOption(containerId, countries, dates) {
   }
 };
 
-function toggleOverTimeOption(containerId, dates, countries) {
-  var overTimeCheckbox = $(".overtime-check-" + containerId);
+function toggleOverTimeOption(dates, countries) {
+  var overTimeCheckbox = $(".overtime-check");
   if(dates.length > 1 && countries.length > 0) { overTimeCheckbox.prop('disabled', ''); }
   else {
     overTimeCheckbox.prop('disabled', 'disabled');
@@ -85,35 +85,35 @@ function toggleOverTimeOption(containerId, dates, countries) {
   }
 }
 
-function chartable(containerId, dates) {
-  var selectedIndicator = getSelectedItemValue(containerId, 'nested_indicators');
-  var selectedGrouping = getSelectedItemValue(containerId, 'disaggregators');
-  var chartType = getSelectedChartType(containerId, 'chart_types');
+function chartable(dates) {
+  var selectedIndicator = getSelectedItemValue('indicators');
+  var selectedGrouping = getSelectedItemValue('disaggregators');
+  var chartType = getSelectedChartType('chart_types');
 
   if(dates.length > 0 &&
      selectedIndicator.length > 0 &&
        selectedGrouping.length > 0 &&
          chartType != undefined &&
          chartType.length > 0) {
-    enableCharting(containerId, '');
+    enableCharting('');
     return true;
   } else {
-    enableCharting(containerId, 'disabled');
+    enableCharting('disabled');
     return false;
   }
 }
 
-function enableCharting(containerId, state) {
+function enableCharting(state) {
   $('.submit-chart').prop('disabled', state)
-  $('#download-csv-' + containerId).prop('disabled', state)
+  $('#download-csv').prop('disabled', state)
 };
 
-function disableUnavailableFilters(containerId) {
-  var selectedIndicator = getSelectedItemValue(containerId, 'nested_indicators');
-  var selectedGrouping = getSelectedItemValue(containerId, 'disaggregators');
+function disableUnavailableFilters() {
+  var selectedIndicator = getSelectedItemValue('indicators');
+  var selectedGrouping = getSelectedItemValue('disaggregators');
 
-  var groupFilterInput = getInput(containerId, 'disaggregators');
-  var indicatorFilterInput = getInput(containerId, 'nested_indicators');
+  var groupFilterInput = getInput('disaggregators');
+  var indicatorFilterInput = getInput('indicators');
 
   var unavailableIndicatorFilters = unavailableFilters[selectedIndicator];
   var unavailableGroupingFilters = unavailableFilters[selectedGrouping];

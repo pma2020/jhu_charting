@@ -231,6 +231,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dateRound
 
     var countryIndex = 0;
     var roundIndex = 0;
+    var totalIndex = 0;
     for(var countryDate in tmpHsh) {
       var country = keyify(countryDate.split("|")[0]);
       var lastCountry;
@@ -245,7 +246,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dateRound
       }
 
       if (blackAndWhite == true) {
-        var color = blackAndWhiteValue(Object.keys(tmpHsh).length, roundIndex);
+        var color = blackAndWhiteValue(Object.keys(tmpHsh).length, totalIndex);
         if (color == false) { return false }
         newRow['color'] = color;
       } else {
@@ -264,6 +265,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dateRound
 
       lastCountry = country;
       roundIndex++;
+      totalIndex++;
       series.push(newRow);
     };
 
@@ -360,23 +362,23 @@ function unassessedRoundsWarning(unassessedRounds) {
   return warnings.join("<br/>");
 };
 
-function chartData(containerId, overTime) {
-  var chartType = getSelectedChartType(containerId, 'chart_types');
-  var selectedCountries = getCountries(containerId);
+function chartData(overTime) {
+  var chartType = getSelectedChartType('chart_types');
+  var selectedCountries = getCountries();
   var selectedYearRounds = getSelectedYearRounds();
-  var selectedIndicator = getSelectedItemValue(containerId, 'nested_indicators');
-  var selectedGrouping = getSelectedItemValue(containerId, 'disaggregators');
-  var blackAndWhite = getCheckValue(containerId, 'black_and_white');
+  var selectedIndicator = getSelectedItemValue('indicators');
+  var selectedGrouping = getSelectedItemValue('disaggregators');
+  var blackAndWhite = getCheckValue('black_and_white');
   var citationText = generateCitation(selectedCountries);
   if (typeof overTime == 'undefined') {
-    var overTime = $('.overtime-check-' + containerId).prop('checked');
+    var overTime = $('.overtime-check').prop('checked');
   }
 
-  if(validateFilters(containerId)) {
+  if(validateFilters()) {
     var title = generateTitle(
       selectedCountries,
-      getSelectedItemDisplayText(containerId, 'nested_indicators'),
-      getSelectedItemDisplayText(containerId, 'disaggregators')
+      getSelectedItemDisplayText('indicators'),
+      getSelectedItemDisplayText('disaggregators')
     );
 
     var chartComponents = generateSeriesData(
@@ -390,7 +392,7 @@ function chartData(containerId, overTime) {
     );
 
     var xAxis = xAxisData(overTime, chartComponents[0]);
-    var yAxis = getSelectedItemDisplayText(containerId, 'nested_indicators');
+    var yAxis = getSelectedItemDisplayText('indicators');
     var seriesData = chartComponents[1];
     var warnings = unassessedRoundsWarning(chartComponents[2]);
 
@@ -414,11 +416,11 @@ function legendContent(lableColor, seriesCount) {
   return legendContent
 };
 
-function generateChart(containerId) {
+function generateChart() {
   var styles = chartStyles();
   var overrides = chartOverrides();
 
-  var data = chartData(containerId) || [];
+  var data = chartData() || [];
   var xAxis = data[0];
   var yAxis = data[1];
   // Override y-axis-label if necessary
@@ -432,7 +434,7 @@ function generateChart(containerId) {
   var footerText = warnings + '<br/><br/>' + citationText;
 
   if(seriesData != false) {
-    $('#chart-container-' + containerId).highcharts({
+    $('#chart-container').highcharts({
       plotOptions: {
         series: {
           connectNulls: true,
@@ -514,6 +516,6 @@ function generateChart(containerId) {
       series: seriesData
     });
 
-    scrollToAnchor('#chart-container-' + containerId);
+    scrollToAnchor('#chart-container');
   }
 };

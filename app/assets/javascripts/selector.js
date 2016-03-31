@@ -6,27 +6,27 @@ function getSelectedYearRounds() {
   return year_rounds;
 };
 
-function getInput(containerId, type) {
-  return $('#dataset_' + type + '_' + containerId);
+function getInput(type) {
+  return $('#dataset_' + type);
 };
 
-function getCheckValue(containerId, type) {
-  return getInput(containerId, type)[0].checked;
+function getCheckValue(type) {
+  return getInput(type)[0].checked;
 }
 
-function getSelectedItemValue(containerId, type) {
-  return getInput(containerId, type).val();
+function getSelectedItemValue(type) {
+  return getInput(type).val();
 };
 
-function getSelectedChartType(containerId, type) {
-  return getInput(containerId, type).find("label.active").find("input").data("type");
+function getSelectedChartType(type) {
+  return getInput(type).find("label.active").find("input").data("type");
 };
 
-function getSelectedItemDisplayText(containerId, type) {
-  return getInput(containerId, type).find(":selected").text();
+function getSelectedItemDisplayText(type) {
+  return getInput(type).find(":selected").text();
 };
 
-function getCountries(containerId) {
+function getCountries() {
   var countries = [];
   $('.year-check:checked').each(function() {
     countries.push($(this).data('country'));

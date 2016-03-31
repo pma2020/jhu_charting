@@ -1,0 +1,37 @@
+<div class='row'>
+  <div class='col-md-12'>
+    <div class='form-group'>
+      <%= label_tag("dataset-language-picker".to_sym, "Language: ", class: 'i18nable-label', data: { type: 'Language' }) %>
+      <%= select_tag("dataset-language-picker".to_sym, options_for_select(select_options(@metadata.fetch(:languages).keys), 'None'), class: "filter filter-language form-control") %>
+    </div>
+  </div>
+</div>
+<%= render partial: 'select_box_filter', locals: {
+  type: 'indicators',
+  label_value: 'Indicators',
+  grouped: true } %>
+<%= render partial: 'select_box_filter', locals: {
+  type: 'disaggregators',
+  label_value: 'Break down data by',
+  grouped: false } %>
+<%= render partial: 'data_series_limiters' %>
+<%= render partial: 'data_series' %>
+<div class='row'>
+  <div class='col-md-8'>
+    <%= render partial: 'chart_type_buttons' %>
+  </div>
+  <div class='col-md-4'>
+    <%= render partial: 'overtime_checkbox' %>
+  </div>
+</div>
+<div class='row'>
+  <div class='col-md-4'>
+    <%= render partial: 'black_and_white_button' %>
+  </div>
+</div>
+<div class='row'>
+  <div class='col-md-12'>
+    <%= button_tag('Chart', type: :button, value: 'Chart', id: "submit-chart-filters", class: 'submit-chart i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled') %>
+    <%= button_tag('Download CSV', type: :button, value: 'Download CSV', id: "download-csv", class: 'i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled') %>
+  </div>
+</div>

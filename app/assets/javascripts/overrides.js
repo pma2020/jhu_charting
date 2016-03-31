@@ -29,7 +29,7 @@ function xAxisData(overtime, components) {
   return xAxis;
 };
 
-function chartStyles(containerId) {
+function chartStyles() {
   var chartBackgroundColor = $('input#chart-background-color').val() || '#FFFFFF';
   var yAxisColor = $('input#y-axis-color').val() || '#FFFFFF';
   var yAxisWidth = 0;
@@ -52,7 +52,7 @@ function chartStyles(containerId) {
   }
 };
 
-function chartOverrides(containerId) {
+function chartOverrides() {
   var yAxisLabel = $('input#y-axis-label').val();
   var xAxisLabel = $('input#x-axis-label').val();
   var yAxisX = $('input#y-axis-x-position').val();

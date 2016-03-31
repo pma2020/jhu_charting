@@ -1,9 +1,9 @@
-function selectAll(containerId) {
+function selectAll() {
   $('.collapse.in .year-check').each(function() { $(this).prop('checked', true); });
-  validateFilters(containerId);
+  validateFilters();
 };
 
-function selectLatest(containerId) {
+function selectLatest() {
   $('.date-selection').each(function() {
     $('.year-check').each(function() {
       $(this).prop('checked', false);
@@ -12,21 +12,21 @@ function selectLatest(containerId) {
   $('.date-selection.collapse.in').each(function() {
     $(this).find('.year-check').last().prop('checked', true);
   });
-  validateFilters(containerId);
+  validateFilters();
 };
 
-function clearAll(containerId) {
+function clearAll() {
   $('.year-check').each(function() {
     $(this).prop('checked', false);
   });
-  validateFilters(containerId);
+  validateFilters();
 };
 
-function clearSelect(containerId, el) {
+function clearSelect(el) {
   var select = el.data('id');
   $('#' + select).prop('selectedIndex', 0);
   $('#' + select).selectpicker('deselectAll');
-  validateFilters(containerId);
+  validateFilters();
 }
 
 function toggleCountryHeader(el) {

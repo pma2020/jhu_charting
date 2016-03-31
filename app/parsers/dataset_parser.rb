@@ -20,10 +20,6 @@ class DatasetParser
     load
   end
 
-  def script
-    ScriptGenerator.new(metadata, data).generate
-  end
-
   def load
     @data ||= SmarterCSV.process(@csv.download, csv_parse_options)
     @indicator_categories = @data.shift
@@ -44,12 +40,9 @@ class DatasetParser
 
   def metadata
     {
-      countries: countries,
       rounds_by_country: rounds_by_country,
-      years: years,
-      year_by_country: years_by_country,
       disaggregators: disaggregators,
-      nested_indicators: nested_indicators,
+      indicators: nested_indicators,
       chart_types: chart_types,
       languages: language_codes,
       help_text: help_text,
@@ -249,14 +242,5 @@ end
 class DateConverter
   def self.convert(value)
     Date.strptime(value, '%m - %Y')
-  end
-end
-
-class Indicator
-  attr_reader :val, :group
-
-  def initialize(val, group)
-    @val = val
-    @group = group
   end
 end

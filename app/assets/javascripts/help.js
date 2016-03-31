@@ -1,7 +1,7 @@
-function getHelpText(containerId) {
+function getHelpText() {
   var language = $('#dataset-language-picker').val();
-  var indicator = $('#dataset_nested_indicators_' + containerId);
-  var grouping = $('#dataset_disaggregators_' + containerId);
+  var indicator = $('#dataset_indicators');
+  var grouping = $('#dataset_disaggregators');
 
   var indicatorKey = keyify(indicator.val());
   var groupingKey = keyify(grouping.val());
@@ -53,8 +53,8 @@ function getHelpText(containerId) {
   return messages
 }
 
-function displayHelpText(containerId) {
-  var helpText = getHelpText(containerId);
+function displayHelpText() {
+  var helpText = getHelpText();
   $('.help-center .help-definition.indicator').html(helpText['indicator']);
   $('.help-center .help-definition.group-filter').html(helpText['group-filter']);
 }

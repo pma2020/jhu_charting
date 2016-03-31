@@ -1,3 +1,1 @@
-function printChart(containerId) {
-  $('.chart-sidebar').hide();
-};
+function printChart() { $('.chart-sidebar').hide(); };
