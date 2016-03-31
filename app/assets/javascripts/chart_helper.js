@@ -1,5 +1,13 @@
 function filterData(dataSet, type, value) {
-  var items = dataSet.filter(function(hsh) { return hsh[type] === value; });
+  if (type == 'CountryDateRound') {
+    var items = dataSet.filter(function(hsh) {
+      return hsh['Country'] === value.country && hsh['Round'] === value.round && hsh['Date'] === value.year
+    });
+  } else {
+    var items = dataSet.filter(function(hsh) {
+      return hsh[type] === value;
+    });
+  };
   return items
 };
 
@@ -93,17 +101,15 @@ function scopeDataSet(data, scope, countries) {
   return scopedData;
 };
 
-function reduceDataBasedOnSelection(countries, grouping, dateRounds, overTime) {
+function reduceDataBasedOnSelection(countryDateRounds, grouping, overTime) {
   var reducedDataSet;
   var syncedData;
 
-  var dates = dateRounds.map(function(obj){return obj.year});
-  var rounds = dateRounds.map(function(obj){return obj.round});
+  var countries = countryDateRounds.map(function(obj){return obj.country });
+  var dates = countryDateRounds.map(function(obj){return obj.year });
 
   reducedDataSet = dataIntersection([
-    reduceDataSet(data, countries, 'Country'),
-    reduceDataSet(data, dates, 'Date'),
-    reduceDataSet(data, rounds, 'Round'),
+    reduceDataSet(data, countryDateRounds, 'CountryDateRound'),
     reduceDataSet(data, grouping, 'Grouping')
   ]);
 
@@ -135,8 +141,8 @@ function reduceDataBasedOnSelection(countries, grouping, dateRounds, overTime) {
   }
 };
 
-function generateSeriesData(chartType, countries, indicator, grouping, dateRounds, overTime, blackAndWhite) {
-  var dataSet = reduceDataBasedOnSelection(countries, grouping, dateRounds, overTime);
+function generateSeriesData(chartType, countries, indicator, grouping, dateRounds, overTime, blackAndWhite, countryDateRounds) {
+  var dataSet = reduceDataBasedOnSelection(countryDateRounds, grouping, overTime);
   var dates = dateRounds.map(function(obj){return obj.year});
   var series = [];
   var unassessedRounds = {};
@@ -298,7 +304,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dateRound
       var newRow = {};
 
       newRow['data'] = [];
-      newRow['name'] = dateRoundLabel(countries[0], dates[0], data[0]['Round']);
+      newRow['name'] = dateRoundLabel(countries[0], dates[0], data[0]['Round']).split("|")[1];
 
       data.forEach(function(row) {
         var dataElement = {};
@@ -364,6 +370,7 @@ function unassessedRoundsWarning(unassessedRounds) {
 
 function chartData(overTime) {
   var chartType = getSelectedChartType('chart_types');
+  var selectedCountryYearRound = getSelectedCountryYearRounds();
   var selectedCountries = getCountries();
   var selectedYearRounds = getSelectedYearRounds();
   var selectedIndicator = getSelectedItemValue('indicators');
@@ -388,7 +395,8 @@ function chartData(overTime) {
       selectedGrouping,
       selectedYearRounds,
       overTime,
-      blackAndWhite
+      blackAndWhite,
+      selectedCountryYearRound
     );
 
     var xAxis = xAxisData(overTime, chartComponents[0]);

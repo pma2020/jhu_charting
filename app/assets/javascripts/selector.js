@@ -1,7 +1,17 @@
 function getSelectedYearRounds() {
+  return getSelectedCountryYearRounds().map(function(item){
+    return { year: item.year, round: item.round };
+  });
+};
+
+function getSelectedCountryYearRounds() {
   var year_rounds = [];
   $('.year-check:checked').each(function() {
-    year_rounds.push({ year: $(this).data('date'), round: $(this).data('round')});
+    year_rounds.push({
+      country: $(this).data('country'),
+      year: $(this).data('date'),
+      round: $(this).data('round')
+    });
   });
   return year_rounds;
 };
