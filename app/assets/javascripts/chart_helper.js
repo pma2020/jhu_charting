@@ -408,13 +408,24 @@ function chartData(overTime) {
   }
 };
 
-function legendContent(lableColor, seriesCount) {
+function seriesDataLabels(overrides) {
+  var dataLabelOverrides = {};
+  if (!isNaN(overrides['data-label-x-position'])) {
+    dataLabelOverrides['x'] = overrides['data-label-x-position'];
+  }
+  if (!isNaN(overrides['data-label-y-position'])) {
+    dataLabelOverrides['y'] = overrides['data-label-y-position'];
+  }
+  return dataLabelOverrides;
+};
+
+function legendContent(lableColor, seriesCount, chartType) {
   var legendContent = {
     itemStyle: {
       color: lableColor
     },
   }
-  if (seriesCount > 5) {
+  if (seriesCount > 5 && chartType != 'pie') {
     legendContent['align'] = 'right',
     legendContent['verticalAlign'] = 'top',
     legendContent['layout'] = 'vertical',
@@ -449,15 +460,19 @@ function generateChart() {
           marker: {
             radius: overrides['marker-size']
           },
-          dataLabels: {
-            x: overrides['data-label-x-position'],
-            y: overrides['data-label-y-position']
-          }
+          dataLabels: seriesDataLabels(overrides)
         },
         bar: { dataLabels: { enabled: true } },
         column: { dataLabels: { enabled: true } },
         line: { dataLabels: { enabled: true } },
-        pie: { dataLabels: { enabled: true } }
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: true
+          },
+          showInLegend: true
+        }
       },
       chart: {
         type: chartType,
@@ -487,7 +502,7 @@ function generateChart() {
           y: -100
         },
       },
-      legend: legendContent(styles['label-color'], seriesData.length),
+      legend: legendContent(styles['label-color'], seriesData.length, chartType),
       title: {
         style: {
           color: styles['title-color']
