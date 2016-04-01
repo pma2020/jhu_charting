@@ -4,6 +4,7 @@ class DatasetsController < ApplicationController
 
   layout false
   layout 'application', :except => :embed
+  layout 'embed', :only => :embed
 
   respond_to :html
 
@@ -18,6 +19,8 @@ class DatasetsController < ApplicationController
   end
 
   def embed
+    @metadata = @dataset.parse.metadata
+    @data = @dataset.parse.data
   end
 
   def create

@@ -1,15 +1,28 @@
-<section class="dataset">
-  <h3><%= @dataset.name %></h3>
-
-  Embed with:
-  <code>
-    <%= @dataset.embed_code(request.host_with_port) %>
-  </code>
-</section>
-
-<section class="charted-dataset">
-  <h3>
-    Rendered Script:
-  </h3>
-  <%= render partial: 'chart' %>
-</section>
+<div class='container-fluid'>
+  <section class="charted-dataset">
+    <h2 class='text-center'>
+      Dataset: <%= @dataset.name %>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#embed-modal">
+      <i class='fa fa-share-alt'></i>
+      Embed
+    </button>
+    </h2>
+    <%= render partial: 'chart' %>
+  </section>
+  <div class="modal fade" id='embed-modal' tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Embed PMA2020 Dataset: <%= @dataset.name %></h4>
+        </div>
+        <div class="modal-body">
+          <p>To embed this dataset and chart into your own site or application copy the code below:</p>
+          <pre>
+          <%= @dataset.embed_code(request.host_with_port) %>
+          </pre>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</div>

@@ -1,40 +1,37 @@
-<div class='container-fluid'>
-  <div id='jhu-chart'>
-    <div class='row top-row'>
-      <div class='col-md-3'>
-        <section class='chart-sidebar'>
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#controls" aria-controls="controls" role="tab" data-toggle="tab">Controls</a></li>
-            <li role="presentation"><a href="#help-center" aria-controls="help-center" role="tab" data-toggle="tab">Help Center</a></li>
-            <li role="presentation"><a href="#style" aria-controls="style" role="tab" data-toggle="tab">Style</a></li>
-          </ul>
-          <!-- Tab panes -->
-          <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="controls">
-              <%= render partial: 'chart_controls' %>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="help-center">
-              <%= render partial: 'chart_help' %>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="style">
-              <%= render partial: 'chart_style' %>
-            </div>
+<div id='jhu-chart'>
+  <div class='row top-row'>
+    <div class='col-md-3'>
+      <section class='chart-sidebar'>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active"><a href="#controls" aria-controls="controls" role="tab" data-toggle="tab">Controls</a></li>
+          <li role="presentation"><a href="#help-center" aria-controls="help-center" role="tab" data-toggle="tab">Help Center</a></li>
+          <li role="presentation"><a href="#style" aria-controls="style" role="tab" data-toggle="tab">Style</a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="controls">
+            <%= render partial: 'chart_controls' %>
           </div>
-        </section>
-      </div>
-      <div class='col-md-9'>
-        <section class='chart-viewport'>
-          <div id='chart-container' class='chart-container'>
-            <div class='chart-placeholder'>
-              <h4>
-                <i class='fa fa-bar-chart'></i>
-              </h4>
-            </div>
-            <div class='clearfix'></div>
+          <div role="tabpanel" class="tab-pane" id="help-center">
+            <%= render partial: 'chart_help' %>
           </div>
-        </section>
-      </div>
+          <div role="tabpanel" class="tab-pane" id="style">
+            <%= render partial: 'chart_style' %>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class='col-md-9'>
+      <section class='chart-viewport'>
+        <div id='chart-container' class='chart-container'>
+          <div class='chart-placeholder'>
+            <h4>
+              <i class='fa fa-bar-chart'></i>
+            </h4>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 </div>

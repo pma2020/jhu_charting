@@ -31,7 +31,18 @@
 </div>
 <div class='row'>
   <div class='col-md-12'>
-    <%= button_tag('Chart', type: :button, value: 'Chart', id: "submit-chart-filters", class: 'submit-chart i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled') %>
-    <%= button_tag('Download CSV', type: :button, value: 'Download CSV', id: "download-csv", class: 'i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled') %>
+    <div class='row'>
+      <div class='col-md-3'>
+        <%= button_tag(type: :button, id: "download-csv", class: 'btn btn-success btn-block btn-lg', disabled: true) do %>
+          <i class='fa fa-download'></i>
+        <% end %>
+      </div>
+      <div class='col-md-9'>
+        <%= button_tag(type: :button, id: "submit-chart-filters", class: 'submit-chart btn btn-success btn-block btn-lg', disabled: true) do %>
+          <i class='fa fa-bar-chart'></i>
+          <span class='i18nable-label' data-type='Chart'>Chart</span>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>
