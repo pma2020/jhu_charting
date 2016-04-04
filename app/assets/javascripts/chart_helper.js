@@ -419,7 +419,7 @@ function seriesDataLabels(overrides) {
   return dataLabelOverrides;
 };
 
-function legendContent(lableColor, seriesCount, chartType) {
+function legendContent(lableColor, seriesCount, chartType, yOffset) {
   var legendContent = {
     itemStyle: {
       color: lableColor
@@ -431,6 +431,9 @@ function legendContent(lableColor, seriesCount, chartType) {
     legendContent['layout'] = 'vertical',
     legendContent['x'] = 0,
     legendContent['y'] = 40
+  } else {
+    legendContent['verticalAlign'] = 'bottom',
+    legendContent['y'] = -yOffset
   }
   return legendContent
 };
@@ -451,6 +454,7 @@ function generateChart() {
   var citationText = data[7];
 
   var footerText = warnings + '<br/><br/>' + citationText;
+  var bottomMargin = warnings.split("*").length * 20 + 25;
 
   if(seriesData != false) {
     $('#chart-container').highcharts({
@@ -476,7 +480,7 @@ function generateChart() {
       },
       chart: {
         type: chartType,
-        marginBottom: 150,
+        marginBottom: bottomMargin,
         backgroundColor: styles["chart-background-color"],
         style: {
           fontFamily: overrides['chart-font']
@@ -499,10 +503,10 @@ function generateChart() {
         text: footerText,
         position: {
           align: 'center',
-          y: -100
+          y: -(bottomMargin) + 115
         },
       },
-      legend: legendContent(styles['label-color'], seriesData.length, chartType),
+      legend: legendContent(styles['label-color'], seriesData.length, chartType, (bottomMargin - 115)),
       title: {
         style: {
           color: styles['title-color']
