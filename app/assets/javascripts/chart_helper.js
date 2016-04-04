@@ -165,7 +165,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dateRound
           if (color == false) { return false }
           newRow['color'] = color;
         } else {
-          newRow['color'] = colorValue(Object.keys(countryData).length, countryIndex, roundIndex)
+          newRow['color'] = colorValue(countries.length, countryIndex, roundIndex)
         }
 
         newRow['name'] = titleCase(key) + ' ' + translate(countryKey, labelText);
