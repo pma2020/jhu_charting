@@ -141,10 +141,19 @@ function reduceDataBasedOnSelection(countryDateRounds, grouping, overTime) {
   }
 };
 
-function generateSeriesData(chartType, countries, indicator, grouping, dateRounds, overTime, blackAndWhite, countryDateRounds) {
+function generateSeriesData(chartType,
+                            countries,
+                            indicator,
+                            grouping,
+                            dateRounds,
+                            overTime,
+                            blackAndWhite,
+                            countryDateRounds) {
   var dataSet = reduceDataBasedOnSelection(countryDateRounds, grouping, overTime);
   var dates = dateRounds.map(function(obj){return obj.year});
   var series = [];
+  var evaluatedCountries = [];
+  var unassessedCountryRounds = [];
   var unassessedRounds = {};
   var xAxis = [];
 
@@ -221,6 +230,7 @@ function generateSeriesData(chartType, countries, indicator, grouping, dateRound
         roundIndex++;
         xAxis = null;
         series.push(newRow);
+        evaluatedCountries = countries;
       };
     }
   } else if(multiSeries(countries, dates)) {
@@ -275,11 +285,23 @@ function generateSeriesData(chartType, countries, indicator, grouping, dateRound
       series.push(newRow);
     };
 
+    var keptSeries = [];
+    series.forEach(function(round) {
+      var nulls = nullSeries(dataValues(round.data));
+      if (nulls) {
+        evaluatedCountries.push(countries[series.indexOf(round)] + "*");
+        unassessedCountryRounds.push(round.name);
+      } else {
+        evaluatedCountries.push(countries[series.indexOf(round)]);
+        keptSeries.push(round);
+      }
+    });
+
     var index = 0;
     for(var key in dataSet) {
       var hasNaN = false;
       var translatedText = translate(key, labelText);
-      series.forEach(function(round) {
+      keptSeries.forEach(function(round) {
         if (isNaN(round['data'][index]['y'])){
           hasNaN = true;
           round['data'][index]['y'] = null;
@@ -297,6 +319,9 @@ function generateSeriesData(chartType, countries, indicator, grouping, dateRound
       index++;
     }
 
+    var compactedData = compactData(keptSeries, xAxis);
+    series = compactedData[0];
+    xAxis = compactedData[1];
   } else {
     var itemIndex = 1;
     for(var key in dataSet) {
@@ -317,9 +342,10 @@ function generateSeriesData(chartType, countries, indicator, grouping, dateRound
       series.push(newRow);
     }
     itemIndex++;
+    evaluatedCountries = countries;
   };
 
-  chartComponents = [xAxis, series, unassessedRounds];
+  chartComponents = [xAxis, series, unassessedRounds, evaluatedCountries, unassessedCountryRounds];
   return chartComponents;
 };
 
@@ -368,43 +394,66 @@ function unassessedRoundsWarning(unassessedRounds) {
   return warnings.join("<br/>");
 };
 
-function chartData(overTime) {
+function unassessedCountryWarnings(countryRounds, indicator, disaggregator) {
+  var warnings = [];
+  countryRounds.forEach(function(countryRound) {
+    var warningString = indicator + ' was not assessed for ' + countryRound + ' by ' + disaggregator;
+    warnings.push(warningString);
+  });
+  return warnings.join("<br/>");
+};
+
+function selectedData() {
   var chartType = getSelectedChartType('chart_types');
-  var selectedCountryYearRound = getSelectedCountryYearRounds();
+  var selectedCountryYearRounds = getSelectedCountryYearRounds();
   var selectedCountries = getCountries();
   var selectedYearRounds = getSelectedYearRounds();
   var selectedIndicator = getSelectedItemValue('indicators');
   var selectedGrouping = getSelectedItemValue('disaggregators');
   var blackAndWhite = getCheckValue('black_and_white');
-  var citationText = generateCitation(selectedCountries);
-  if (typeof overTime == 'undefined') {
-    var overTime = $('.overtime-check').prop('checked');
+  var overTime = $('.overtime-check').prop('checked');
+
+  return {
+    chartType: chartType,
+    countryYearRounds: selectedCountryYearRounds,
+    countries: selectedCountries,
+    yearRounds: selectedYearRounds,
+    indicator: selectedIndicator,
+    disaggregator: selectedGrouping,
+    blackAndWhite: blackAndWhite,
+    overTime: overTime
   }
+};
+
+function chartData(overTime) {
+  var citationText = generateCitation(selectedData().countries);
 
   if(validateFilters()) {
-    var title = generateTitle(
-      selectedCountries,
-      getSelectedItemDisplayText('indicators'),
-      getSelectedItemDisplayText('disaggregators')
-    );
-
     var chartComponents = generateSeriesData(
-      chartType,
-      selectedCountries,
-      selectedIndicator,
-      selectedGrouping,
-      selectedYearRounds,
-      overTime,
-      blackAndWhite,
-      selectedCountryYearRound
+      selectedData().chartType,
+      selectedData().countries,
+      selectedData().indicator,
+      selectedData().disaggregator,
+      selectedData().yearRounds,
+      selectedData().overTime,
+      selectedData().blackAndWhite,
+      selectedData().countryYearRounds
     );
 
     var xAxis = xAxisData(overTime, chartComponents[0]);
     var yAxis = getSelectedItemDisplayText('indicators');
     var seriesData = chartComponents[1];
-    var warnings = unassessedRoundsWarning(chartComponents[2]);
+    var roundWarnings = unassessedRoundsWarning(chartComponents[2]);
+    var countryWarnings = unassessedCountryWarnings(chartComponents[4], selectedData().indicator, selectedData().disaggregator);
+    var warnings = [roundWarnings, countryWarnings].join("<br/>");
 
-    return [xAxis, yAxis, title, chartType, selectedGrouping, seriesData, warnings, citationText];
+    var title = generateTitle(
+      chartComponents[3],
+      getSelectedItemDisplayText('indicators'),
+      getSelectedItemDisplayText('disaggregators')
+    );
+
+    return [xAxis, yAxis, title, selectedData().chartType, selectedData().disaggregator, seriesData, warnings, citationText];
   }
 };
 
@@ -427,15 +476,58 @@ function legendContent(lableColor, seriesCount, chartType, yOffset) {
   }
   if (seriesCount > 5 && chartType != 'pie') {
     legendContent['align'] = 'right',
-    legendContent['verticalAlign'] = 'top',
-    legendContent['layout'] = 'vertical',
-    legendContent['x'] = 0,
-    legendContent['y'] = 40
+      legendContent['verticalAlign'] = 'top',
+      legendContent['layout'] = 'vertical',
+      legendContent['x'] = 0,
+      legendContent['y'] = 40
   } else {
     legendContent['verticalAlign'] = 'bottom',
-    legendContent['y'] = -yOffset
+      legendContent['y'] = -yOffset
   }
   return legendContent
+};
+
+function compactData(series, xAxis, unassessedRounds) {
+  var compactedSeries = [];
+  var compactedXAxis = [];
+
+  var datapointIndex = 0;
+  while(datapointIndex < series[0].data.length) {
+    var allNull = series.every(function(round) {
+      console.log(xAxis[datapointIndex] + '  ' + round.name + ' '  + round.data[datapointIndex].y)
+      return(round.data[datapointIndex].y === null ||
+      isNaN(round.data[datapointIndex].y))
+    });
+
+    if (!allNull) {
+      var roundIndex = 0;
+      series.forEach(function(round) {
+        var roundData = compactedSeries[roundIndex];
+        if (roundData == null) { roundData = [] };
+
+        roundData.push(round.data[datapointIndex]);
+        compactedSeries[roundIndex] = roundData;
+
+        roundIndex++;
+      });
+      compactedXAxis.push(xAxis[datapointIndex]);
+    }
+
+    datapointIndex++;
+  }
+
+  var roundIndex = 0;
+  series.forEach(function(round) {
+    var roundData = compactedSeries[roundIndex];
+    round.data = roundData
+    roundIndex++;
+  });
+
+  return [series, compactedXAxis];
+};
+
+function chartMargin(chartType) {
+  return 115;
 };
 
 function generateChart() {
@@ -454,7 +546,8 @@ function generateChart() {
   var citationText = data[7];
 
   var footerText = warnings + '<br/><br/>' + citationText;
-  var bottomMargin = warnings.split("*").length * 20 + 25;
+
+  var bottomMargin = (warnings.split("*").length * 20) + chartMargin(chartType) + 30;
 
   if(seriesData != false) {
     $('#chart-container').highcharts({
@@ -503,10 +596,10 @@ function generateChart() {
         text: footerText,
         position: {
           align: 'center',
-          y: -(bottomMargin) + 115
+          y: -(bottomMargin) + chartMargin(chartType)
         },
       },
-      legend: legendContent(styles['label-color'], seriesData.length, chartType, (bottomMargin - 115)),
+      legend: legendContent(styles['label-color'], seriesData.length, chartType, (bottomMargin - chartMargin(chartType))),
       title: {
         style: {
           color: styles['title-color']
