@@ -410,8 +410,8 @@ function selectedData() {
   var selectedYearRounds = getSelectedYearRounds();
   var selectedIndicator = getSelectedItemValue('indicators');
   var selectedGrouping = getSelectedItemValue('disaggregators');
-  var blackAndWhite = getCheckValue('black_and_white');
-  var overTime = $('.overtime-check').prop('checked');
+  var blackAndWhite = getBlackAndWhiteState();
+  var overTime = getOvertimeState();
 
   return {
     chartType: chartType,
