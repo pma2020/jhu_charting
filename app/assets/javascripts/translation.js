@@ -12,7 +12,41 @@ function updateLanguage() {
 function translate(text, type) {
   if(text == "") { text = 'Select option'; }
   var language = $('#dataset-language-picker').val();
+  var originalText = text;
   var key = keyify(text);
   if(type[key]) { text = type[key][language]; }
+  else {
+    text = originalText;
+    console.log('There was not a translation for ' + key + ' in the specified type.')
+  }
   return text
 };
+
+function translateCountryRound(countryRound) {
+  var parts = countryRound.split(" ");
+  var country = parts[0];
+  var year = parts[1];
+  var round = parts[2];
+  var roundNumber = parts[3];
+
+  return [
+    translate(country, labelText),
+    year,
+    translate(round, labelText),
+    roundNumber
+  ].join(" ");
+};
+
+function translateCountries(countries) {
+  var translated = [];
+  countries.forEach(function(country) {
+    if (country.indexOf("*") > -1) {
+      country = country.split("*")[0];
+      translated.push(titleCase(translate(country, labelText)) + '*');
+    } else {
+      translated.push(titleCase(translate(country, labelText)));
+    }
+  });
+  return translated;
+};
+

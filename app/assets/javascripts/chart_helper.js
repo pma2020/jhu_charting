@@ -353,14 +353,6 @@ function dateRoundLabel(country, date, round) {
   return titleCase(country) + "|" + titleCase(translate(country, labelText)) + ' ' + date.split("-")[0] + ' ' + round;
 };
 
-function translateCountries(countries) {
-  var translated = [];
-  countries.forEach(function(country) {
-    translated.push(titleCase(translate(country, labelText)));
-  });
-  return translated;
-};
-
 function generateTitle(countries, indicator, grouping) {
   var titleResult =  indicator;
   var byArticle = translate('by', labelText);
@@ -388,19 +380,21 @@ function generateCitation(partners) {
 function unassessedRoundsWarning(unassessedRounds) {
   var warnings = [];
   Object.keys(unassessedRounds).forEach(function(indicator) {
-    var warningString = indicator + '* was not assessed in: ' + unassessedRounds[indicator].join(', ');
+    var warningString = indicator + '* ' + translate('was not assessed in', labelText) + ': ' + unassessedRounds[indicator].map(function(countryRound){
+      return translateCountryRound(countryRound, labelText);
+    }).join(', ');
     warnings.push(warningString);
   });
   return warnings.join("<br/>");
 };
 
 function unassessedCountryWarnings(countryRounds, indicator, disaggregator) {
-  var warnings = [];
-  countryRounds.forEach(function(countryRound) {
-    var warningString = indicator + ' was not assessed for ' + countryRound + ' by ' + disaggregator;
-    warnings.push(warningString);
-  });
-  return warnings.join("<br/>");
+  var warning = translate(indicator, labelText) + ' ' + translate('was not assessed in', labelText) + ':'
+  var translatedCountryRounds = countryRounds.map(function(countryRound) {
+    return translateCountryRound(countryRound, labelText)
+  }).join(", ");;
+  warning = warning + ' ' + translatedCountryRounds;
+  return warning;
 };
 
 function selectedData() {
