@@ -289,8 +289,10 @@ function generateSeriesData(chartType,
     series.forEach(function(round) {
       var nulls = nullSeries(dataValues(round.data));
       if (nulls) {
-        evaluatedCountries.push(countries[series.indexOf(round)] + "*");
-        unassessedCountryRounds.push(round.name);
+        if (countries[series.indexOf(round)]) {
+          evaluatedCountries.push(countries[series.indexOf(round)] + "*");
+          unassessedCountryRounds.push(round.name);
+        }
       } else {
         evaluatedCountries.push(countries[series.indexOf(round)]);
         keptSeries.push(round);
@@ -344,6 +346,8 @@ function generateSeriesData(chartType,
     itemIndex++;
     evaluatedCountries = countries;
   };
+
+  evaluatedCountries = evaluatedCountries.filter(function(country) { return !!country });
 
   chartComponents = [xAxis, series, unassessedRounds, evaluatedCountries, unassessedCountryRounds];
   return chartComponents;
