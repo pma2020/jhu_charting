@@ -594,6 +594,7 @@ function generateChart() {
       },
       credits: {
         text: footerText,
+        href: '',
         position: {
           align: 'center',
           y: -(bottomMargin) + chartMargin(chartType)
