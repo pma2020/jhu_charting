@@ -557,6 +557,8 @@ function compactData(series, xAxis, unassessedRounds) {
 
 function chartMargin(chartType) { return 115; };
 
+function accessedOn() { return translate('Accessed on', labelText) + ' ' + new Date() };
+
 function generateChart() {
   var styles = chartStyles();
   var overrides = chartOverrides();
@@ -572,7 +574,7 @@ function generateChart() {
   var warnings = data[6];
   var citationText = data[7];
 
-  var footerText = warnings + '<br/><br/>' + citationText;
+  var footerText = warnings + '<br/><br/>' + citationText + '<br/><br/>' + accessedOn();
 
   var bottomMargin = (warnings.split("*").length * 20) + chartMargin(chartType) + 30;
 
