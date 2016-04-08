@@ -469,7 +469,7 @@ function chartData(overTime) {
       selectedData().countryYearRounds
     );
 
-    var xAxis = xAxisData(overTime, chartComponents[0]);
+    var xAxis = xAxisData(chartComponents[0]);
     var yAxis = getSelectedItemDisplayText('indicators');
     var seriesData = chartComponents[1];
     var roundWarnings = unassessedRoundsWarning(chartComponents[2]);

@@ -3,7 +3,7 @@ function xAxisData(overtime, components) {
   var overrides = chartOverrides();
   var xAxis = {};
 
-  if (overtime) {
+  if (getOvertimeState()) {
     xAxis['type'] = 'datetime';
   } else {
     xAxis['categories'] = components;
