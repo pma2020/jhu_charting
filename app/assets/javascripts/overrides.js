@@ -59,6 +59,9 @@ function chartOverrides() {
   var yAxisY = $('input#y-axis-y-position').val();
   var xAxisX = $('input#x-axis-x-position').val();
   var xAxisY = $('input#x-axis-y-position').val();
+  var creditsX = $('input#credits-x-position').val() || 0;
+  var creditsY = $('input#credits-y-position').val() || 0;
+  var bottomMarginOffset = $('input#bottom-margin-offset').val() || 115;
   var markerSize = $('input#marker-size').val() || 4;
   var dataLabelX = $('input#data-label-x-position').val();
   var dataLabelY = $('input#data-label-y-position').val();
@@ -71,6 +74,9 @@ function chartOverrides() {
     "y-axis-y-position" : parseInt(yAxisY),
     "x-axis-x-position" : parseInt(xAxisX),
     "x-axis-y-position" : parseInt(xAxisY),
+    "credits-x-position" : parseInt(creditsX),
+    "credits-y-position" : parseInt(creditsY),
+    "bottom-margin-offset" : parseInt(bottomMarginOffset),
     "marker-size" : parseInt(markerSize),
     "data-label-x-position" : parseInt(dataLabelX),
     "data-label-y-position" : parseInt(dataLabelY),

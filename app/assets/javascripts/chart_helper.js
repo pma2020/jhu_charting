@@ -555,7 +555,9 @@ function compactData(series, xAxis, unassessedRounds) {
   return [series, compactedXAxis];
 };
 
-function chartMargin(chartType) { return 115; };
+function chartMargin(chartType) {
+  return chartOverrides()['bottom-margin-offset'];
+};
 
 function accessedOn() { return translate('Accessed on', labelText) + ' ' + new Date() };
 
@@ -626,7 +628,7 @@ function generateChart() {
         href: '',
         position: {
           align: 'center',
-          y: -(bottomMargin) + chartMargin(chartType)
+          y: -(bottomMargin) + overrides['credits-y-position'] + chartMargin(chartType)
         },
       },
       legend: legendContent(styles['label-color'], seriesData.length, chartType, (bottomMargin - chartMargin(chartType))),

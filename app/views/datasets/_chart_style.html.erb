@@ -186,6 +186,32 @@
       </div>
     </div>
   </div>
+  <h4 class='text-center'>Credits Position</h4>
+  <div class='form-group'>
+    <div class='row'>
+      <div class='col-md-6'>
+        <label for='credits-y-position' class='text-right'>
+          Credits Y:
+        </label>
+      </div>
+      <div class='col-md-6'>
+        <%= text_field_tag('credits-y-position', nil, class: 'form-control', id:"credits-y-position", placeholder: 'Default: 0') %>
+      </div>
+    </div>
+  </div>
+  <h4 class='text-center'>Chart Margins</h4>
+  <div class='form-group'>
+    <div class='row'>
+      <div class='col-md-6'>
+        <label for='bottom-margin-offset' class='text-right'>
+          Bottom Margin:
+        </label>
+      </div>
+      <div class='col-md-6'>
+        <%= text_field_tag('bottom-margin-offset', nil, class: 'form-control', id:"bottom-margin-offset", placeholder: 'Default: 115') %>
+      </div>
+    </div>
+  </div>
 </div>
 <br/>
 <br/>
