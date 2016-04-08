@@ -39,7 +39,7 @@ function titleCase(string) {
   }
 }
 
-function nullSeries(series) {
+function isNullSeries(series) {
   return series.every(function(v){return (v == null || isNaN(v))});
 }
 

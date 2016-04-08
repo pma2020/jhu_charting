@@ -154,6 +154,7 @@ function generateSeriesData(chartType,
   var series = [];
   var evaluatedCountries = [];
   var unassessedCountryRounds = [];
+  var removedCountries = [];
   var unassessedRounds = {};
   var xAxis = [];
 
@@ -206,15 +207,20 @@ function generateSeriesData(chartType,
         data.forEach(function(row) {
           var dataElement = {};
 
-          country = translate(row['Country'], labelText);
-          category = row['Category'];
-          round = row['Round'];
+          if(!(nullIndexes.indexOf(row['Date']) > -1)) {
+            country = translate(row['Country'], labelText);
+            category = row['Category'];
+            round = row['Round'];
 
-          dataElement['name'] = country + ' ' + category + ' ' + round;
-          dataElement['y'] = parseFloat(checkValue(tmpHsh[row['Date']]));
-          dataElement['x'] = (new Date(row['Date']+"-02")).getTime()
+            dataElement['name'] = country + ' ' + category + ' ' + round;
+            dataElement['y'] = parseFloat(checkValue(tmpHsh[row['Date']]));
+            dataElement['x'] = (new Date(row['Date']+"-02")).getTime()
 
-          newRow['data'].push(dataElement);
+            newRow['data'].push(dataElement);
+          } else {
+            unassessedCountryRounds.push(country + ' ' + category + ' ' + round);
+            removedCountries.push(country);
+          }
         });
 
         nullIndexes.forEach(function(date) {
@@ -230,6 +236,16 @@ function generateSeriesData(chartType,
         roundIndex++;
         xAxis = null;
         series.push(newRow);
+
+        removedCountries.forEach(function(country) {
+          if(countries.indexOf(country) > -1) {
+            countries.splice(countries.indexOf(country), 1);
+          }
+          if(!(countries.indexOf(country + "*") > -1)) {
+            countries.push(country + "*");
+          }
+        });
+
         evaluatedCountries = countries;
       };
     }
@@ -287,11 +303,12 @@ function generateSeriesData(chartType,
     };
 
     var keptSeries = [];
+    var removedSeries = [];
     series.forEach(function(round) {
-      var nulls = nullSeries(dataValues(round.data));
+      var nulls = isNullSeries(dataValues(round.data));
       if (nulls) {
-        if (!(evaluatedCountries.indexOf(round.country + "*") > -1)) {
-          evaluatedCountries.push(round.country + "*");
+        if (!(removedSeries.indexOf(round.country) > -1)) {
+          removedSeries.push(round.country)
         }
         unassessedCountryRounds.push(round.name);
       } else {
@@ -300,6 +317,16 @@ function generateSeriesData(chartType,
         }
         keptSeries.push(round);
       }
+    });
+
+    removedSeries.forEach(function(country) {
+      if(evaluatedCountries.indexOf(country) > -1) {
+        evaluatedCountries.splice(evaluatedCountries.indexOf(country), 1);
+      }
+    });
+
+    removedSeries.forEach(function(country) {
+      evaluatedCountries.push(country + "*");
     });
 
     var index = 0;
@@ -350,6 +377,7 @@ function generateSeriesData(chartType,
     evaluatedCountries = countries;
   };
 
+  // Remove Duplicate Countries
   evaluatedCountries = evaluatedCountries.filter(function(country) { return !!country });
 
   chartComponents = [xAxis, series, unassessedRounds, evaluatedCountries, unassessedCountryRounds];
@@ -527,9 +555,7 @@ function compactData(series, xAxis, unassessedRounds) {
   return [series, compactedXAxis];
 };
 
-function chartMargin(chartType) {
-  return 115;
-};
+function chartMargin(chartType) { return 115; };
 
 function generateChart() {
   var styles = chartStyles();
