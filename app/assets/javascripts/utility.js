@@ -33,4 +33,18 @@ function scrollToAnchor(aid){
   return false;
 };
 
-function titleCase(string) { return (string.charAt(0).toUpperCase() + string.slice(1)).replace("_", " "); }
+function titleCase(string) {
+  if (string == null) { return null; } else {
+    return (string.charAt(0).toUpperCase() + string.slice(1)).replace("_", " ");
+  }
+}
+
+function nullSeries(series) {
+  return series.every(function(v){return (v == null || isNaN(v))});
+}
+
+function dataValues(hsh) {
+  var values = [];
+  for(var k in hsh) { values.push(hsh[k].y); }
+  return values;
+}

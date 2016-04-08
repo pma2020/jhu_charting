@@ -43,3 +43,11 @@ function toggleCountryHeader(el) {
     container.find(".country-header b.i18nable").removeClass("active");
   }
 }
+
+function resetChart() {
+  if (confirm('Are you sure you want to reset the chart styles?')) {
+    $(".tab-pane#style").find("input[type=text], textarea").val("");
+    generateChart();
+    $('#download-csv').prop('disabled', '');
+  };
+};

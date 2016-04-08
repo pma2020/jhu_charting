@@ -16,6 +16,14 @@ function getSelectedCountryYearRounds() {
   return year_rounds;
 };
 
+function getOvertimeState() {
+  return getCheckValue('overtime');
+};
+
+function getBlackAndWhiteState() {
+  return getCheckValue('black_and_white');
+};
+
 function getInput(type) {
   return $('#dataset_' + type);
 };

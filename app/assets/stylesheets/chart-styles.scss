@@ -238,7 +238,8 @@ $light-purple: lighten($dark-purple, 25%);
       display: inline-block;
       float: left;
     }
-    &.overtime-checkbox-container {
+    &.overtime-checkbox-container,
+    &.black-and-white-checkbox-container {
       display: block;
       text-align: center;
       h4 {

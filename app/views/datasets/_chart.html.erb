@@ -56,6 +56,9 @@ $('.submit-chart').on('click', function() {
   generateChart();
   $('#download-csv').prop('disabled', '');
 });
+$('.reset-chart').on('click', function() {
+  resetChart();
+});
 $('#download-csv').on('click', function() { downloadCSV(); });
 $('input.color').colorPicker();
 $(document).ready(function(){ updateLanguage(); });

@@ -5,6 +5,7 @@ function validateFilters() {
 
   disablePieOption(selectedCountries, selectedDates);
   toggleOverTimeOption(selectedDates, selectedCountries);
+  toggleBlackAndWhiteOption(getSelectedCountryYearRounds());
   disableUnavailableFilters();
 
   return chartable(selectedDates);
@@ -75,6 +76,17 @@ function disablePieOption(countries, dates) {
     }
   }
 };
+
+function toggleBlackAndWhiteOption(countryDateRounds) {
+  var blackAndWhiteCheck = $("#dataset_black_and_white");
+  if(countryDateRounds.length > 3) {
+    blackAndWhiteCheck.prop('disabled', 'disabled');
+    blackAndWhiteCheck.prop('checked', false);
+  }
+  else {
+    blackAndWhiteCheck.prop('disabled', '');
+  }
+}
 
 function toggleOverTimeOption(dates, countries) {
   var overTimeCheckbox = $(".overtime-check");
