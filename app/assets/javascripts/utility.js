@@ -35,7 +35,13 @@ function scrollToAnchor(aid){
 
 function titleCase(string) {
   if (string == null) { return null; } else {
-    return (string.charAt(0).toUpperCase() + string.slice(1)).replace("_", " ");
+    return (string.charAt(0).toUpperCase() + string.slice(1)).replace(/_/g, " ");
+  }
+}
+
+function humanize(string) {
+  if (string == null) { return null; } else {
+    return string.toLowerCase().replace(/_/g, " ");
   }
 }
 

@@ -1,16 +1,37 @@
-var DEFAULTCOLORS = [
-  "#ad241a",
-  "#25577f",
-  "#32722f",
-  "#ff7f00",
-  "#b1a601",
-  "#a65628",
-  "#f781bf",
-  "#753c7e",
-  "#999999",
-  "#6a3d9a"
+var HIGHCHARTS_DEFAULT_COLORS = [
+  '#7cb5ec',
+  '#434348',
+  '#90ed7d',
+  '#f7a35c',
+  '#8085e9',
+  '#f15c80',
+  '#e4d354',
+  '#2b908f',
+  '#f45b5b',
+  '#91e8e1'
+];
+var DEFAULT_COLORS = [
+  '#ad241a',
+  '#25577f',
+  '#32722f',
+  '#ff7f00',
+  '#b1a601',
+  '#a65628',
+  '#f781bf',
+  '#753c7e',
+  '#999999',
+  '#6a3d9a'
+];
+var BLACK_AND_WHITE_COLORS = [
+  '#121212',
+  '#515151',
+  '#919191'
+];
+
+var COLOR_PALETTES = [
+  'HIGHCHARTS_DEFAULT_COLORS',
+  'DEFAULT_COLORS'
 ]
-var BLACK_AND_WHITE_COLORS = [ '#121212 ','#515151 ', '#919191' ]
 
 var FACTOR_BASE = 100;
 var COLOR_SERIES_MIN = 1;
@@ -37,6 +58,41 @@ function shadeColor(color, percent) {
   return "#"+RR+GG+BB;
 }
 
+function generateColorPaletteOptions() {
+  var colorPaletteSelect = $('#chart-palette');
+  COLOR_PALETTES.forEach(function(palette) {
+    var opt = document.createElement('option');
+    opt.value = keyify(palette);
+    opt.innerHTML = titleCase(humanize(palette));
+    colorPaletteSelect.append(opt);
+  });
+  previewColorPalette();
+};
+
+function previewColorPalette() {
+  var colorPalettePreview = $('#color-palette-preview');
+  var colorPalette;
+  colorPalettePreview.empty();
+
+  selectedColorPalette().forEach(function(color) {
+    var previewBox = document.createElement('div');
+    previewBox.style.backgroundColor = color;
+    previewBox.style.height = '25px';
+    previewBox.style.width = '25px';
+    previewBox.style.cssFloat = 'left';
+    colorPalettePreview.append(previewBox);
+  });
+};
+
+function selectedColorPalette() {
+  var selectedColorPalette = $('#chart-palette').val();
+  if (selectedColorPalette == 'default_colors') {
+    return DEFAULT_COLORS;
+  } else if (selectedColorPalette == 'highcharts_default_colors') {
+    return HIGHCHARTS_DEFAULT_COLORS;
+  }
+};
+
 function blackAndWhiteValue(seriesSize, index) {
   if(seriesSize > BLACK_AND_WHITE_MAX) {
     alert("Black and White color scheme is only available for " + BLACK_AND_WHITE_MAX + " or fewer Country/Rounds. Please select fewer Country/Rounds and try again");
@@ -48,9 +104,11 @@ function blackAndWhiteValue(seriesSize, index) {
 function colorValue(seriesSize, countryIndex, roundIndex) {
   if (seriesSize > COLOR_SERIES_MIN && seriesSize <= COLOR_SERIES_MAX) {
     var shadedColor;
-    var baseColor = DEFAULTCOLORS[countryIndex]
+    var baseColor = selectedColorPalette()[countryIndex]
     var factor = FACTOR_BASE / seriesSize;
     var offset = factor * roundIndex;
     return shadeColor(baseColor, offset);
+  } else {
+    return selectedColorPalette()[roundIndex];
   }
 }
