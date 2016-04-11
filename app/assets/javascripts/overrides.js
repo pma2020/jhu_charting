@@ -1,9 +1,9 @@
-function xAxisData(overtime, components) {
+function xAxisData(components) {
   var styles = chartStyles();
   var overrides = chartOverrides();
   var xAxis = {};
 
-  if (getOvertimeState()) {
+  if (selectedData().overTime) {
     xAxis['type'] = 'datetime';
   } else {
     xAxis['categories'] = components;
