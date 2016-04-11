@@ -61,7 +61,12 @@ $('.reset-chart').on('click', function() {
 });
 $('#download-csv').on('click', function() { downloadCSV(); });
 $('input.color').colorPicker();
-$(document).ready(function(){ updateLanguage(); });
+$('#chart-palette').on('change', function() { previewColorPalette(); });
+
+$(document).ready(function(){
+  generateColorPaletteOptions();
+  updateLanguage();
+});
 
 $('.collapse').on('show.bs.collapse', function () {
   var checked = $(this).find("[type='checkbox']:checked").length;

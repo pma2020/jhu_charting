@@ -1,8 +1,27 @@
 <h4 class='text-center'>Chart Font</h4>
-<div class="bfh-selectbox bfh-fonts" data-font="Arial">
+<div class='bfh-selectbox bfh-fonts' data-font='Arial'>
 </div>
 <h4 class='text-center'>Chart Color Options</h4>
 <div>
+  <div class='form-group'>
+    <div class='row'>
+      <div class='col-md-6'>
+        <label for='chart-color-palette' class='text-right'>
+          Color Palette:
+        </label>
+      </div>
+      <div class='col-md-6'>
+        <%= select('chart-color-palette', nil, [], {},{ class: 'form-control', id:'chart-palette' }) %>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-md-12'>
+        <div id='color-palette-preview'></div>
+        <br/>
+        <br/>
+      </div>
+    </div>
+  </div>
   <div class='form-group'>
     <div class='row'>
       <div class='col-md-6'>
@@ -11,7 +30,7 @@
         </label>
       </div>
       <div class='col-md-6'>
-        <%= text_field_tag('chart-background-color', nil, class: 'color form-control', id:"chart-background-color") %>
+        <%= text_field_tag('chart-background-color', nil, class: 'color form-control', id:'chart-background-color') %>
       </div>
     </div>
   </div>
@@ -23,7 +42,7 @@
         </label>
       </div>
       <div class='col-md-6'>
-        <%= text_field_tag('title-color', nil, class: 'color form-control', id:"title-color") %>
+        <%= text_field_tag('title-color', nil, class: 'color form-control', id:'title-color') %>
       </div>
     </div>
   </div>
@@ -35,7 +54,7 @@
         </label>
       </div>
       <div class='col-md-6'>
-        <%= text_field_tag('label-color', nil, class: 'color form-control', id:"label-color") %>
+        <%= text_field_tag('label-color', nil, class: 'color form-control', id:'label-color') %>
       </div>
     </div>
   </div>
@@ -47,7 +66,7 @@
         </label>
       </div>
       <div class='col-md-6'>
-        <%= text_field_tag('y-axis-color', nil, class: 'color form-control', id:"y-axis-color") %>
+        <%= text_field_tag('y-axis-color', nil, class: 'color form-control', id:'y-axis-color') %>
       </div>
     </div>
   </div>
@@ -59,7 +78,7 @@
         </label>
       </div>
       <div class='col-md-6'>
-        <%= text_field_tag('x-axis-color', nil, class: 'color form-control', id:"x-axis-color") %>
+        <%= text_field_tag('x-axis-color', nil, class: 'color form-control', id:'x-axis-color') %>
       </div>
     </div>
   </div>
@@ -71,7 +90,7 @@
         </label>
       </div>
       <div class='col-md-6'>
-        <%= text_field_tag('tick-color', nil, class: 'color form-control', id:"tick-color") %>
+        <%= text_field_tag('tick-color', nil, class: 'color form-control', id:'tick-color') %>
       </div>
     </div>
   </div>
@@ -83,7 +102,7 @@
         </label>
       </div>
       <div class='col-md-6'>
-        <%= text_field_tag('minor-tick-color', nil, class: 'color form-control', id:"minor-tick-color") %>
+        <%= text_field_tag('minor-tick-color', nil, class: 'color form-control', id:'minor-tick-color') %>
       </div>
     </div>
   </div>
@@ -92,13 +111,13 @@
     <label for='chart-background-color' class='text-right'>
       Y-Axis Label:
     </label>
-    <%= text_field_tag('y-axis-label', nil, class: 'form-control', id:"y-axis-label") %>
+    <%= text_field_tag('y-axis-label', nil, class: 'form-control', id:'y-axis-label') %>
   </div>
   <div class='form-group'>
     <label for='chart-background-color' class='text-right'>
       X-Axis Label:
     </label>
-    <%= text_field_tag('x-axis-label', nil, class: 'form-control', id:"x-axis-label") %>
+    <%= text_field_tag('x-axis-label', nil, class: 'form-control', id:'x-axis-label') %>
   </div>
   <h4 class='text-center'>Axis Title Position</h4>
   <div class='form-group'>
@@ -109,7 +128,7 @@
         </label>
       </div>
       <div class='col-md-6'>
-        <%= text_field_tag('y-axis-x-position', nil, class: 'form-control', id:"y-axis-x-position", placeholder: 'Default: 0') %>
+        <%= text_field_tag('y-axis-x-position', nil, class: 'form-control', id:'y-axis-x-position', placeholder: 'Default: 0') %>
       </div>
     </div>
   </div>
@@ -121,7 +140,7 @@
         </label>
       </div>
       <div class='col-md-6'>
-        <%= text_field_tag('y-axis-y-position', nil, class: 'form-control', id:"y-axis-y-position", placeholder: 'Default: 0') %>
+        <%= text_field_tag('y-axis-y-position', nil, class: 'form-control', id:'y-axis-y-position', placeholder: 'Default: 0') %>
       </div>
     </div>
   </div>
@@ -133,7 +152,7 @@
         </label>
       </div>
       <div class='col-md-6'>
-        <%= text_field_tag('x-axis-x-position', nil, class: 'form-control', id:"x-axis-x-position", placeholder: 'Default: 0') %>
+        <%= text_field_tag('x-axis-x-position', nil, class: 'form-control', id:'x-axis-x-position', placeholder: 'Default: 0') %>
       </div>
     </div>
   </div>
@@ -145,7 +164,7 @@
         </label>
       </div>
       <div class='col-md-6'>
-        <%= text_field_tag('x-axis-y-position', nil, class: 'form-control', id:"x-axis-y-position", placeholder: 'Default: 0') %>
+        <%= text_field_tag('x-axis-y-position', nil, class: 'form-control', id:'x-axis-y-position', placeholder: 'Default: 0') %>
       </div>
     </div>
   </div>
@@ -158,7 +177,7 @@
         </label>
       </div>
       <div class='col-md-6'>
-        <%= text_field_tag('marker-size', nil, class: 'form-control', id:"marker-size", placeholder: 'Default: 4') %>
+        <%= text_field_tag('marker-size', nil, class: 'form-control', id:'marker-size', placeholder: 'Default: 4') %>
       </div>
     </div>
   </div>
@@ -170,7 +189,7 @@
         </label>
       </div>
       <div class='col-md-6'>
-        <%= text_field_tag('data-label-x-position', nil, class: 'form-control', id:"data-label-x-position", placeholder: 'Default: 0') %>
+        <%= text_field_tag('data-label-x-position', nil, class: 'form-control', id:'data-label-x-position', placeholder: 'Default: 0') %>
       </div>
     </div>
   </div>
@@ -182,7 +201,7 @@
         </label>
       </div>
       <div class='col-md-6'>
-        <%= text_field_tag('data-label-y-position', nil, class: 'form-control', id:"data-label-y-position", placeholder: 'Default: -6') %>
+        <%= text_field_tag('data-label-y-position', nil, class: 'form-control', id:'data-label-y-position', placeholder: 'Default: -6') %>
       </div>
     </div>
   </div>
@@ -195,7 +214,7 @@
         </label>
       </div>
       <div class='col-md-6'>
-        <%= text_field_tag('credits-y-position', nil, class: 'form-control', id:"credits-y-position", placeholder: 'Default: 0') %>
+        <%= text_field_tag('credits-y-position', nil, class: 'form-control', id:'credits-y-position', placeholder: 'Default: 0') %>
       </div>
     </div>
   </div>
@@ -208,12 +227,12 @@
         </label>
       </div>
       <div class='col-md-6'>
-        <%= text_field_tag('bottom-margin-offset', nil, class: 'form-control', id:"bottom-margin-offset", placeholder: 'Default: 115') %>
+        <%= text_field_tag('bottom-margin-offset', nil, class: 'form-control', id:'bottom-margin-offset', placeholder: 'Default: 115') %>
       </div>
     </div>
   </div>
 </div>
 <br/>
 <br/>
-<%= button_tag('Chart', type: :button, value: 'Update Chart', id: "submit-chart-filters", class: 'submit-chart i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled') %>
-<%= button_tag('Chart', type: :button, value: 'Reset Chart', id: "reset-chart-filters", class: 'reset-chart i18nable-button btn btn-success btn-block btn-lg') %>
+<%= button_tag('Chart', type: :button, value: 'Update Chart', id: 'submit-chart-filters', class: 'submit-chart i18nable-button btn btn-success btn-block btn-lg', disabled: 'disabled') %>
+<%= button_tag('Chart', type: :button, value: 'Reset Chart', id: 'reset-chart-filters', class: 'reset-chart i18nable-button btn btn-success btn-block btn-lg') %>
