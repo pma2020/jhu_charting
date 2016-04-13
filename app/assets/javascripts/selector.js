@@ -1,6 +1,42 @@
+function selectedData() {
+  var chartType = getSelectedChartType('chart_types');
+  var selectedCountryYearRounds = getSelectedCountryYearRounds();
+  var selectedCountries = getCountries();
+  var selectedYearRounds = getSelectedYearRounds();
+  var selectedYears = getSelectedYears();
+  var selectedIndicator = getSelectedItemValue('indicators');
+  var selectedIndicatorName = getSelectedItemDisplayText('indicators');
+  var selectedGrouping = getSelectedItemValue('disaggregators');
+  var selectedGroupingName = getSelectedItemDisplayText('disaggregators');
+  var blackAndWhite = getBlackAndWhiteState();
+  var overTime = getOvertimeState();
+  var language = $('#dataset-language-picker').val();
+
+  return {
+    chartType: chartType,
+    countryYearRounds: selectedCountryYearRounds,
+    countries: selectedCountries,
+    yearRounds: selectedYearRounds,
+    years: selectedYears,
+    indicator: selectedIndicator,
+    indicatorName: selectedIndicatorName,
+    disaggregator: selectedGrouping,
+    disaggregatorName: selectedGroupingName,
+    blackAndWhite: blackAndWhite,
+    overTime: overTime,
+    language: selectedLanguage
+  }
+};
+
 function getSelectedYearRounds() {
   return getSelectedCountryYearRounds().map(function(item){
     return { year: item.year, round: item.round };
+  });
+};
+
+function getSelectedYears() {
+  return getSelectedCountryYearRounds().map(function(item){
+    return item.year;
   });
 };
 

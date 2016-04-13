@@ -88,6 +88,7 @@ function scopeDataSet(data, scope, countries) {
   var scopedData = {};
 
   if(scope == 'OverTime') {
+    var countries = selectedData().countries;
     scope = 'Category';
     countries.forEach(function(country) { scopedData[country] = {}; });
     data.forEach(function(row) {
@@ -101,7 +102,11 @@ function scopeDataSet(data, scope, countries) {
   return scopedData;
 };
 
-function reduceDataBasedOnSelection(countryDateRounds, grouping, overTime) {
+function reduceDataBasedOnSelection() {
+  var countryDateRounds = selectedData().countryYearRounds;
+  var grouping = selectedData().disaggregator;
+  var overTime = selectedData().overTime;
+
   var reducedDataSet;
   var syncedData;
 
@@ -128,7 +133,7 @@ function reduceDataBasedOnSelection(countryDateRounds, grouping, overTime) {
 
     if(overTime) {
       scopedData = scopeDataSet(reducedDataSet, 'OverTime', countries);
-    } else if(multiSeries(countries, dates)) {
+    } else if(multiSeries()) {
       scopedData = scopeDataSet(reducedDataSet, 'Category', countries);
     } else {
       scopedData = scopeDataSet(reducedDataSet, 'Country');
@@ -141,16 +146,14 @@ function reduceDataBasedOnSelection(countryDateRounds, grouping, overTime) {
   }
 };
 
-function generateSeriesData(chartType,
-                            countries,
-                            indicator,
-                            grouping,
-                            dateRounds,
-                            overTime,
-                            blackAndWhite,
-                            countryDateRounds) {
-  var dataSet = reduceDataBasedOnSelection(countryDateRounds, grouping, overTime);
-  var dates = dateRounds.map(function(obj){return obj.year});
+
+function generateOverTimeSeriesData() {
+  var dataSet = reduceDataBasedOnSelection();
+  var dates = selectedData().years;
+  var countries = selectedData().countries;
+  var blackAndWhite = selectedData().blackAndWhite;
+  var indicator = selectedData().indicator;
+
   var series = [];
   var evaluatedCountries = [];
   var unassessedCountryRounds = [];
@@ -158,230 +161,288 @@ function generateSeriesData(chartType,
   var unassessedRounds = {};
   var xAxis = [];
 
-  if(overTime) {
-    dates.sort(function(a,b){ return Date.parse(a) - Date.parse(b); });
+  dates.sort(function(a,b){ return Date.parse(a) - Date.parse(b); });
 
-    for(var key in dataSet) {
-      var countryData = dataSet[key];
+  for(var key in dataSet) {
+    var countryData = dataSet[key];
 
-      var roundIndex = 0;
-      for(var countryKey in countryData) {
-        var data = countryData[countryKey];
-        var newRow = {};
-
-        var countryIndex = countries.indexOf(countryData[countryKey][0]['Country']);
-        if (blackAndWhite) {
-          var color = blackAndWhiteValue(Object.keys(countryData).length, roundIndex);
-          if (color == false) { return false }
-          newRow['color'] = color;
-        } else {
-          newRow['color'] = colorValue(countries.length, countryIndex, roundIndex)
-        }
-
-        newRow['name'] = titleCase(key) + ' ' + translate(countryKey, labelText);
-        newRow['data'] = [];
-
-        var tmpHsh = {};
-
-        // Gather the possible keys
-        data.forEach(function(row) {
-          dates.forEach(function(date) {
-            if(date == row['Date']) {
-              tmpHsh[date] = row[indicator];
-            } else {
-              if(tmpHsh[date] == null || tmpHsh[date] == undefined) {
-                tmpHsh[date] = null;
-              }
-            }
-          });
-        });
-
-        var country;
-        var category;
-        var round;
-        var nullKeys = Object.keys(tmpHsh).filter(function(key) { return tmpHsh[key] == null });
-        var nullIndexes = [];
-
-        nullKeys.forEach(function(date) { nullIndexes.push(date); });
-
-        data.forEach(function(row) {
-          var dataElement = {};
-
-          if(!(nullIndexes.indexOf(row['Date']) > -1)) {
-            country = translate(row['Country'], labelText);
-            category = row['Category'];
-            round = row['Round'];
-
-            dataElement['name'] = country + ' ' + category + ' ' + round;
-            dataElement['y'] = parseFloat(checkValue(tmpHsh[row['Date']]));
-            dataElement['x'] = (new Date(row['Date']+"-02")).getTime()
-
-            newRow['data'].push(dataElement);
-          } else {
-            unassessedCountryRounds.push(country + ' ' + category + ' ' + round);
-            removedCountries.push(country);
-          }
-        });
-
-        nullIndexes.forEach(function(date) {
-          var dataElement = {};
-
-          dataElement['name'] = country + ' ' + category;
-          dataElement['y'] = null;
-          dataElement['x'] = (new Date(date+"-02")).getTime()
-
-          newRow['data'].push(dataElement);
-        });
-
-        roundIndex++;
-        xAxis = null;
-        series.push(newRow);
-
-        removedCountries.forEach(function(country) {
-          if(countries.indexOf(country) > -1) {
-            countries.splice(countries.indexOf(country), 1);
-          }
-          if(!(countries.indexOf(country + "*") > -1)) {
-            countries.push(country + "*");
-          }
-        });
-
-        evaluatedCountries = countries;
-      };
-    }
-  } else if(multiSeries(countries, dates)) {
-    var tmpHsh = {};
-
-    for(var key in dataSet) {
-      var data = dataSet[key];
-
-      data.forEach(function(row) {
-        key = dateRoundLabel(row['Country'], row['Date'], row['Round']);
-        appendToHash(tmpHsh, key, checkValue(row[indicator]));
-      });
-    };
-
-    var countryIndex = 0;
     var roundIndex = 0;
-    var totalIndex = 0;
-    for(var countryDate in tmpHsh) {
-      var country = keyify(countryDate.split("|")[0]);
-      var lastCountry;
-      if (lastCountry == null) { lastCountry = country; }
-      var name  = countryDate.split("|")[1];
-      var dataPoints = tmpHsh[countryDate];
+    for(var countryKey in countryData) {
+      var data = countryData[countryKey];
       var newRow = {};
 
-      if (country != lastCountry) {
-        countryIndex++;
-        roundIndex = 0;
-      }
-
-      if (blackAndWhite == true) {
-        var color = blackAndWhiteValue(Object.keys(tmpHsh).length, totalIndex);
+      var countryIndex = countries.indexOf(countryData[countryKey][0]['Country']);
+      if (blackAndWhite) {
+        var color = blackAndWhiteValue(Object.keys(countryData).length, roundIndex);
         if (color == false) { return false }
         newRow['color'] = color;
       } else {
-        newRow['color'] = colorValue(countries.length, countryIndex, roundIndex);
+        newRow['color'] = colorValue(countries.length, countryIndex, roundIndex)
       }
 
+      newRow['name'] = titleCase(key) + ' ' + translate(countryKey, labelText);
       newRow['data'] = [];
-      newRow['name'] = name;
-      newRow['country'] = country;
 
-      dataPoints.forEach(function(dataPoint) {
-        var dataElement = {};
-        var val = checkValue(dataPoint);
-        dataElement['y'] = parseFloat(val);
-        newRow['data'].push(dataElement);
-      });
+      var tmpHsh = {};
 
-      lastCountry = country;
-      roundIndex++;
-      totalIndex++;
-      series.push(newRow);
-    };
-
-    var keptSeries = [];
-    var removedSeries = [];
-    series.forEach(function(round) {
-      var nulls = isNullSeries(dataValues(round.data));
-      if (nulls) {
-        if (!(removedSeries.indexOf(round.country) > -1)) {
-          removedSeries.push(round.country)
-        }
-        unassessedCountryRounds.push(round.name);
-      } else {
-        if (!(evaluatedCountries.indexOf(round.country) > -1)) {
-          evaluatedCountries.push(round.country);
-        }
-        keptSeries.push(round);
-      }
-    });
-
-    removedSeries.forEach(function(country) {
-      if(evaluatedCountries.indexOf(country) > -1) {
-        evaluatedCountries.splice(evaluatedCountries.indexOf(country), 1);
-      }
-    });
-
-    removedSeries.forEach(function(country) {
-      evaluatedCountries.push(country + "*");
-    });
-
-    var index = 0;
-    for(var key in dataSet) {
-      var hasNaN = false;
-      var translatedText = translate(key, labelText);
-      keptSeries.forEach(function(round) {
-        if (isNaN(round['data'][index]['y'])){
-          hasNaN = true;
-          round['data'][index]['y'] = null;
-          if (unassessedRounds[key] == null || unassessedRounds[key] == undefined) {
-            unassessedRounds[key] = [];
+      // Gather the possible keys
+      data.forEach(function(row) {
+        dates.forEach(function(date) {
+          if(date == row['Date']) {
+            tmpHsh[date] = row[indicator];
+          } else {
+            if(tmpHsh[date] == null || tmpHsh[date] == undefined) {
+              tmpHsh[date] = null;
+            }
           }
-          unassessedRounds[key].push(round['name']);
-        }
+        });
       });
-      if (hasNaN) {
-        xAxis.push(translatedText + '*');
-      } else {
-        xAxis.push(translatedText);
-      }
-      index++;
-    }
 
-    var compactedData = compactData(keptSeries, xAxis);
-    series = compactedData[0];
-    xAxis = compactedData[1];
-  } else {
-    var itemIndex = 1;
-    for(var key in dataSet) {
-      var data = dataSet[key];
-      var newRow = {};
+      var country;
+      var category;
+      var round;
+      var nullKeys = Object.keys(tmpHsh).filter(function(key) { return tmpHsh[key] == null });
+      var nullIndexes = [];
 
-      newRow['data'] = [];
-      newRow['name'] = dateRoundLabel(countries[0], dates[0], data[0]['Round']).split("|")[1];
+      nullKeys.forEach(function(date) { nullIndexes.push(date); });
 
       data.forEach(function(row) {
         var dataElement = {};
-        xAxis.push(translate(row['Category'], labelText))
-        dataElement['name'] = row['Category'];
-        dataElement['y'] = parseFloat(checkValue(row[indicator]));
+
+        if(!(nullIndexes.indexOf(row['Date']) > -1)) {
+          country = translate(row['Country'], labelText);
+          category = row['Category'];
+          round = row['Round'];
+
+          dataElement['name'] = country + ' ' + category + ' ' + round;
+          dataElement['y'] = parseFloat(checkValue(tmpHsh[row['Date']]));
+          dataElement['x'] = (new Date(row['Date']+"-02")).getTime()
+
+          newRow['data'].push(dataElement);
+        } else {
+          unassessedCountryRounds.push(country + ' ' + category + ' ' + round);
+          removedCountries.push(country);
+        }
+      });
+
+      nullIndexes.forEach(function(date) {
+        var dataElement = {};
+
+        dataElement['name'] = country + ' ' + category;
+        dataElement['y'] = null;
+        dataElement['x'] = (new Date(date+"-02")).getTime()
+
         newRow['data'].push(dataElement);
       });
 
+      roundIndex++;
+      xAxis = null;
       series.push(newRow);
-    }
-    itemIndex++;
-    evaluatedCountries = countries;
-  };
+
+      removedCountries.forEach(function(country) {
+        if(countries.indexOf(country) > -1) {
+          countries.splice(countries.indexOf(country), 1);
+        }
+        if(!(countries.indexOf(country + "*") > -1)) {
+          countries.push(country + "*");
+        }
+      });
+
+      evaluatedCountries = countries;
+    };
+  }
+
 
   // Remove Duplicate Countries
   evaluatedCountries = evaluatedCountries.filter(function(country) { return !!country });
 
   chartComponents = [xAxis, series, unassessedRounds, evaluatedCountries, unassessedCountryRounds];
   return chartComponents;
+};
+
+function generateMultiSeriesData() {
+  var dataSet = reduceDataBasedOnSelection();
+  var indicator = selectedData().indicator;
+  var blackAndWhite = selectedData().blackAndWhite;
+  var countries = selectedData().countries;
+  var tmpHsh = {};
+
+  var series = [];
+  var evaluatedCountries = [];
+  var unassessedCountryRounds = [];
+  var removedCountries = [];
+  var unassessedRounds = {};
+  var xAxis = [];
+
+  for(var key in dataSet) {
+    var data = dataSet[key];
+
+    data.forEach(function(row) {
+      key = dateRoundLabel(row['Country'], row['Date'], row['Round']);
+      appendToHash(tmpHsh, key, checkValue(row[indicator]));
+    });
+  };
+
+  var countryIndex = 0;
+  var roundIndex = 0;
+  var totalIndex = 0;
+  for(var countryDate in tmpHsh) {
+    var country = keyify(countryDate.split("|")[0]);
+    var lastCountry;
+    if (lastCountry == null) { lastCountry = country; }
+    var name  = countryDate.split("|")[1];
+    var dataPoints = tmpHsh[countryDate];
+    var newRow = {};
+
+    if (country != lastCountry) {
+      countryIndex++;
+      roundIndex = 0;
+    }
+
+    if (blackAndWhite == true) {
+      var color = blackAndWhiteValue(Object.keys(tmpHsh).length, totalIndex);
+      if (color == false) { return false }
+      newRow['color'] = color;
+    } else {
+      newRow['color'] = colorValue(countries.length, countryIndex, roundIndex);
+    }
+
+    newRow['data'] = [];
+    newRow['name'] = name;
+    newRow['country'] = country;
+
+    dataPoints.forEach(function(dataPoint) {
+      var dataElement = {};
+      var val = checkValue(dataPoint);
+      dataElement['y'] = parseFloat(val);
+      newRow['data'].push(dataElement);
+    });
+
+    lastCountry = country;
+    roundIndex++;
+    totalIndex++;
+    series.push(newRow);
+  };
+
+  var keptSeries = [];
+  var removedSeries = [];
+  series.forEach(function(round) {
+    var nulls = isNullSeries(dataValues(round.data));
+    if (nulls) {
+      if (!(removedSeries.indexOf(round.country) > -1)) {
+        removedSeries.push(round.country)
+      }
+      unassessedCountryRounds.push(round.name);
+    } else {
+      if (!(evaluatedCountries.indexOf(round.country) > -1)) {
+        evaluatedCountries.push(round.country);
+      }
+      keptSeries.push(round);
+    }
+  });
+
+  removedSeries.forEach(function(country) {
+    if(evaluatedCountries.indexOf(country) > -1) {
+      evaluatedCountries.splice(evaluatedCountries.indexOf(country), 1);
+    }
+  });
+
+  removedSeries.forEach(function(country) {
+    evaluatedCountries.push(country + "*");
+  });
+
+  var index = 0;
+  for(var key in dataSet) {
+    var hasNaN = false;
+    var translatedText = translate(key, labelText);
+    keptSeries.forEach(function(round) {
+      if (isNaN(round['data'][index]['y'])){
+        hasNaN = true;
+        round['data'][index]['y'] = null;
+        if (unassessedRounds[key] == null || unassessedRounds[key] == undefined) {
+          unassessedRounds[key] = [];
+        }
+        unassessedRounds[key].push(round['name']);
+      }
+    });
+    if (hasNaN) {
+      xAxis.push(translatedText + '*');
+    } else {
+      xAxis.push(translatedText);
+    }
+    index++;
+  }
+
+  var compactedData = compactData(keptSeries, xAxis);
+  series = compactedData[0];
+  xAxis = compactedData[1];
+
+  // Remove Duplicate Countries
+  evaluatedCountries = evaluatedCountries.filter(function(country) { return !!country });
+
+  chartComponents = [
+    xAxis,
+    series,
+    unassessedRounds,
+    evaluatedCountries,
+    unassessedCountryRounds
+  ];
+  return chartComponents;
+};
+
+function generateSingleSeriesData() {
+  var dataSet = reduceDataBasedOnSelection();
+  var dates = selectedData().years;
+  var indicator = selectedData().indicator;
+  var blackAndWhite = selectedData().blackAndWhite;
+  var countries = selectedData().countries;
+  var tmpHsh = {};
+  var series = [];
+  var evaluatedCountries = [];
+  var unassessedCountryRounds = [];
+  var removedCountries = [];
+  var unassessedRounds = {};
+  var xAxis = [];
+  var itemIndex = 1;
+
+  for(var key in dataSet) {
+    var data = dataSet[key];
+    var newRow = {};
+
+    newRow['data'] = [];
+    newRow['name'] = dateRoundLabel(countries[0], dates[0], data[0]['Round']).split("|")[1];
+
+    data.forEach(function(row) {
+      var dataElement = {};
+      xAxis.push(translate(row['Category'], labelText))
+      dataElement['name'] = row['Category'];
+      dataElement['y'] = parseFloat(checkValue(row[indicator]));
+      newRow['data'].push(dataElement);
+    });
+
+    series.push(newRow);
+  }
+  itemIndex++;
+  evaluatedCountries = countries;
+
+  // Remove Duplicate Countries
+  evaluatedCountries = evaluatedCountries.filter(function(country) { return !!country });
+
+  chartComponents = [
+    xAxis,
+    series,
+    unassessedRounds,
+    evaluatedCountries,
+    unassessedCountryRounds
+  ];
+  return chartComponents;
+};
+
+function generateSeriesData() {
+  if(selectedData().overTime) { return generateOverTimeSeriesData(); }
+  else if(multiSeries()) {
+    return generateMultiSeriesData();
+  } else { return generateSingleSeriesData(); };
 };
 
 function dateRoundLabel(country, date, round) {
@@ -432,45 +493,15 @@ function unassessedCountryWarnings(countryRounds, indicator, disaggregator) {
   return warning;
 };
 
-function selectedData() {
-  var chartType = getSelectedChartType('chart_types');
-  var selectedCountryYearRounds = getSelectedCountryYearRounds();
-  var selectedCountries = getCountries();
-  var selectedYearRounds = getSelectedYearRounds();
-  var selectedIndicator = getSelectedItemValue('indicators');
-  var selectedGrouping = getSelectedItemValue('disaggregators');
-  var blackAndWhite = getBlackAndWhiteState();
-  var overTime = getOvertimeState();
-
-  return {
-    chartType: chartType,
-    countryYearRounds: selectedCountryYearRounds,
-    countries: selectedCountries,
-    yearRounds: selectedYearRounds,
-    indicator: selectedIndicator,
-    disaggregator: selectedGrouping,
-    blackAndWhite: blackAndWhite,
-    overTime: overTime
-  }
-};
 
 function chartData(overTime) {
   var citationText = generateCitation(selectedData().countries);
 
   if(validateFilters()) {
-    var chartComponents = generateSeriesData(
-      selectedData().chartType,
-      selectedData().countries,
-      selectedData().indicator,
-      selectedData().disaggregator,
-      selectedData().yearRounds,
-      selectedData().overTime,
-      selectedData().blackAndWhite,
-      selectedData().countryYearRounds
-    );
+    var chartComponents = generateSeriesData();
 
     var xAxis = xAxisData(chartComponents[0]);
-    var yAxis = getSelectedItemDisplayText('indicators');
+    var yAxis = selectedData().indicatorName;
     var seriesData = chartComponents[1];
     var roundWarnings = unassessedRoundsWarning(chartComponents[2]);
     var countryWarnings = unassessedCountryWarnings(chartComponents[4], selectedData().indicator, selectedData().disaggregator);
@@ -478,8 +509,8 @@ function chartData(overTime) {
 
     var title = generateTitle(
       chartComponents[3],
-      getSelectedItemDisplayText('indicators'),
-      getSelectedItemDisplayText('disaggregators')
+      selectedData().indicatorName,
+      selectedData().disaggregatorName
     );
 
     return [xAxis, yAxis, title, selectedData().chartType, selectedData().disaggregator, seriesData, warnings, citationText];

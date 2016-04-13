@@ -1,57 +1,66 @@
-<h1>Datasets</h1>
+<div class='container'>
+  <h1>Datasets</h1>
 
-<div>
-  <% flash.each do |key, value| %>
-    <%= value %>
-  <% end %>
-  <ul>
-    <% @dataset.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
+  <div>
+    <% flash.each do |key, value| %>
+      <%= value %>
     <% end %>
-  </ul>
-</div>
-
-<section class="new-dataset">
-  <h3>Upload New Dataset</h3>
-  <%= form_for @dataset do |form| %>
-    <p>
-      <%= label(:dataset, :name) %>
-      <%= form.text_field :name %>
-    </p>
-
-    <p>
-      <%= label(:dataset, :csv_file) %>
-      <%= form.attachment_field :csv_file %>
-    </p>
-
-    <p>
-      <%= label(:dataset, :help_file) %>
-      <%= form.attachment_field :help_file %>
-    </p>
-
-    <p><%= submit_tag "Save dataset" %></p>
-  <% end %>
-</section>
-
-<section class="current-datasets">
-  <h3>Current Datasets</h3>
-
-  <ul>
-    <% if @datasets.empty? %>
-      No datasets. Upload the first one!
-    <% else %>
-      <% @datasets.each do |dataset| %>
-        <li>
-          <p>
-            <strong><%= dataset.name %></strong>
-            <span><%= dataset.created_at %></span>
-          </p>
-          <p>
-            <%= link_to("View", dataset_path(dataset)) %>
-            <%= link_to("Delete", dataset_path(dataset), method: :delete) %>
-          </p>
-        </li>
+    <ul>
+      <% @dataset.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
       <% end %>
-    <% end %>
-  </ul>
-</section>
+    </ul>
+  </div>
+
+  <div class='row'>
+    <div class='col-md-12'>
+      <h3>Upload New Dataset</h3>
+      <%= form_for(@dataset, class: 'form-inline') do |form| %>
+        <div class="form-group">
+          <%= label(:dataset, :name) %>
+          <%= form.text_field(:name, class: 'form-control') %>
+        </div>
+
+        <div class="form-group">
+          <%= label(:dataset, :csv_file) %>
+          <%= form.attachment_field(:csv_file) %>
+        </div>
+
+        <div class="form-group">
+          <%= label(:dataset, :help_file) %>
+          <%= form.attachment_field(:help_file) %>
+        </div>
+
+        <%= submit_tag "Save dataset", class: 'btn btn-success' %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class='row'>
+    <div class='col-md-12'>
+      <h3>Current Datasets</h3>
+
+      <% if @datasets.empty? %>
+        No datasets. Upload the first one!
+      <% else %>
+        <% @datasets.order(created_at: :desc).each do |dataset| %>
+          <div class='row'>
+            <div class='col-md-2'>
+              <span><%= dataset.created_at %></span>
+            </div>
+            <div class='col-md-8'>
+              <strong><%= dataset.name %></strong>
+            </div>
+            <div class='col-md-1 text-center'>
+              <%= link_to("View", dataset_path(dataset)) %>
+            </div>
+            <div class='col-md-1 text-center'>
+              <%= link_to("Delete", dataset_path(dataset), method: :delete) %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <br/>
+</div>

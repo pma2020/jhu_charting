@@ -13,12 +13,10 @@ function appendToHash(hsh, key, value) {
   return hsh;
 };
 
-function multiSeries(countries, dates) {
-  if (countries.length >= 1 && dates.length > 1) {
-    return true
-  } else {
-    return false
-  }
+function multiSeries() {
+  var countries = selectedData().countries;
+  var years = selectedData().years;
+  return (countries.length >= 1 && years.length > 1);
 };
 
 function checkValue(value) {

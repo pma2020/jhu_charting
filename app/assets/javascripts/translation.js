@@ -11,7 +11,7 @@ function updateLanguage() {
 
 function translate(text, type) {
   if(text == "") { text = 'Select option'; }
-  var language = $('#dataset-language-picker').val();
+  var language = selectedData().language;
   var originalText = text;
   var key = keyify(text);
   if(type[key]) { text = type[key][language]; }
