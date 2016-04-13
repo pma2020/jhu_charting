@@ -44,7 +44,7 @@ class DatasetParser
       disaggregators: disaggregators,
       indicators: nested_indicators,
       chart_types: chart_types,
-      languages: language_codes,
+      languages: languages(help_data.first),
       help_text: help_text,
       label_text: label_text,
       unavailable_filters: unavailable_filters
@@ -185,18 +185,6 @@ class DatasetParser
     languages = row.keys.collect{|key| key.split(HELP_FILE_DELIMITER).last}
     languages.shift # Shift ID off the languages
     languages.uniq
-  end
-
-  def language_codes
-    potential_languages.select{|k,v| languages(help_data.first).include?(k) }
-  end
-
-  def potential_languages
-    potential_languages = Hash.new
-    ISO::Language.all.each do |language|
-      potential_languages[language.name] = language.code
-    end
-    potential_languages
   end
 
   def normalize_data
