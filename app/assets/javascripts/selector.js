@@ -24,7 +24,7 @@ function selectedData() {
     disaggregatorName: selectedGroupingName,
     blackAndWhite: blackAndWhite,
     overTime: overTime,
-    language: selectedLanguage
+    language: language
   }
 };
 
