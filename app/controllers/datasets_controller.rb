@@ -1,5 +1,6 @@
 class DatasetsController < ApplicationController
-  before_action :set_dataset, only: [:show, :embed, :destroy]
+  before_action :set_dataset, only: [:activate, :destroy]
+  before_action :current_dataset, only: [:show, :embed]
   after_action :allow_iframe, only: :embed
 
   layout false
@@ -50,6 +51,12 @@ class DatasetsController < ApplicationController
     end
   end
 
+  def activate
+    Dataset.update_all(active: false)
+    @dataset.update_attributes(active: true)
+    redirect_to datasets_path
+  end
+
   private
 
   def dataset_params
@@ -58,6 +65,10 @@ class DatasetsController < ApplicationController
 
   def set_dataset
     @dataset = Dataset.find(params[:id])
+  end
+
+  def current_dataset
+    @dataset = Dataset.find_by(active: true)
   end
 
   def allow_iframe

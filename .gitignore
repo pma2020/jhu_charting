@@ -38,3 +38,5 @@ config/database.yml
 
 # Ignore cirm-quantlib embedded repo
 /cirm-quantlib
+
+.env

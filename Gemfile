@@ -3,6 +3,7 @@ ruby "2.2.1"
 
 source 'https://rails-assets.tenex.tech' do
   gem 'rails-assets-jquery'
+  gem 'rails-assets-jquery-ujs'
   gem 'rails-assets-bootstrap'
   gem 'rails-assets-highcharts'
   gem 'rails-assets-bootstrap-select'
@@ -26,6 +27,7 @@ group :development, :test do
   gem 'byebug'
   gem 'factory_girl_rails'
   gem 'pry-rails'
+  gem 'dotenv-rails'
 end
 
 group :development do

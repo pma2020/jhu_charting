@@ -1,9 +1,10 @@
 <div class='container'>
-  <h1>Datasets</h1>
-
   <div>
     <% flash.each do |key, value| %>
-      <%= value %>
+      <div class='alert alert-info'>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= value %>
+      </div>
     <% end %>
     <ul>
       <% @dataset.errors.full_messages.each do |msg| %>
@@ -11,6 +12,8 @@
       <% end %>
     </ul>
   </div>
+
+  <h1>Datasets</h1>
 
   <div class='row'>
     <div class='col-md-12'>
@@ -48,15 +51,22 @@
             <div class='col-md-2'>
               <span><%= dataset.created_at %></span>
             </div>
-            <div class='col-md-8'>
-              <strong><%= dataset.name %></strong>
+            <div class='col-md-7'>
+              <% if dataset.active %>
+                <span class='label label-success'>Active</span>
+              <% end %>
+              <%= link_to(dataset_path(dataset), class: 'btn btn-link') do %>
+                <strong><%= dataset.name %></strong>
+              <% end %>
             </div>
-            <div class='col-md-1 text-center'>
-              <%= link_to("View", dataset_path(dataset)) %>
-            </div>
-            <div class='col-md-1 text-center'>
-              <%= link_to("Delete", dataset_path(dataset), method: :delete) %>
-            </div>
+            <% unless dataset.active %>
+              <div class='col-md-2 text-center'>
+                <%= link_to("Make Active", activate_dataset_path(dataset), class: 'btn btn-link', method: :post) %>
+              </div>
+              <div class='col-md-1 text-center'>
+                <%= button_to("Delete", dataset_path(dataset), method: :delete, class: 'btn btn-link', data: { confirm: 'Are you sure you want to delete this dataset?' }) %>
+              </div>
+            <% end %>
           </div>
         <% end %>
       <% end %>
