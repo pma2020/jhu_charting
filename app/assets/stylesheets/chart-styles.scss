@@ -53,6 +53,8 @@ $light-purple: lighten($dark-purple, 25%);
       font-weight: 300;
     }
     &.chart-sidebar {
+      overflow-y: auto;
+      overflow-x: hidden;
       max-height: 100%;
       color: $dark-purple;
       .bootstrap-select.btn-group .dropdown-toggle .filter-option {
