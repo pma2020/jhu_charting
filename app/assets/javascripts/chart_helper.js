@@ -673,7 +673,7 @@ function generateChart() {
         style: {
           color: styles['title-color']
         },
-        text: "PMA 2020"
+        text: "PMA2020"
       },
       xAxis: xAxis,
       yAxis: {

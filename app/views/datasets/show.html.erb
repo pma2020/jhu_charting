@@ -1,13 +1,14 @@
 <div class='container-fluid'>
   <section class="charted-dataset">
-    <h2 class='text-center'>
+    <%= render partial: 'chart' %>
+    <h3 class='text-center' style="padding-bottom:50px">
       Dataset: <%= @dataset.name %>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#embed-modal">
       <i class='fa fa-share-alt'></i>
       Embed
     </button>
-    </h2>
-    <%= render partial: 'chart' %>
+    </h3>
+    <p>PMA2020 uses innovative mobile technology to support low-cost, rapid-turnaround surveys monitoring key indicators for family planning, water, sanitation and hygiene and other health and development indicators. The project is implemented by local university and research organizations in 11 countries, deploying a cadre of female resident enumerators trained in mobile-assisted data collection. PMA2020 establishes a sentinel data collection platform that can be utilized for other health program areas.</p>
   </section>
   <div class="modal fade" id='embed-modal' tabindex="-1" role="dialog">
     <div class="modal-dialog">
