@@ -476,7 +476,7 @@ function generateCitation(partners) {
 function unassessedRoundsWarning(unassessedRounds) {
   var warnings = [];
   Object.keys(unassessedRounds).forEach(function(indicator) {
-    var warningString = indicator + '* ' + translate('was not assessed in', labelText) + ': ' + unassessedRounds[indicator].map(function(countryRound){
+    var warningString = '* ' + translate(indicator, labelText) + ' ' + translate('was not assessed in', labelText) + ': ' + unassessedRounds[indicator].map(function(countryRound){
       return translateCountryRound(countryRound, labelText);
     }).join(', ');
     warnings.push(warningString);
@@ -485,7 +485,7 @@ function unassessedRoundsWarning(unassessedRounds) {
 };
 
 function unassessedCountryWarnings(countryRounds, indicator, disaggregator) {
-  var warning = translate(indicator, labelText) + ' ' + translate('was not assessed in', labelText) + ':'
+  var warning = '* ' + translate(indicator, labelText) + ' ' + translate('was not assessed in', labelText) + ':'
   var translatedCountryRounds = countryRounds.map(function(countryRound) {
     return translateCountryRound(countryRound, labelText)
   }).join(", ");;
