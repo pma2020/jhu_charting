@@ -18,24 +18,17 @@ $light-purple: lighten($dark-purple, 25%);
     transform: rotate(270deg) scale(1, -1);
   }
   .row {
-    &.top-row {
-      height: auto;
-    }
     &.bottom-row {
       height: auto;
     }
-    [class*='col-'] {
-      height: auto;
-    }
-    @media (min-width: 992px) {
-      &.top-row {
-        height: 91vh;
-      }
-      &.bottom-row {
-        height: 20vh;
-      }
-      [class*='col-'] {
-        height: 100%;
+    &.top-row {
+      @media (min-width: 992px) {
+        display: table;
+        & .match-height {
+          float: none;
+          display: table-cell;
+          vertical-align: top;
+        }
       }
     }
   }
@@ -53,8 +46,6 @@ $light-purple: lighten($dark-purple, 25%);
       font-weight: 300;
     }
     &.chart-sidebar {
-      overflow-y: auto;
-      overflow-x: hidden;
       max-height: 100%;
       color: $dark-purple;
       .bootstrap-select.btn-group .dropdown-toggle .filter-option {
