@@ -17,7 +17,7 @@ function translate(text, type) {
   if(type[key]) { text = type[key][language]; }
   else {
     text = originalText;
-    console.log('There was not a translation for ' + key + ' in the specified type.')
+    //console.log('There was not a translation for ' + key + ' in the specified type.')
   }
   return text
 };

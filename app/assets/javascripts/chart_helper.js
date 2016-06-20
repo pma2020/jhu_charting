@@ -485,12 +485,15 @@ function unassessedRoundsWarning(unassessedRounds) {
 };
 
 function unassessedCountryWarnings(countryRounds, indicator, disaggregator) {
-  var warning = '* ' + translate(indicator, labelText) + ' ' + translate('was not assessed in', labelText) + ':'
-  var translatedCountryRounds = countryRounds.map(function(countryRound) {
-    return translateCountryRound(countryRound, labelText)
-  }).join(", ");;
-  warning = warning + ' ' + translatedCountryRounds;
-  return warning;
+  if (countryRounds.length > 0) {
+    var warning = '* ' + translate(indicator, labelText) + ' ' + translate('was not assessed in', labelText) + ':';
+    var translatedCountryRounds = countryRounds.map(function(countryRound) {
+      return translateCountryRound(countryRound, labelText)
+    }).join(", ");
+    console.log(countryRounds);
+    warning = warning + ' ' + translatedCountryRounds;
+    return warning;
+  }
 };
 
 
@@ -554,7 +557,6 @@ function compactData(series, xAxis, unassessedRounds) {
   var datapointIndex = 0;
   while(datapointIndex < series[0].data.length) {
     var allNull = series.every(function(round) {
-      console.log(xAxis[datapointIndex] + '  ' + round.name + ' '  + round.data[datapointIndex].y)
       return(round.data[datapointIndex].y === null ||
       isNaN(round.data[datapointIndex].y))
     });
