@@ -79,12 +79,14 @@ function disablePieOption(countries, dates) {
 
 function toggleBlackAndWhiteOption(countryDateRounds) {
   var blackAndWhiteCheck = $("#dataset_black_and_white");
-  if(countryDateRounds.length > 3) {
-    blackAndWhiteCheck.prop('disabled', 'disabled');
-    blackAndWhiteCheck.prop('checked', false);
+
+  if((countryDateRounds.length >= 1 && countryDateRounds.length < 3) &&
+      selectedData().overTime == false) {
+    blackAndWhiteCheck.prop('disabled', '');
   }
   else {
-    blackAndWhiteCheck.prop('disabled', '');
+    blackAndWhiteCheck.prop('disabled', 'disabled');
+    blackAndWhiteCheck.prop('checked', false);
   }
 }
 
