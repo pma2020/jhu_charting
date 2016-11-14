@@ -53,6 +53,7 @@ function chartStyles() {
 };
 
 function chartOverrides() {
+  var chartTitle = $('input#chart-title').val();
   var yAxisLabel = $('input#y-axis-label').val();
   var xAxisLabel = $('input#x-axis-label').val();
   var yAxisX = $('input#y-axis-x-position').val();
@@ -68,6 +69,7 @@ function chartOverrides() {
   var font = $('.bfh-selectbox-option').text()
 
   return {
+    "chart-title" : chartTitle,
     "y-axis-label" : yAxisLabel,
     "x-axis-label" : xAxisLabel,
     "y-axis-x-position" : parseInt(yAxisX),
