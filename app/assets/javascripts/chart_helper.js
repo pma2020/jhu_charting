@@ -614,6 +614,8 @@ function generateChart() {
   // Override y-axis-label if necessary
   if (overrides['y-axis-label'] != "") { yAxis = overrides['y-axis-label']; }
   var title = data[2];
+  // Override title if necessary
+  if (overrides['chart-title'] != "") { title = overrides['chart-title']; }
   var chartType = data[3].toLowerCase();
   var seriesData = data[5];
   var warnings = data[6];
