@@ -1,9 +1,10 @@
 function downloadCSV() {
-  var data = chartData(false) || [];
+  var data = chartData(selectedData().overTime) || [];
   var xAxis = data[0];
   var title = data[2];
   var disaggregator = data[4];
   var seriesData = data[5];
+  var overTime = data[8];
 
   $form = $("<form></form>");
   $form.attr('action', "/datasets/chart_csv.csv");
@@ -25,6 +26,12 @@ function downloadCSV() {
     id: 'disaggregator',
     name: 'disaggregator',
     value: disaggregator
+  }).appendTo($form);
+  $('<input>').attr({
+    type: 'hidden',
+    id: 'over_time',
+    name: 'over_time',
+    value: overTime,
   }).appendTo($form);
   $('<input>').attr({
     type: 'hidden',
