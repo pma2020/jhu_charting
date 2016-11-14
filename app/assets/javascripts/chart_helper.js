@@ -497,7 +497,7 @@ function unassessedCountryWarnings(countryRounds, indicator, disaggregator) {
 };
 
 
-function chartData(overTime) {
+function chartData() {
   var citationText = generateCitation(selectedData().countries);
 
   if(validateFilters()) {
@@ -516,7 +516,17 @@ function chartData(overTime) {
       selectedData().disaggregatorName
     );
 
-    return [xAxis, yAxis, title, selectedData().chartType, selectedData().disaggregator, seriesData, warnings, citationText];
+    return [
+      xAxis,
+      yAxis,
+      title,
+      selectedData().chartType,
+      selectedData().disaggregator,
+      seriesData,
+      warnings,
+      citationText,
+      selectedData().overTime,
+    ];
   }
 };
 
