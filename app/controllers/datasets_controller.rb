@@ -41,11 +41,17 @@ class DatasetsController < ApplicationController
   end
 
   def chart_csv
+    over_time = params.fetch("over_time", false) == "true" ? true : false
+
+    data = if over_time
+      SeriesDataOverTime.new(params).generate_csv
+    else
+      SeriesData.new(params).generate_csv
+    end
+
     respond_to do |format|
       format.csv {
-        send_data(SeriesData.new(params).generate_csv,
-                  filename: "result.csv",
-                  type: "text/csv")
+        send_data(data, filename: "result.csv", type: "text/csv")
       }
     end
   end

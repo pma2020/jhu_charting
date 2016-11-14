@@ -497,7 +497,7 @@ function unassessedCountryWarnings(countryRounds, indicator, disaggregator) {
 };
 
 
-function chartData(overTime) {
+function chartData() {
   var citationText = generateCitation(selectedData().countries);
 
   if(validateFilters()) {
@@ -516,7 +516,17 @@ function chartData(overTime) {
       selectedData().disaggregatorName
     );
 
-    return [xAxis, yAxis, title, selectedData().chartType, selectedData().disaggregator, seriesData, warnings, citationText];
+    return [
+      xAxis,
+      yAxis,
+      title,
+      selectedData().chartType,
+      selectedData().disaggregator,
+      seriesData,
+      warnings,
+      citationText,
+      selectedData().overTime,
+    ];
   }
 };
 
@@ -604,6 +614,8 @@ function generateChart() {
   // Override y-axis-label if necessary
   if (overrides['y-axis-label'] != "") { yAxis = overrides['y-axis-label']; }
   var title = data[2];
+  // Override title if necessary
+  if (overrides['chart-title'] != "") { title = overrides['chart-title']; }
   var chartType = data[3].toLowerCase();
   var seriesData = data[5];
   var warnings = data[6];
