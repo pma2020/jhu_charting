@@ -9,20 +9,17 @@ class SeriesData
 
 
   def data
-    @data = Hash.new
-    @series.each do |row|
-      series_row = SeriesRow.new(row, @xAxis)
-      @data[series_row.header] = series_row.series_values
-    end
-    @data
+    @series.map do |row|
+      SeriesRow.new(row, @xAxis.fetch("categories")).data
+    end.inject(&:merge)
   end
 
   def generate_csv
     CSV.generate do |csv|
       csv << csv_header
 
-      csv_rows.each do |k,v|
-        csv << v.unshift(k)
+      value_keys.each do |key|
+        csv << [key, data.values.collect{|x| x[key]}].flatten
       end
     end
   end
@@ -31,19 +28,7 @@ class SeriesData
     data.keys.unshift(@disaggregator)
   end
 
-  def csv_rows
-    csv_rows = Hash.new
-    csv_row_keys.each_with_index do |key, index|
-      csv_rows[key] = transposed_data_values[index]
-    end
-    csv_rows
-  end
-
-  def csv_row_keys
-    @xAxis['categories'] || []
-  end
-
-  def transposed_data_values
-    data.values.transpose
+  def value_keys
+    @value_keys ||= data.values.collect{|x| x.keys}.flatten.uniq
   end
 end

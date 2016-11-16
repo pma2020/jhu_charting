@@ -1,18 +1,25 @@
 class SeriesRow
-  def initialize(row, xAxis)
+  def initialize(row, categories)
     @row = row
-    @xAxis = xAxis
+    @categories = categories
   end
 
-  def header
+  def data
+    { series_name => series_values }
+  end
+
+  private
+
+  def series_name
     @row.fetch("name")
   end
 
   def series_values
-    @row.fetch("data", {}).collect(&:values).flatten
-  end
-
-  def disaggregator_values
-    @xAxis || []
+    @row.fetch("data", {}).map.with_index do |row, index|
+      row["name"] = @categories[index]
+      row
+    end.inject({}) do |acc, cur|
+      acc.merge({cur["name"] => cur["y"]})
+    end
   end
 end
