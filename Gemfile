@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby "2.2.1"
 
-source 'https://rails-assets.tenex.tech' do
+source 'https://rails-assets.org' do
   gem 'rails-assets-jquery'
   gem 'rails-assets-jquery-ujs'
   gem 'rails-assets-bootstrap'
