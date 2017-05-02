@@ -40,3 +40,5 @@ config/database.yml
 /cirm-quantlib
 
 .env
+.idea
+.dev
